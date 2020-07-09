@@ -16,3 +16,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::prefix('login')->group(function () {
+    Route::get('redirect/{provider}', 'LoginController@redirect')->name('login.redirect');
+    Route::get('callback/{provider}', 'LoginController@callback')->name('login.callback');
+});
