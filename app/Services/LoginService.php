@@ -3,6 +3,7 @@ namespace App\Services;
 
 use App\Interfaces\LoginServiceInterface;
 use App\User;
+use Illuminate\Support\Str;
 use Laravel\Passport\Client;
 use Laravel\Passport\ClientRepository;
 use Laravel\Socialite\Contracts\User as UserContract;
@@ -99,7 +100,10 @@ class LoginService implements LoginServiceInterface
         return $find->first() ?? $this->clientRepository->create(
             $user->id,
             "{$user->provider_name}-{$user->provider_id}",
-            $user->provider_name
+            '',
+            $user->provider_name,
+            '',
+            Str::random(40)
         );
     }
 }
