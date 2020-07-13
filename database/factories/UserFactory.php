@@ -22,7 +22,7 @@ $factory->define(User::class, function (Faker $faker) {
     return [
         'name'          => $name,
         'provider_name' => collect(['github', 'linkedin', 'google', 'instagram'])->random(),
-        'provider_id'   => Str::uuid(),
+        'provider_id'   => Str::uuid()->toString(),
         'access_token'  => Str::random(40),
         'refresh_token' => Str::random(40),
         'profile'       => [

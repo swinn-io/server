@@ -2,11 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
-use Laravel\Socialite\Facades\Socialite;
+use App\Interfaces\LoginServiceInterface;
 
 class LoginController extends Controller
 {
+    /**
+     * Login Service.
+     *
+     * @var LoginServiceInterface $service
+     */
+    private $service;
+
+    /**
+     * LoginController constructor.
+     *
+     * @param LoginServiceInterface $service
+     */
+    public function __construct(LoginServiceInterface $service)
+    {
+        $this->service = $service;
+    }
+
     /**
      * Redirect the user to the GitHub authentication page.
      *
@@ -15,14 +31,7 @@ class LoginController extends Controller
      */
     public function redirect(string $provider)
     {
-        try {
-            return Socialite::driver($provider)
-                ->scopes(config("services.{$provider}.scopes") ?? '*')
-                ->stateless()
-                ->redirect();
-        } catch (\Exception $exception) {
-            abort(404);
-        }
+        return $this->service->redirect($provider);
     }
 
     /**
@@ -33,17 +42,8 @@ class LoginController extends Controller
      */
     public function callback(string $provider)
     {
-        $get  = Socialite::driver($provider)->stateless()->user();
-        $user = User::updateOrCreate([
-            'provider_name'  => $provider,              // GitHub, LinkedIn, Google, Apple
-            'provider_id'    => $get->getId(),          // uuid-0001-0002-0003
-        ],[
-            'name'           => $get->getName(),
-            'access_token'   => $get->token,            // TOKEN
-            'refresh_token'  => $get->refreshToken,     // TOKEN - some providers have it
-            'profile'        => $get->user,             // JSON profile data
-        ]);
+        $callback = $this->service->callback($provider);
 
-        return response()->json($user);
+        return response()->json($callback);
     }
 }
