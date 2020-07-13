@@ -1,4 +1,4 @@
-![Laravel](https://github.com/ikidnapmyself/pp-api/workflows/Laravel/badge.svg)
+![Laravel](https://github.com/ikidnapmyself/pp-api/workflows/Laravel/badge.svg?branch=master)
 
 ## About PP API
 
