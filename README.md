@@ -1,3 +1,5 @@
+![Laravel](https://github.com/ikidnapmyself/pp-api/workflows/Laravel/badge.svg)
+
 ## About PP API
 
 @todo
