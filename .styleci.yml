@@ -1,5 +1,5 @@
 php:
-  preset: recomm
+  preset: laravel
   disabled:
     - unused_use
   finder:
