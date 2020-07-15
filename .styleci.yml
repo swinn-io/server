@@ -1,5 +1,5 @@
 php:
-  preset: laravel
+  preset: recomm
   disabled:
     - unused_use
   finder:
@@ -17,3 +17,6 @@ php:
   use-tabs: false
 js: false
 css: false
+ts: false
+py: false
+vue: false
