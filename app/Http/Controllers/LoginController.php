@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Interfaces\LoginServiceInterface;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -24,26 +25,43 @@ class LoginController extends Controller
     }
 
     /**
-     * Redirect the user to the GitHub authentication page.
+     * Redirect the user to the provider authentication page.
      *
      * @param string $provider
-     * @return mixed
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function redirect(string $provider)
+    public function redirect(string $provider, Request $request)
     {
-        return $this->service->redirect($provider);
+        try {
+            $request->session()->flash('state', $request->get('state'));
+            return $this->service->redirect($provider);
+        } catch (\Exception $exception) {
+            abort(404);
+        }
     }
 
     /**
-     * Obtain the user information from GitHub.
+     * Obtain the user information from the provider.
      *
      * @param string $provider
-     * @return \Illuminate\Http\JsonResponse
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function callback(string $provider)
+    public function callback(string $provider, Request $request)
     {
-        $callback = $this->service->callback($provider);
+        try {
+            $callback = $this->service->callback($provider);
+            $URI      = config('app.uri');
+            $state    = $request->session()->get('state');
+            $query    = http_build_query([
+                'state'    => $state,
+                'callback' => $callback->toArray()
+            ]);
 
-        return response()->json($callback);
+            return redirect()->away("$URI?{$query}");
+        } catch (\Exception $exception) {
+            abort(404);
+        }
     }
 }
