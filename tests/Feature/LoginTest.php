@@ -4,12 +4,12 @@ namespace Tests\Feature;
 
 use App\Interfaces\LoginServiceInterface;
 use App\User;
+use InvalidArgumentException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Str;
 use Mockery;
 use Laravel\Socialite\Contracts\User as SocialiteUser;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Tests\TestCase;
 
 class LoginTest extends TestCase
@@ -37,7 +37,7 @@ class LoginTest extends TestCase
      */
     public function testUnknownServiceRedirection()
     {
-        $this->expectException(NotFoundHttpException::class);
+        $this->expectException(InvalidArgumentException::class);
         $redirect = $this->service->redirect('unknown-service');
 
         $this->assertEquals(404, $redirect->getStatusCode());
