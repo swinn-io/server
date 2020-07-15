@@ -37,15 +37,11 @@ class LoginService implements LoginServiceInterface
      */
     public function redirect(string $provider): RedirectResponse
     {
-        try {
-            return Socialite::driver($provider)
-                // Define custom scopes if needed under "services.{provider}"
-                ->scopes(config("services.{$provider}.scopes") ?? '*')
-                ->stateless()
-                ->redirect();
-        } catch (\Exception $exception) {
-            abort(404);
-        }
+        return Socialite::driver($provider)
+            // Define custom scopes if needed under "services.{provider}"
+            ->scopes(config("services.{$provider}.scopes") ?? '*')
+            ->stateless()
+            ->redirect();
     }
 
     /**
@@ -56,13 +52,9 @@ class LoginService implements LoginServiceInterface
      */
     public function callback(string $provider): User
     {
-        try {
-            $callback = Socialite::driver($provider)->stateless()->user();
-            $user     = $this->user($provider, $callback);
-            $this->client($user);
-        } catch (\Exception $exception) {
-            abort(404);
-        }
+        $callback = Socialite::driver($provider)->stateless()->user();
+        $user     = $this->user($provider, $callback);
+        $this->client($user);
 
         return $user->load('clients');
     }
