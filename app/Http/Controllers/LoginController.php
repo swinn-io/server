@@ -36,6 +36,7 @@ class LoginController extends Controller
     {
         try {
             $request->session()->flash('client', $request->all());
+
             return $this->service->redirect($provider);
         } catch (\Exception $exception) {
             abort(404);
@@ -52,12 +53,12 @@ class LoginController extends Controller
     public function callback(string $provider, Request $request)
     {
         try {
-            $client   = $request->session()->get('client');
+            $client = $request->session()->get('client');
             $callback = $this->service->callback($provider, $client);
-            $URI      = Arr::get($client, 'redirect_uri');
-            $query    = http_build_query([
+            $URI = Arr::get($client, 'redirect_uri');
+            $query = http_build_query([
                 'state'    => Arr::get($client, 'state'),
-                'callback' => $callback->toArray()
+                'callback' => $callback->toArray(),
             ]);
 
             return redirect()->away("$URI?{$query}");

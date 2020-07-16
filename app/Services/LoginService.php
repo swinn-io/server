@@ -56,7 +56,7 @@ class LoginService implements LoginServiceInterface
     public function callback(string $provider, array $clientInfo): User
     {
         $callback = Socialite::driver($provider)->stateless()->user();
-        $user     = $this->user($provider, $callback);
+        $user = $this->user($provider, $callback);
         $this->client($user, $clientInfo);
 
         return $user->load('clients');
