@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services;
 
 use App\Interfaces\LoginServiceInterface;
@@ -15,7 +16,7 @@ class LoginService implements LoginServiceInterface
     /**
      * Laravel Passport Client Repository.
      *
-     * @var ClientRepository $clientRepository
+     * @var ClientRepository
      */
     private $clientRepository;
 
@@ -53,7 +54,7 @@ class LoginService implements LoginServiceInterface
     public function callback(string $provider): User
     {
         $callback = Socialite::driver($provider)->stateless()->user();
-        $user     = $this->user($provider, $callback);
+        $user = $this->user($provider, $callback);
         $this->client($user);
 
         return $user->load('clients');
@@ -71,7 +72,7 @@ class LoginService implements LoginServiceInterface
         return User::updateOrCreate([
             'provider_name'  => $provider,                       // GitHub, LinkedIn, Google, Apple
             'provider_id'    => $userContract->getId(),          // uuid-0001-0002-0003
-        ],[
+        ], [
             'name'           => $userContract->getName(),
             'access_token'   => $userContract->token,            // TOKEN
             'refresh_token'  => $userContract->refreshToken,     // TOKEN - some providers have it
