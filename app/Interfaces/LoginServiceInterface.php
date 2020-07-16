@@ -19,7 +19,8 @@ interface LoginServiceInterface
      * Handle callback.
      *
      * @param string $provider
+     * @param array $clientInfo
      * @return User
      */
-    public function callback(string $provider): User;
+    public function callback(string $provider, array $clientInfo): User;
 }

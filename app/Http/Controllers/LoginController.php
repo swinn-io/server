@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Interfaces\LoginServiceInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class LoginController extends Controller
 {
@@ -34,8 +35,7 @@ class LoginController extends Controller
     public function redirect(string $provider, Request $request)
     {
         try {
-            $request->session()->flash('state', $request->get('state'));
-
+            $request->session()->flash('client', $request->all());
             return $this->service->redirect($provider);
         } catch (\Exception $exception) {
             abort(404);
@@ -52,12 +52,12 @@ class LoginController extends Controller
     public function callback(string $provider, Request $request)
     {
         try {
-            $callback = $this->service->callback($provider);
-            $URI = config('app.uri');
-            $state = $request->session()->get('state');
-            $query = http_build_query([
-                'state'    => $state,
-                'callback' => $callback->toArray(),
+            $client   = $request->session()->get('client');
+            $callback = $this->service->callback($provider, $client);
+            $URI      = Arr::get($client, 'redirect_uri');
+            $query    = http_build_query([
+                'state'    => Arr::get($client, 'state'),
+                'callback' => $callback->toArray()
             ]);
 
             return redirect()->away("$URI?{$query}");
