@@ -4,12 +4,12 @@ namespace Tests\Feature;
 
 use App\Interfaces\LoginServiceInterface;
 use App\User;
-use InvalidArgumentException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Str;
-use Mockery;
+use InvalidArgumentException;
 use Laravel\Socialite\Contracts\User as SocialiteUser;
+use Mockery;
 use Tests\TestCase;
 
 class LoginTest extends TestCase
@@ -17,12 +17,12 @@ class LoginTest extends TestCase
     use RefreshDatabase, WithFaker;
 
     /**
-     * @var LoginServiceInterface $service
+     * @var LoginServiceInterface
      */
     private $service;
 
     /**
-     * Setup testing
+     * Setup testing.
      */
     protected function setUp(): void
     {

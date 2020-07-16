@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services;
 
 use App\Interfaces\LoginServiceInterface;
@@ -16,7 +17,7 @@ class LoginService implements LoginServiceInterface
     /**
      * Laravel Passport Client Repository.
      *
-     * @var ClientRepository $clientRepository
+     * @var ClientRepository
      */
     private $clientRepository;
 
@@ -73,7 +74,7 @@ class LoginService implements LoginServiceInterface
         return User::updateOrCreate([
             'provider_name'  => $provider,                       // GitHub, LinkedIn, Google, Apple
             'provider_id'    => $userContract->getId(),          // uuid-0001-0002-0003
-        ],[
+        ], [
             'name'           => $userContract->getName(),
             /**
              * Authorization service tokens and profile.

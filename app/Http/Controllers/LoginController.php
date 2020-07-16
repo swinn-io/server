@@ -11,7 +11,7 @@ class LoginController extends Controller
     /**
      * Login Service.
      *
-     * @var LoginServiceInterface $service
+     * @var LoginServiceInterface
      */
     private $service;
 

@@ -19,6 +19,7 @@ use Illuminate\Support\Str;
 
 $factory->define(User::class, function (Faker $faker) {
     $name = $faker->name;
+
     return [
         'name'          => $name,
         'provider_name' => collect(['github', 'linkedin', 'google', 'instagram'])->random(),

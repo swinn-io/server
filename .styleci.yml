@@ -3,11 +3,20 @@ php:
   disabled:
     - unused_use
   finder:
+    exclude:
+      - "modules"
+      - "node_modules"
+      - "storage"
+      - "vendor"
+    name: "*.php"
     not-name:
+      - "*.blade.php"
       - index.php
       - server.php
-js:
-  finder:
-    not-name:
-      - webpack.mix.js
-css: true
+  tab-width: 4
+  use-tabs: false
+js: false
+css: false
+ts: false
+py: false
+vue: false
