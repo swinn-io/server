@@ -53,11 +53,11 @@ class LoginController extends Controller
     public function callback(string $provider, Request $request)
     {
         try {
-            $client = $request->session()->get('client');
+            $client = $request->session()->get('client', []);
             $callback = $this->service->callback($provider, $client);
-            $URI = Arr::get($client, 'redirect_uri');
+            $URI = Arr::get($client, 'redirect_uri') ?? config('app.uri');
             $query = http_build_query([
-                'state'    => Arr::get($client, 'state'),
+                'state'    => Arr::get($client, 'state', null),
                 'callback' => $callback->toArray(),
             ]);
 
