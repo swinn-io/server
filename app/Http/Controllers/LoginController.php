@@ -10,7 +10,7 @@ class LoginController extends Controller
     /**
      * Login Service.
      *
-     * @var LoginServiceInterface $service
+     * @var LoginServiceInterface
      */
     private $service;
 
@@ -35,6 +35,7 @@ class LoginController extends Controller
     {
         try {
             $request->session()->flash('state', $request->get('state'));
+
             return $this->service->redirect($provider);
         } catch (\Exception $exception) {
             abort(404);
@@ -52,11 +53,11 @@ class LoginController extends Controller
     {
         try {
             $callback = $this->service->callback($provider);
-            $URI      = config('app.uri');
-            $state    = $request->session()->get('state');
-            $query    = http_build_query([
+            $URI = config('app.uri');
+            $state = $request->session()->get('state');
+            $query = http_build_query([
                 'state'    => $state,
-                'callback' => $callback->toArray()
+                'callback' => $callback->toArray(),
             ]);
 
             return redirect()->away("$URI?{$query}");

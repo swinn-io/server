@@ -186,7 +186,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-        App\Providers\Project\LoginServiceProvider::class
+        App\Providers\Project\LoginServiceProvider::class,
     ],
 
     /*
