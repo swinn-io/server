@@ -88,7 +88,11 @@ class LoginTest extends TestCase
     public function testClient()
     {
         $user   = factory(User::class)->create();
-        $client = $this->service->client($user);
+        $data   = [
+            'state' => Str::random(),
+            'redirect_uri' => $this->faker->url
+        ];
+        $client = $this->service->client($user, $data);
         $clientName = "{$user->provider_name}-{$user->provider_id}";
         $this->assertEquals($clientName, $client->name);
     }
