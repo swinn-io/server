@@ -26,6 +26,19 @@ class LoginController extends Controller
     }
 
     /**
+     * Socialite integrations provider selection to authenticate.
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function home(Request $request)
+    {
+        $request->session()->flash('client', $request->all());
+
+        return view('login');
+    }
+
+    /**
      * Redirect the user to the provider authentication page.
      *
      * @param string $provider
@@ -35,7 +48,13 @@ class LoginController extends Controller
     public function redirect(string $provider, Request $request)
     {
         try {
-            $request->session()->flash('client', $request->all());
+            $client = collect($request->session()->get('client'));
+            if($client->has('state') && $client->has('redirect_uri'))
+            {
+                $request->session()->reflash();
+            } else {
+                $request->session()->flash('client', $request->all());
+            }
 
             return $this->service->redirect($provider);
         } catch (\Exception $exception) {
