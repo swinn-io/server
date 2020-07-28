@@ -3,9 +3,8 @@
 namespace App\Services;
 
 use App\Interfaces\LoginServiceInterface;
-use App\User;
+use App\Models\User;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 use Laravel\Passport\Client;
 use Laravel\Passport\ClientRepository;
 use Laravel\Socialite\Contracts\User as UserContract;

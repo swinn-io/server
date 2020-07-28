@@ -2,7 +2,7 @@
 
 namespace App\Interfaces;
 
-use App\User;
+use App\Models\User;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 interface LoginServiceInterface
