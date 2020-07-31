@@ -53,7 +53,7 @@ class MessageService implements MessageServiceInterface
      */
     public function thread(string $thread_id): Thread
     {
-        return Thread::with(['messages', 'participants'])->findOrFail($thread_id);
+        return Thread::with(['messages', 'participants.user'])->findOrFail($thread_id);
     }
 
     /**
@@ -64,7 +64,7 @@ class MessageService implements MessageServiceInterface
      */
     public function threadParticipants(string $thread_id): Collection
     {
-        return Thread::findOrFail($thread_id)->participants()->get();
+        return Thread::with('participants.user')->findOrFail($thread_id)->participants;
     }
 
     /**
@@ -82,7 +82,7 @@ class MessageService implements MessageServiceInterface
             'subject' => $subject,
         ]);
 
-        $thread->message()->create([
+        $thread->messages()->create([
             'thread_id' => $thread->id,
             'user_id' => $user_id,
             'body' => $content,
@@ -92,7 +92,7 @@ class MessageService implements MessageServiceInterface
         Participant::create([
             'thread_id' => $thread->id,
             'user_id' => $user_id,
-            'last_read' => now(),
+            'last_read' => $thread->created_at,
         ]);
 
         collect($recipients)->each(function ($item) use ($thread) {
@@ -124,18 +124,18 @@ class MessageService implements MessageServiceInterface
         ]);
 
         // Add replier as a participant
-        $participant = Participant::firstOrCreate([
+        Participant::updateOrCreate([
             'thread_id' => $thread->id,
             'user_id' => $user_id,
+        ], [
             'last_read' => now(),
         ]);
-        $participant->save();
 
         return $message;
     }
 
     /**
-     * Mark as read all messages of a user.
+     * Mark as read a tread of a user.
      *
      * @param Thread $thread
      * @param string $user_id
@@ -143,6 +143,21 @@ class MessageService implements MessageServiceInterface
     public function markAsRead(Thread $thread, string $user_id): void
     {
         $thread->markAsRead($user_id);
+    }
+
+    /**
+     * Mark as read all messages of a user.
+     *
+     * @param string $user_id
+     * @return bool
+     */
+    public function markAsReadAll(string $user_id): bool
+    {
+        return Participant::where([
+            'user_id' => $user_id
+        ])->update([
+            'last_read' => now()
+        ]);
     }
 
     /**

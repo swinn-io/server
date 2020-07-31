@@ -72,12 +72,20 @@ interface MessageServiceInterface
     public function newMessage(string $thread_id, string $user_id, array $content): Message;
 
     /**
-     * Mark as read all messages of a user.
+     * Mark as read a tread of a user.
      *
      * @param Thread $thread
      * @param string $user_id
      */
     public function markAsRead(Thread $thread, string $user_id): void;
+
+    /**
+     * Mark as read all messages of a user.
+     *
+     * @param string $user_id
+     * @return bool
+     */
+    public function markAsReadAll(string $user_id): bool;
 
     /**
      * Mark as read all messages of a user.
