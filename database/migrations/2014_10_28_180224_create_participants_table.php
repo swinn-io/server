@@ -22,6 +22,7 @@ class CreateParticipantsTable extends Migration
             $table->timestamps();
 
             $table->primary(['id']);
+            $table->unique(['thread_id', 'user_id']);
         });
     }
 
