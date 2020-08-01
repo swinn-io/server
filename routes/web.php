@@ -18,7 +18,7 @@ Route::get('/', function () {
 });
 
 Route::prefix('login')->group(function () {
-    Route::get('/', 'LoginController@home')->name('login.home');
+    Route::get('/', 'LoginController@home')->name('login');
     Route::get('redirect/{provider}', 'LoginController@redirect')->name('login.redirect');
     Route::get('callback/{provider}', 'LoginController@callback')->name('login.callback');
 });

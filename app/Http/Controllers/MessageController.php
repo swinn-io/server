@@ -2,17 +2,57 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use Carbon\Carbon;
-use Cmgmyr\Messenger\Models\Message;
-use Cmgmyr\Messenger\Models\Participant;
-use Cmgmyr\Messenger\Models\Thread;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Request;
-use Illuminate\Support\Facades\Session;
+use App\Http\Requests\MessageStoreRequest;
+use App\Http\Resources\TreadResource;
+use App\Interfaces\MessageServiceInterface;
+use Illuminate\Http\Request;
 
 class MessageController extends Controller
 {
+    /**
+     * @var MessageServiceInterface
+     */
+    private MessageServiceInterface $service;
 
+    /**
+     * MessageController constructor.
+     *
+     * @param MessageServiceInterface $service
+     */
+    public function __construct(MessageServiceInterface $service)
+    {
+        $this->service = $service;
+    }
+
+    /**
+     * Returns pagination of all threads.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
+    public function index(Request $request)
+    {
+        $user = $request->user();
+        $threads = $this->service->threads($user->id);
+
+        return TreadResource::collection($threads);
+    }
+
+    /**
+     * @param MessageStoreRequest $request
+     * @return TreadResource
+     */
+    public function store(MessageStoreRequest $request)
+    {
+        $values = $request->all();
+        $user = $request->user();
+        $threads = $this->service->newThread(
+            $values['subject'],
+            $user->id,
+            $values['content'],
+            $values['recipients'] ?? null
+        );
+
+        return new TreadResource($threads);
+    }
 }
