@@ -7,9 +7,9 @@ use App\Models\Thread;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use UserSeeder;
-use MessagingSeeder;;
+use MessagingSeeder;
 use Tests\TestCase;
+use UserSeeder;
 
 class MessageTest extends TestCase
 {
@@ -58,7 +58,7 @@ class MessageTest extends TestCase
         $total = $this->service->threads($user->id);
 
         $response = $this
-            ->actingAs($user,'api')
+            ->actingAs($user, 'api')
             ->get(route('message'));
 
         $response
@@ -66,8 +66,8 @@ class MessageTest extends TestCase
             ->assertJson([
                 'data' => [],
                 'meta' => [
-                    'total' => $total->total()
-                ]
+                    'total' => $total->total(),
+                ],
             ]);
     }
 
@@ -90,14 +90,14 @@ class MessageTest extends TestCase
      */
     public function testStore()
     {
-        $user  = factory(User::class)->create();
+        $user = factory(User::class)->create();
         $thread = factory(Thread::class)->make();
         $content = ['some' => 'data'];
 
         // Test with invalid data and receive 422
 
         $response = $this
-            ->actingAs($user,'api')
+            ->actingAs($user, 'api')
             ->post(route('message'));
 
         $response
@@ -107,14 +107,13 @@ class MessageTest extends TestCase
                 'errors' => [
                     'subject' => [],
                     'content' => [],
-                ]
+                ],
             ]);
-
 
         // Make request correctly
 
         $response = $this
-            ->actingAs($user,'api')
+            ->actingAs($user, 'api')
             ->post(route('message'), [
                 'subject' => $thread->subject,
                 'content' => $content,
@@ -142,10 +141,10 @@ class MessageTest extends TestCase
                                 'attributes' => [
                                     'user_id' => $user->id,
                                 ],
-                            ]
+                            ],
                         ],
-                    ]
-                ]
+                    ],
+                ],
             ]);
     }
 }

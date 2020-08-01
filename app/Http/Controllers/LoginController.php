@@ -49,8 +49,7 @@ class LoginController extends Controller
     {
         try {
             $client = collect($request->session()->get('client'));
-            if($client->has('state') && $client->has('redirect_uri'))
-            {
+            if ($client->has('state') && $client->has('redirect_uri')) {
                 $request->session()->reflash();
             } else {
                 $request->session()->flash('client', $request->all());

@@ -24,7 +24,7 @@ class UserResource extends JsonResource
                 'profile'       => $this->profile,
                 'created_at'    => $this->created_at,
                 'updated_at'    => $this->updated_at,
-            ]
+            ],
         ];
     }
 }
