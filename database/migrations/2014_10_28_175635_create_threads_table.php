@@ -18,6 +18,7 @@ class CreateThreadsTable extends Migration
             $table->uuid('id');
             $table->string('subject');
             $table->timestamps();
+            $table->softDeletes();
 
             $table->primary(['id']);
         });

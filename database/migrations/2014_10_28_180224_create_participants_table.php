@@ -20,6 +20,7 @@ class CreateParticipantsTable extends Migration
             $table->uuid('user_id');
             $table->timestamp('last_read')->nullable();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->primary(['id']);
             $table->unique(['thread_id', 'user_id']);

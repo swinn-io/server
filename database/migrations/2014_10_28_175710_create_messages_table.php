@@ -20,6 +20,7 @@ class CreateMessagesTable extends Migration
             $table->uuid('user_id');
             $table->json('body');
             $table->timestamps();
+            $table->softDeletes();
 
             $table->primary(['id']);
         });
