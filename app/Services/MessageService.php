@@ -154,9 +154,9 @@ class MessageService implements MessageServiceInterface
     public function markAsReadAll(string $user_id): bool
     {
         return Participant::where([
-            'user_id' => $user_id
+            'user_id' => $user_id,
         ])->update([
-            'last_read' => now()
+            'last_read' => now(),
         ]);
     }
 

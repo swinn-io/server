@@ -11,8 +11,8 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use MessagingSeeder;
-use UserSeeder;
 use Tests\TestCase;
+use UserSeeder;
 
 class MessageTest extends TestCase
 {
@@ -103,17 +103,15 @@ class MessageTest extends TestCase
         $unreadThreads = $this->service->unreadThreads($user_id);
 
         $participated = $participated->get();
-        $filtered = $participated->filter(function($participation) {
-
+        $filtered = $participated->filter(function ($participation) {
             $thread = Thread::where('id', $participation->thread_id)->first();
 
-            return (
+            return
                 // Last read is null and the user has never read the thread
                 null === $participation->last_read
                 ||
                 // Or last read datetime is less than last message datetime
-                $thread->updated_at->greaterThan($participation->last_read)
-            );
+                $thread->updated_at->greaterThan($participation->last_read);
         });
 
         $this->assertEquals($filtered->count(), $unreadThreads->count());
@@ -191,8 +189,7 @@ class MessageTest extends TestCase
         $lastMessage = null;
         $messageNum = rand(1, 10);
 
-        for ($i = 1; $i <= $messageNum; $i++)
-        {
+        for ($i = 1; $i <= $messageNum; $i++) {
             $lastMessage = $this->service->newMessage($thread->id, $recipients->random(), ['some', "content #{$i}"]);
             sleep(1); // For message sorting
         }
@@ -222,8 +219,7 @@ class MessageTest extends TestCase
         $users = factory(User::class, 2)->create();
         $messageNum = rand(1, 10);
 
-        for ($i = 1; $i <= $messageNum; $i++)
-        {
+        for ($i = 1; $i <= $messageNum; $i++) {
             $title = Str::title(implode(' ', $this->faker->words));
             $this->service->newThread($title, $users->first()->id, ['some' => 'data'], [$users->last()->id]);
         }
@@ -233,7 +229,7 @@ class MessageTest extends TestCase
         $this->assertCount($messageNum, $retrieve);
 
         // Mark as read each treads.
-        $retrieve->each(function($tread) use ($users){
+        $retrieve->each(function ($tread) use ($users) {
             $this->service->markAsRead($tread, $users->last()->id);
         });
         $retrieve = $this->service->unreadThreads($users->last()->id);
@@ -250,8 +246,7 @@ class MessageTest extends TestCase
         $users = factory(User::class, 2)->create();
         $messageNum = rand(1, 10);
 
-        for ($i = 1; $i <= $messageNum; $i++)
-        {
+        for ($i = 1; $i <= $messageNum; $i++) {
             $title = Str::title(implode(' ', $this->faker->words));
             $this->service->newThread($title, $users->first()->id, ['some' => 'data'], [$users->last()->id]);
         }
@@ -265,7 +260,6 @@ class MessageTest extends TestCase
         $retrieve = $this->service->unreadThreads($users->last()->id);
         $this->assertCount(0, $retrieve);
     }
-
 
     /**
      * Check id addParticipant method adds new participants to the tread.
