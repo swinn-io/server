@@ -50,8 +50,6 @@ class MessageTest extends TestCase
         $total = $this->service->threads($this->user->id);
         $response = $this->get(route('message'));
 
-        $response->dump();
-
         $response
             ->assertOk()
             ->assertJson([
