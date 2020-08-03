@@ -7,13 +7,19 @@ use App\Models\Thread;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use MessagingSeeder;
 use Tests\TestCase;
-use UserSeeder;
+use Tests\Traits\WithAccessToken;
 
 class MessageTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use RefreshDatabase, WithAccessToken, WithFaker;
+
+    /**
+     * Access token.
+     *
+     * @var User
+     */
+    protected $user;
 
     /**
      * @var MessageServiceInterface
@@ -27,23 +33,11 @@ class MessageTest extends TestCase
     {
         parent::setUp();
         $this->service = app(MessageServiceInterface::class);
-        $this->seed(UserSeeder::class);
-        $this->seed(MessagingSeeder::class);
+        $this->user = factory(User::class)->create();
 
-        // Behave like an API call
-        $this->withHeader('Accept', 'application/json');
-    }
+        $this->prepareAccessTokenForRequest($this->user);
 
-    /**
-     * Index method test without authorization.
-     *
-     * @return void
-     */
-    public function testIndexWithoutAuthorization()
-    {
-        $response = $this->get(route('message'));
-
-        $response->assertUnauthorized();
+        $this->service->newThread('Sample Thread', $this->user->id, ['data' => 'sample']);
     }
 
     /**
@@ -53,13 +47,10 @@ class MessageTest extends TestCase
      */
     public function testIndex()
     {
-        $thread = Thread::with('participants.user')->inRandomOrder()->first();
-        $user = $thread->participants->first()->user;
-        $total = $this->service->threads($user->id);
+        $total = $this->service->threads($this->user->id);
+        $response = $this->get(route('message'));
 
-        $response = $this
-            ->actingAs($user, 'api')
-            ->get(route('message'));
+        $response->dump();
 
         $response
             ->assertOk()
@@ -72,32 +63,18 @@ class MessageTest extends TestCase
     }
 
     /**
-     * Index method test without authorization.
-     *
-     * @return void
-     */
-    public function testStoreWithoutAuthorization()
-    {
-        $response = $this->post(route('message.store'));
-
-        $response->assertUnauthorized();
-    }
-
-    /**
      * Index method test as an authorized user.
      *
      * @return void
      */
     public function testStore()
     {
-        $user = factory(User::class)->create();
         $thread = factory(Thread::class)->make();
         $content = ['some' => 'data'];
 
         // Test with invalid data and receive 422
 
         $response = $this
-            ->actingAs($user, 'api')
             ->post(route('message'));
 
         $response
@@ -113,7 +90,6 @@ class MessageTest extends TestCase
         // Make request correctly
 
         $response = $this
-            ->actingAs($user, 'api')
             ->post(route('message'), [
                 'subject' => $thread->subject,
                 'content' => $content,
@@ -130,7 +106,7 @@ class MessageTest extends TestCase
                             [
                                 'type' => 'message',
                                 'attributes' => [
-                                    'user_id' => $user->id,
+                                    'user_id' => $this->user->id,
                                     'body' => $content,
                                 ],
                             ],
@@ -139,7 +115,7 @@ class MessageTest extends TestCase
                             [
                                 'type' => 'participant',
                                 'attributes' => [
-                                    'user_id' => $user->id,
+                                    'user_id' => $this->user->id,
                                 ],
                             ],
                         ],
