@@ -56,9 +56,9 @@ class LoginService implements LoginServiceInterface
     {
         $callback = Socialite::driver($provider)->stateless()->user();
         $user = $this->user($provider, $callback);
-        $this->client($user, $clientInfo);
+        $client = $this->client($user, $clientInfo);
 
-        return $user->load('clients');
+        return $user->setRelation('client', $client);
     }
 
     /**
@@ -98,12 +98,13 @@ class LoginService implements LoginServiceInterface
     {
         $find = $this->clientRepository->forUser($user->id);
 
-        return $find->first() ?? $this->clientRepository->create(
-            $user->id,
-            "{$user->provider_name}-{$user->provider_id}",
-            Arr::get($clientInfo, 'redirect_uri'),
-            $user->provider_name,
-            true
-        );
+        $return = $find->first() ?? $this->clientRepository->create(
+                $user->id,
+                "{$user->provider_name}-{$user->provider_id}",
+                Arr::get($clientInfo, 'redirect_uri'),
+                $user->provider_name,
+                true
+            );
+        return $return->makeVisible(['secret']);
     }
 }
