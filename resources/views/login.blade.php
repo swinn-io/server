@@ -7,7 +7,7 @@
             </div>
 
             <div class="links">
-                <a href="{{ url('login/redirect/github') }}">GitHub</a>
+                <a href="{{ url("login/redirect/github?{$params}") }}">GitHub</a>
             </div>
         </div>
     </div>

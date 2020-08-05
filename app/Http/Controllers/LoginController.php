@@ -35,7 +35,9 @@ class LoginController extends Controller
     {
         $request->session()->flash('client', $request->all());
 
-        return view('login');
+        $params = http_build_query($request->all());
+
+        return view('login', compact('params'));
     }
 
     /**
