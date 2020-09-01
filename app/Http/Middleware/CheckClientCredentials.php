@@ -64,5 +64,4 @@ class CheckClientCredentials extends BaseMiddleware
 
         return $next($request);
     }
-
 }
