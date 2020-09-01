@@ -105,6 +105,7 @@ class LoginService implements LoginServiceInterface
                 $user->provider_name,
                 true
             );
+
         return $return->makeVisible(['secret']);
     }
 }
