@@ -20,5 +20,6 @@ Route::middleware('client')->group(function () {
         Route::post('/', ['as' => 'message.store', 'uses' => 'MessageController@store']);
         Route::get('{id}', ['as' => 'message.show', 'uses' => 'MessageController@show']);
         Route::put('{id}', ['as' => 'message.update', 'uses' => 'MessageController@update']);
+        Route::post('{id}', ['as' => 'message.new', 'uses' => 'MessageController@new']);
     });
 });
