@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\MessageNewRequest;
 use App\Http\Requests\MessageStoreRequest;
 use App\Http\Resources\MessageResource;
-use App\Http\Resources\TreadResource;
+use App\Http\Resources\ThreadResource;
 use App\Interfaces\MessageServiceInterface;
 use Illuminate\Http\Request;
 
@@ -37,12 +37,12 @@ class MessageController extends Controller
         $user = $request->user();
         $threads = $this->service->threads($user->id);
 
-        return TreadResource::collection($threads);
+        return ThreadResource::collection($threads);
     }
 
     /**
      * @param MessageStoreRequest $request
-     * @return TreadResource
+     * @return ThreadResource
      */
     public function store(MessageStoreRequest $request)
     {
@@ -55,7 +55,20 @@ class MessageController extends Controller
             $values['recipients'] ?? null
         );
 
-        return new TreadResource($threads);
+        return new ThreadResource($threads);
+    }
+
+    /**
+     * Returns pagination of all threads.
+     *
+     * @param string $id
+     * @return ThreadResource
+     */
+    public function show(string $id)
+    {
+        $thread = $this->service->thread($id);
+
+        return new ThreadResource($thread);
     }
 
     /**

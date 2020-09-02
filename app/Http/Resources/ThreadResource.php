@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class TreadResource extends JsonResource
+class ThreadResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,7 +15,7 @@ class TreadResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'type'       => 'tread',
+            'type'       => 'thread',
             'id'         => (string) $this->id,
             'attributes' => [
                 'subject'      => $this->subject,

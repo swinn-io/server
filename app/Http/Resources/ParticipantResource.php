@@ -19,9 +19,9 @@ class ParticipantResource extends JsonResource
             'id'         => (string) $this->id,
             'attributes' => [
                 'thread_id'  => $this->thread_id,
-                'thread'     => TreadResource::collection($this->whenLoaded('tread')),
+                'thread'     => new ThreadResource($this->whenLoaded('tread')),
                 'user_id'    => $this->user_id,
-                'user'       => UserResource::collection($this->whenLoaded('user')),
+                'user'       => new UserResource($this->whenLoaded('user')),
                 'last_read'  => $this->last_read,
                 'created_at' => $this->created_at,
                 'updated_at' => $this->updated_at,

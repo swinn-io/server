@@ -16,7 +16,7 @@ use UserSeeder;
 
 class MessageTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use WithFaker;
 
     /**
      * @var MessageServiceInterface
@@ -71,7 +71,7 @@ class MessageTest extends TestCase
     }
 
     /**
-     * Check if undereadTreads method returns unread message treads.
+     * Check if undereadThreads method returns unread message threads.
      *
      * @return void
      */
@@ -118,14 +118,14 @@ class MessageTest extends TestCase
     }
 
     /**
-     * Check if thread method returns a tread model.
+     * Check if thread method returns a thread model.
      *
      * @return void
      */
     public function testServiceMethodThread()
     {
         $user = factory(User::class)->create();
-        $thread = $this->service->newThread('New Tread!', $user->id, ['some' => 'data']);
+        $thread = $this->service->newThread('New Thread!', $user->id, ['some' => 'data']);
         $retrieve = $this->service->thread($thread->id)->toArray();
 
         $this->assertArrayHasKey('messages', $retrieve);
@@ -138,7 +138,7 @@ class MessageTest extends TestCase
     }
 
     /**
-     * Check if tread participants are same as retrieved by thread method.
+     * Check if thread participants are same as retrieved by thread method.
      *
      * @return void
      */
@@ -146,25 +146,25 @@ class MessageTest extends TestCase
     {
         $users = factory(User::class, 5)->create();
         $recipients = $users->pluck('id')->toArray();
-        $create = $this->service->newThread('New Tread!', $users->first()->id, ['some' => 'data'], $recipients);
+        $create = $this->service->newThread('New Thread!', $users->first()->id, ['some' => 'data'], $recipients);
         $thread = $this->service->thread($create->id);
         $participants = $this->service->threadParticipants($create->id);
 
-        $useTreadMethod = json_encode($thread->participants->sortBy('id')->toArray());
+        $useThreadMethod = json_encode($thread->participants->sortBy('id')->toArray());
         $useThreadParticipantsMethod = json_encode($participants->sortBy('id')->toArray());
 
-        $this->assertSame($useTreadMethod, $useThreadParticipantsMethod);
+        $this->assertSame($useThreadMethod, $useThreadParticipantsMethod);
     }
 
     /**
-     * Check id newThread method creates a new tread.
+     * Check id newThread method creates a new thread.
      *
      * @return void
      */
     public function testServiceMethodNewThread()
     {
         $user = factory(User::class)->create();
-        $thread = $this->service->newThread('New Tread!', $user->id, ['some' => 'data']);
+        $thread = $this->service->newThread('New Thread!', $user->id, ['some' => 'data']);
         $retrieve = $this->service->thread($thread->id)->toArray();
 
         $this->assertArrayHasKey('messages', $retrieve);
@@ -185,7 +185,7 @@ class MessageTest extends TestCase
     {
         $users = factory(User::class, 5)->create();
         $recipients = $users->pluck('id');
-        $thread = $this->service->newThread('New Tread!', $users->first()->id, ['some' => 'data'], $recipients->toArray());
+        $thread = $this->service->newThread('New Thread!', $users->first()->id, ['some' => 'data'], $recipients->toArray());
         $lastMessage = null;
         $messageNum = rand(1, 10);
 
@@ -228,9 +228,9 @@ class MessageTest extends TestCase
 
         $this->assertCount($messageNum, $retrieve);
 
-        // Mark as read each treads.
-        $retrieve->each(function ($tread) use ($users) {
-            $this->service->markAsRead($tread, $users->last()->id);
+        // Mark as read each threads.
+        $retrieve->each(function ($thread) use ($users) {
+            $this->service->markAsRead($thread, $users->last()->id);
         });
         $retrieve = $this->service->unreadThreads($users->last()->id);
         $this->assertCount(0, $retrieve);
@@ -255,21 +255,21 @@ class MessageTest extends TestCase
 
         $this->assertCount($messageNum, $retrieve);
 
-        // Mark as read all treads.
+        // Mark as read all threads.
         $this->service->markAsReadAll($users->last()->id);
         $retrieve = $this->service->unreadThreads($users->last()->id);
         $this->assertCount(0, $retrieve);
     }
 
     /**
-     * Check id addParticipant method adds new participants to the tread.
+     * Check id addParticipant method adds new participants to the thread.
      *
      * @return void
      */
     public function testServiceMethodAddParticipant()
     {
         $user = factory(User::class)->create();
-        $thread = $this->service->newThread('New Tread!', $user->id, ['some' => 'data']);
+        $thread = $this->service->newThread('New Thread!', $user->id, ['some' => 'data']);
 
         $newParticipants = factory(User::class, 5)->create();
 

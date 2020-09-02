@@ -12,7 +12,7 @@ use Tests\Traits\WithAccessToken;
 
 class MessageTest extends TestCase
 {
-    use RefreshDatabase, WithAccessToken, WithFaker;
+    use WithAccessToken, WithFaker;
 
     /**
      * Access token.
@@ -97,7 +97,7 @@ class MessageTest extends TestCase
             ->assertCreated()
             ->assertJson([
                 'data' => [
-                    'type' => 'tread',
+                    'type' => 'thread',
                     'attributes' => [
                         'subject'  => $thread->subject,
                         'messages' => [
