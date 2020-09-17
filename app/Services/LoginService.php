@@ -18,7 +18,7 @@ class LoginService implements LoginServiceInterface
      *
      * @var ClientRepository
      */
-    private $clientRepository;
+    private ClientRepository $clientRepository;
 
     /**
      * LoginService constructor.
