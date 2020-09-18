@@ -22,4 +22,7 @@ Route::middleware('client')->group(function () {
         Route::put('{id}', ['as' => 'message.update', 'uses' => 'MessageController@update']);
         Route::post('{id}', ['as' => 'message.new', 'uses' => 'MessageController@new']);
     });
+    Route::group(['prefix' => 'participant'], function () {
+        Route::get('/', ['as' => 'participant', 'uses' => 'ParticipantController@index']);
+    });
 });

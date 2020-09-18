@@ -94,4 +94,12 @@ interface MessageServiceInterface
      * @param string $user_id
      */
     public function addParticipant(Thread $thread, string $user_id): void;
+
+    /**
+     * All possible participants.
+     *
+     * @param string $user_id
+     * @return LengthAwarePaginator
+     */
+    public function allParticipants(string $user_id): LengthAwarePaginator;
 }

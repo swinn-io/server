@@ -6,6 +6,7 @@ use App\Interfaces\MessageServiceInterface;
 use App\Models\Message;
 use App\Models\Participant;
 use App\Models\Thread;
+use App\Models\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
@@ -169,5 +170,33 @@ class MessageService implements MessageServiceInterface
     public function addParticipant(Thread $thread, string $user_id): void
     {
         $thread->addParticipant($user_id);
+    }
+
+    /**
+     * All possible participants.
+     *
+     * @param string $user_id
+     * @return LengthAwarePaginator
+     */
+    public function allParticipants(string $user_id): LengthAwarePaginator
+    {
+        $allThreads = Participant::where([
+            'user_id' => $user_id,
+        ])
+            ->get('thread_id')
+            ->pluck('thread_id')
+            ->toArray();
+
+        $participants = Thread::with('participants')
+            ->find($allThreads)
+            ->pluck('participants.*.user_id')
+            ->flatten()
+            ->unique()
+            ->diff([$user_id]);
+
+        /**
+         * @todo UserService would be nicer.
+         */
+        return User::whereIn('id', $participants)->paginate();
     }
 }
