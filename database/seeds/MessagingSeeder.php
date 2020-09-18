@@ -19,7 +19,7 @@ class MessagingSeeder extends Seeder
             /**
              * @var Thread $thread
              */
-            $messages = factory(Message::class, rand(1, 25))->create(['thread_id' => $thread->id]);
+            $messages = factory(Message::class, rand(1, 5))->create(['thread_id' => $thread->id]);
 
             // Set message sender as participants.
             $users_ids = $messages->pluck('user_id');
