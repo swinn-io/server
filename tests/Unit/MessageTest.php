@@ -96,7 +96,7 @@ class MessageTest extends TestCase
         sleep(1);
         $allThreads->random(rand(0, $allThreads->count()))->each(function ($willBeMessaged) {
             $sender = User::inRandomOrder()->first();
-            $this->service->newMessage($willBeMessaged->id, $sender->id, ['some' => 'content']);
+            $this->service->newMessage($willBeMessaged, $sender->id, ['some' => 'content']);
         });
 
         // Collection of unread threads to match

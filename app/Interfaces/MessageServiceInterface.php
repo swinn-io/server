@@ -3,6 +3,7 @@
 namespace App\Interfaces;
 
 use App\Models\Message;
+use App\Models\Participant;
 use App\Models\Thread;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -56,28 +57,29 @@ interface MessageServiceInterface
      * @param string $subject
      * @param string $user_id
      * @param array $content
-     * @param null|array $recipients
+     * @param array $recipients
      * @return Thread
      */
-    public function newThread(string $subject, string $user_id, array $content, ?array $recipients): Thread;
+    public function newThread(string $subject, string $user_id, array $content, array $recipients = []): Thread;
 
     /**
      * New message.
      *
-     * @param string $thread_id
+     * @param Thread $thread
      * @param string $user_id
      * @param array $content
      * @return Message
      */
-    public function newMessage(string $thread_id, string $user_id, array $content): Message;
+    public function newMessage(Thread $thread, string $user_id, array $content): Message;
 
     /**
      * Mark as read a tread of a user.
      *
      * @param Thread $thread
      * @param string $user_id
+     * @return Participant
      */
-    public function markAsRead(Thread $thread, string $user_id): void;
+    public function markAsRead(Thread $thread, string $user_id): Participant;
 
     /**
      * Mark as read all messages of a user.
@@ -92,8 +94,10 @@ interface MessageServiceInterface
      *
      * @param Thread $thread
      * @param string $user_id
+     * @param bool $mark_as_read
+     * @return Participant
      */
-    public function addParticipant(Thread $thread, string $user_id): void;
+    public function addParticipant(Thread $thread, string $user_id, bool $mark_as_read = false): Participant;
 
     /**
      * All possible participants.

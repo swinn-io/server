@@ -24,7 +24,7 @@ class MessageNewRequest extends FormRequest
     public function rules()
     {
         return [
-            'content'    => 'required|array',
+            'content'      => 'required|array',
         ];
     }
 }

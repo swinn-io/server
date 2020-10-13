@@ -8,6 +8,7 @@ use App\Http\Resources\MessageResource;
 use App\Http\Resources\ThreadResource;
 use App\Interfaces\MessageServiceInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class MessageController extends Controller
 {
@@ -52,7 +53,7 @@ class MessageController extends Controller
             $values['subject'],
             $user->id,
             $values['content'],
-            $values['recipients'] ?? null
+            Arr::get($values, 'recipients', [])
         );
 
         return new ThreadResource($threads);
@@ -80,12 +81,13 @@ class MessageController extends Controller
     {
         $values = $request->validated();
         $user = $request->user();
-        $threads = $this->service->newMessage(
-            $id,
+        $thread = $this->service->thread($id);
+        $message = $this->service->newMessage(
+            $thread,
             $user->id,
-            $values['content']
+            $values['content'],
         );
 
-        return new MessageResource($threads);
+        return new MessageResource($message);
     }
 }

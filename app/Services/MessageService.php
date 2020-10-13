@@ -7,9 +7,12 @@ use App\Models\Message;
 use App\Models\Participant;
 use App\Models\Thread;
 use App\Models\User;
+use App\Notifications\MessageCreated;
+use App\Notifications\ThreadCreated;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Notification;
 
 class MessageService implements MessageServiceInterface
 {
@@ -79,26 +82,22 @@ class MessageService implements MessageServiceInterface
      */
     public function newThread(string $subject, string $user_id, array $content, ?array $recipients = []): Thread
     {
+        /** @var $thread Thread */
         $thread = Thread::create([
             'subject' => $subject,
         ]);
 
-        $thread->messages()->create([
-            'thread_id' => $thread->id,
-            'user_id' => $user_id,
-            'body' => $content,
-        ]);
+        // Thread creator is a participant
+        $this->addParticipant($thread, $user_id, true);
 
-        // Sender
-        Participant::create([
-            'thread_id' => $thread->id,
-            'user_id' => $user_id,
-            'last_read' => $thread->created_at,
-        ]);
-
-        collect($recipients)->each(function ($item) use ($thread) {
-            $thread->addParticipant($item);
+        // Recipients are participants too
+        $recipients = collect($recipients)->each(function ($recipient) use ($thread) {
+            $this->addParticipant($thread, $recipient);
         });
+
+        $this->newMessage($thread, $user_id, $content);
+
+        Notification::send($recipients, new ThreadCreated($thread));
 
         return $thread;
     }
@@ -106,17 +105,18 @@ class MessageService implements MessageServiceInterface
     /**
      * New message.
      *
-     * @param string $thread_id
+     * @param Thread $thread
      * @param string $user_id
      * @param array $content
      * @return Message
-     * @throws ModelNotFoundException
      */
-    public function newMessage(string $thread_id, string $user_id, array $content): Message
+    public function newMessage(Thread $thread, string $user_id, array $content): Message
     {
-        $thread = Thread::findOrFail($thread_id);
-
-        $thread->activateAllParticipants();
+        $activatedParticipants = $thread
+            ->activateAllParticipants()
+            ->pluck('user_id')
+            ->unique()
+            ->toArray();
 
         $message = Message::create([
             'thread_id' => $thread->id,
@@ -124,13 +124,11 @@ class MessageService implements MessageServiceInterface
             'body' => $content,
         ]);
 
-        // Add replier as a participant
-        Participant::updateOrCreate([
-            'thread_id' => $thread->id,
-            'user_id' => $user_id,
-        ], [
-            'last_read' => now(),
-        ]);
+        // Make participant
+        $this->addParticipant($thread, $user_id, true);
+
+        $recipients = User::find($activatedParticipants);
+        Notification::send($recipients, new MessageCreated($message));
 
         return $message;
     }
@@ -140,10 +138,11 @@ class MessageService implements MessageServiceInterface
      *
      * @param Thread $thread
      * @param string $user_id
+     * @return Participant
      */
-    public function markAsRead(Thread $thread, string $user_id): void
+    public function markAsRead(Thread $thread, string $user_id): Participant
     {
-        $thread->markAsRead($user_id);
+        return $thread->markAsRead($user_id);
     }
 
     /**
@@ -166,10 +165,16 @@ class MessageService implements MessageServiceInterface
      *
      * @param Thread $thread
      * @param string $user_id
+     * @param bool $mark_as_read
+     * @return Participant
      */
-    public function addParticipant(Thread $thread, string $user_id): void
+    public function addParticipant(Thread $thread, string $user_id, bool $mark_as_read = false): Participant
     {
-        $thread->addParticipant($user_id);
+        return $thread->participants()->updateOrCreate([
+            'user_id' => $user_id,
+            'thread_id' => $thread->id,
+        ],
+            $mark_as_read ? ['last_read' => now()] : []);
     }
 
     /**
