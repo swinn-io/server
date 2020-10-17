@@ -1,5 +1,7 @@
 <?php
 
+use App\Notifications\ThreadCreated;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,9 +15,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'FrontEndController@welcome');
 
 Route::prefix('login')->group(function () {
     Route::get('/', 'LoginController@home')->name('login');
