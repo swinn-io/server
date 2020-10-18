@@ -20,6 +20,11 @@ Crete environment:
 php -r "file_exists('.env') || copy('.env.example', '.env');"
 ```
 
+Install Telescope:
+```
+php artisan telescope:install
+```
+
 Migrate:
 ```
 php artisan migrate
