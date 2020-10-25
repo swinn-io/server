@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('access_token');
             $table->string('refresh_token')->nullable();
             $table->json('profile');
+            $table->rememberToken();
             $table->timestamps();
 
             $table->primary(['id']);

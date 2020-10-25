@@ -41,7 +41,6 @@ class LoginService implements LoginServiceInterface
         return Socialite::driver($provider)
             // Define custom scopes if needed under "services.{provider}"
             ->scopes(config("services.{$provider}.scopes") ?? '*')
-            ->stateless()
             ->redirect();
     }
 
@@ -54,7 +53,7 @@ class LoginService implements LoginServiceInterface
      */
     public function callback(string $provider, array $clientInfo): User
     {
-        $callback = Socialite::driver($provider)->stateless()->user();
+        $callback = Socialite::driver($provider)->user();
         $user = $this->user($provider, $callback);
         $client = $this->client($user, $clientInfo);
 
@@ -103,7 +102,9 @@ class LoginService implements LoginServiceInterface
                 "{$user->provider_name}-{$user->provider_id}",
                 Arr::get($clientInfo, 'redirect_uri'),
                 $user->provider_name,
-                true
+                false,
+                false,
+                false
             );
         return $return->makeVisible(['secret']);
     }

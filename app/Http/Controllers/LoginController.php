@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Interfaces\LoginServiceInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -33,9 +34,10 @@ class LoginController extends Controller
      */
     public function home(Request $request)
     {
-        $request->session()->flash('client', $request->all());
+        $allParams = $request->all();
+        $request->session()->flash('client', $allParams);
 
-        $params = http_build_query($request->all());
+        $params = http_build_query($allParams);
 
         return view('login', compact('params'));
     }
@@ -76,6 +78,16 @@ class LoginController extends Controller
             $client = $request->session()->get('client', []);
             $callback = $this->service->callback($provider, $client);
             $URI = Arr::get($client, 'redirect_uri') ?? config('app.uri');
+
+            /**
+             * Authorize user before redirection, it's required for PKCE
+             * it will also remember the client user
+             */
+            Auth::login($callback, true);
+
+            /**
+             * client_id is known by the app, redirect to authorization endpoint
+             */
             $query = http_build_query([
                 'state'    => Arr::get($client, 'state', null),
                 'callback' => $callback->toArray(),
