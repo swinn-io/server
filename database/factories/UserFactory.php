@@ -1,34 +1,39 @@
 <?php
-
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
 use App\Models\User;
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use Laravel\Passport\ClientRepository;
 
-/*
-|--------------------------------------------------------------------------
-| Model Factories
-|--------------------------------------------------------------------------
-|
-| This directory should contain each of the model factory definitions for
-| your application. Factories provide a convenient way to generate new
-| model instances for testing / seeding your application's database.
-|
-*/
+class UserFactory extends Factory
+{
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = User::class;
 
-$factory->define(User::class, function (Faker $faker) {
-    $name = $faker->name;
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        $name = $this->faker->name;
 
-    return [
-        'name'          => $name,
-        'provider_name' => collect(['github', 'linkedin', 'google', 'instagram'])->random(),
-        'provider_id'   => Str::uuid()->toString(),
-        'access_token'  => Str::random(40),
-        'refresh_token' => Str::random(40),
-        'profile'       => [
-            'name'   => $name,
-            'avatar' => $faker->url,
-        ],
-    ];
-});
+        return [
+            'name'          => $name,
+            'provider_name' => collect(['github', 'linkedin', 'google', 'instagram'])->random(),
+            'provider_id'   => Str::uuid()->toString(),
+            'access_token'  => Str::random(40),
+            'refresh_token' => Str::random(40),
+            'profile'       => [
+                'name'   => $name,
+                'avatar' => $this->faker->url,
+            ],
+        ];
+    }
+}
