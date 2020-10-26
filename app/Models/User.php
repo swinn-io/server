@@ -4,13 +4,14 @@ namespace App\Models;
 
 use App\Traits\HasUUID;
 use Cmgmyr\Messenger\Traits\Messagable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasUUID, Messagable, Notifiable;
+    use HasApiTokens, HasFactory, HasUUID, Messagable, Notifiable;
 
     /**
      * The attributes that are mass assignable.

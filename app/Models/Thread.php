@@ -6,10 +6,11 @@ use App\Traits\HasUUID;
 use Cmgmyr\Messenger\Models\Message;
 use Cmgmyr\Messenger\Models\Models;
 use Cmgmyr\Messenger\Models\Thread as BaseThread;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Thread extends BaseThread
 {
-    use HasUUID;
+    use HasFactory, HasUUID;
 
     /**
      * Messages relationship.
