@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('client')->group(function () {
+Route::middleware('auth:api')->group(function () {
     Route::group(['prefix' => 'message'], function () {
         Route::get('/', ['as' => 'message', 'uses' => 'MessageController@index']);
         Route::post('/', ['as' => 'message.store', 'uses' => 'MessageController@store']);

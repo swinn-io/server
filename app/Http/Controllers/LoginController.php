@@ -70,32 +70,26 @@ class LoginController extends Controller
      *
      * @param string $provider
      * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function callback(string $provider, Request $request)
     {
-        try {
             $client = $request->session()->get('client', []);
-            $callback = $this->service->callback($provider, $client);
+            $user = $this->service->callback($provider, $client);
             $URI = Arr::get($client, 'redirect_uri') ?? config('app.uri');
 
             /**
              * Authorize user before redirection, it's required for PKCE
              * it will also remember the client user
              */
-            Auth::login($callback, true);
+            Auth::login($user, true);
 
-            /**
-             * client_id is known by the app, redirect to authorization endpoint
-             */
             $query = http_build_query([
-                'state'    => Arr::get($client, 'state', null),
-                'callback' => $callback->toArray(),
+                'user' => $user->toArray(),
+                'access_token' => $this->service->createToken($user),
+                'state' => Arr::get($client, 'state', null),
             ]);
 
-            return redirect()->away("$URI?{$query}");
-        } catch (\Exception $exception) {
-            abort(404);
-        }
+            return redirect("$URI?{$query}");
     }
 }

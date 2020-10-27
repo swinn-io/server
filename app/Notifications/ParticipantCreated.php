@@ -5,10 +5,10 @@ namespace App\Notifications;
 use App\Models\Thread;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\BroadcastMessage;
+use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class ThreadCreated extends Notification implements ShouldQueue
+class ParticipantCreated extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -36,19 +36,30 @@ class ThreadCreated extends Notification implements ShouldQueue
      */
     public function via($notifiable)
     {
-        return ['broadcast', 'database'];
+        return ['broadcast', 'database', 'mail'];
     }
 
     /**
-     * Get the broadcastable representation of the notification.
+     * Get the mail representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return BroadcastMessage
+     * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toBroadcast($notifiable)
+    public function toMail($notifiable)
     {
-        return new BroadcastMessage([
-            'thread' => $this->thread,
-        ]);
+        return (new MailMessage)
+                    ->line("New Thread: {$this->thread->name}")
+                    ->line('Thank you for using our application!');
+    }
+
+    /**
+     * Get the array representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return array
+     */
+    public function toArray($notifiable)
+    {
+        return $this->thread->toArray();
     }
 }

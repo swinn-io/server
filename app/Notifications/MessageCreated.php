@@ -36,7 +36,7 @@ class MessageCreated extends Notification implements ShouldQueue
      */
     public function via($notifiable)
     {
-        return ['broadcast', 'database'];
+        return ['broadcast', 'database', 'mail'];
     }
 
     /**
@@ -53,19 +53,6 @@ class MessageCreated extends Notification implements ShouldQueue
     }
 
     /**
-     * Get the database representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function toDatabase($notifiable)
-    {
-        return [
-            'message' => $this->message,
-        ];
-    }
-
-    /**
      * Get the mail representation of the notification.
      *
      * @param  mixed  $notifiable
@@ -73,9 +60,9 @@ class MessageCreated extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
+        $body = json_encode($this->message->body);
         return (new MailMessage)
-            ->line('The introduction to the notification.')
-            ->action('Notification Action', url('/'))
+            ->line("New Message: {$body}")
             ->line('Thank you for using our application!');
     }
 }

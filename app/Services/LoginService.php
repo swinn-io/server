@@ -53,11 +53,19 @@ class LoginService implements LoginServiceInterface
      */
     public function callback(string $provider, array $clientInfo): User
     {
-        $callback = Socialite::driver($provider)->user();
-        $user = $this->user($provider, $callback);
-        $client = $this->client($user, $clientInfo);
+        $profile = Socialite::driver($provider)->user();
+        return $this->user($provider, $profile);
+    }
 
-        return $user->setRelation('client', $client);
+    /**
+     * Handle callback.
+     *
+     * @param User $user
+     * @return string
+     */
+    public function createToken(User $user): string
+    {
+        return $user->createToken(config('app.name') . ' Token')->accessToken;
     }
 
     /**
@@ -71,15 +79,16 @@ class LoginService implements LoginServiceInterface
     {
         return User::updateOrCreate([
             'provider_name'  => $provider,                       // GitHub, LinkedIn, Google, Apple
-            'provider_id'    => $userContract->getId(),          // uuid-0001-0002-0003
+            'provider_id'    => $userContract->getId(),          // unsignedBigInteger, uuid
         ], [
             'name'           => $userContract->getName(),
             /**
-             * Authorization service tokens and profile.
-             * These tokens are used to retrieve data
-             * from authorization server such as GitHub,
-             * Twitter or Google.
+             * E-mails, tokens and profile will be synced.
+             * E-mail is for e-mail notifications.
+             * Tokens for retrieve data from authorization
+             * server such as GitHub, Twitter or Google.
              */
+            'email'          => $userContract->getEmail(),       // OAuth provider e-mail address
             'access_token'   => $userContract->token,            // TOKEN
             'refresh_token'  => $userContract->refreshToken,     // TOKEN - some providers have it
             'profile'        => $userContract->user,             // JSON profile data
@@ -97,7 +106,7 @@ class LoginService implements LoginServiceInterface
     {
         $find = $this->clientRepository->forUser($user->id);
 
-        $return = $find->first() ?? $this->clientRepository->create(
+        return $find->first() ?? $this->clientRepository->create(
                 $user->id,
                 "{$user->provider_name}-{$user->provider_id}",
                 Arr::get($clientInfo, 'redirect_uri'),
@@ -106,6 +115,5 @@ class LoginService implements LoginServiceInterface
                 false,
                 false
             );
-        return $return->makeVisible(['secret']);
     }
 }

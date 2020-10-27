@@ -23,4 +23,12 @@ interface LoginServiceInterface
      * @return User
      */
     public function callback(string $provider, array $clientInfo): User;
+
+    /**
+     * Handle callback.
+     *
+     * @param User $user
+     * @return string
+     */
+    public function createToken(User $user): string;
 }
