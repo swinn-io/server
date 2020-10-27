@@ -32,5 +32,10 @@ php artisan migrate
 
 Refresh Migrations with Passport Installer (say yes to refresh migrations):
 ```
-php artisan passport:install --uuids
+php artisan passport:install
+```
+
+Seed database:
+```
+php artisan db:seed
 ```
