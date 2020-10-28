@@ -89,6 +89,7 @@ class LoginService implements LoginServiceInterface
              * server such as GitHub, Twitter or Google.
              */
             'email'          => $userContract->getEmail(),       // OAuth provider e-mail address
+            'notify_via'     => ['broadcast'],                   // Default notification preference
             'access_token'   => $userContract->token,            // TOKEN
             'refresh_token'  => $userContract->refreshToken,     // TOKEN - some providers have it
             'profile'        => $userContract->user,             // JSON profile data
