@@ -36,7 +36,7 @@ class MessageCreated extends Notification implements ShouldQueue
      */
     public function via($notifiable)
     {
-        return ['broadcast', 'database', 'mail'];
+        return $notifiable->notify_via;
     }
 
     /**

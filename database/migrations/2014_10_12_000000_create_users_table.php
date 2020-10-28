@@ -19,6 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('provider_name');
             $table->string('provider_id');
             $table->string('email')->nullable();
+            $table->json('notify_via');
             $table->string('access_token');
             $table->string('refresh_token')->nullable();
             $table->json('profile');

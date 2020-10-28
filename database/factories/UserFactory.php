@@ -28,6 +28,8 @@ class UserFactory extends Factory
             'name'          => $name,
             'provider_name' => collect(['github', 'linkedin', 'google', 'instagram'])->random(),
             'provider_id'   => Str::uuid()->toString(),
+            'email'         => null,
+            'notify_via'    => [],
             'access_token'  => Str::random(40),
             'refresh_token' => Str::random(40),
             'profile'       => [

@@ -19,7 +19,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'provider_name', 'provider_id', 'access_token', 'refresh_token', 'profile',
+        'name', 'email', 'notify_via','provider_name', 'provider_id', 'access_token', 'refresh_token', 'profile',
     ];
 
     /**
@@ -28,7 +28,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'provider_name', 'provider_id', 'access_token', 'refresh_token', 'remember_token',
+        'provider_name', 'provider_id', 'access_token', 'refresh_token', 'remember_token', 'profile',
     ];
 
     /**
@@ -37,6 +37,17 @@ class User extends Authenticatable
      * @var array
      */
     protected $casts = [
+        'notify_via' => 'array',
         'profile' => 'array',
     ];
+
+    /**
+     * Get the user's notification preference.
+     *
+     * @return array
+     */
+    public function getFullNameAttribute()
+    {
+        return $this->notify_via ?? [];
+    }
 }
