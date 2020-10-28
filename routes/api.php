@@ -25,4 +25,7 @@ Route::middleware('auth:api')->group(function () {
     Route::group(['prefix' => 'participant'], function () {
         Route::get('/', ['as' => 'participant', 'uses' => 'ParticipantController@index']);
     });
+    Route::group(['prefix' => 'user'], function () {
+        Route::get('/me', ['as' => 'user.me', 'uses' => 'UserController@me']);
+    });
 });
