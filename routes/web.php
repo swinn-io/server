@@ -1,6 +1,5 @@
 <?php
 
-use App\Notifications\ThreadCreated;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Route;
 
@@ -22,3 +21,4 @@ Route::prefix('login')->group(function () {
     Route::get('redirect/{provider}', 'LoginController@redirect')->name('login.redirect');
     Route::get('callback/{provider}', 'LoginController@callback')->name('login.callback');
 });
+Route::get('logout', 'LoginController@logout')->name('logout');
