@@ -63,12 +63,13 @@ class LoginTest extends TestCase
      */
     public function testUser()
     {
-        $user = factory(User::class)->make();
+        $user = User::factory()->make();
         $nick = collect([$user->name, ''])->random();
         $socialiteUser = Mockery::mock(SocialiteUser::class);
         $socialiteUser->shouldReceive([
             'getId'       => Str::random(),
             'getName'     => $user->name,
+            'getEmail'    => $this->faker->email,
             'getNickname' => $nick,
             'getAvatar'   => $this->faker->url,
         ])
@@ -87,7 +88,7 @@ class LoginTest extends TestCase
      */
     public function testClient()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $data = [
             'state' => Str::random(),
             'redirect_uri' => $this->faker->url,
