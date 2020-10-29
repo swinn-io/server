@@ -51,7 +51,7 @@ class MessageController extends Controller
         $user = $request->user();
         $threads = $this->service->newThread(
             $values['subject'],
-            $user->id,
+            $user,
             $values['content'],
             Arr::get($values, 'recipients', [])
         );
@@ -84,7 +84,7 @@ class MessageController extends Controller
         $thread = $this->service->thread($id);
         $message = $this->service->newMessage(
             $thread,
-            $user->id,
+            $user,
             $values['content'],
         );
 

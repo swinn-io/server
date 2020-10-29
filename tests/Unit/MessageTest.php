@@ -96,7 +96,7 @@ class MessageTest extends TestCase
         sleep(1);
         $allThreads->random(rand(0, $allThreads->count()))->each(function ($willBeMessaged) {
             $sender = User::inRandomOrder()->first();
-            $this->service->newMessage($willBeMessaged, $sender->id, ['some' => 'content']);
+            $this->service->newMessage($willBeMessaged, $sender, ['some' => 'content']);
         });
 
         // Collection of unread threads to match
@@ -124,8 +124,8 @@ class MessageTest extends TestCase
      */
     public function testServiceMethodThread()
     {
-        $user = factory(User::class)->create();
-        $thread = $this->service->newThread('New Thread!', $user->id, ['some' => 'data']);
+        $user = User::factory()->create();
+        $thread = $this->service->newThread('New Thread!', $user, ['some' => 'data']);
         $retrieve = $this->service->thread($thread->id)->toArray();
 
         $this->assertArrayHasKey('messages', $retrieve);
@@ -144,9 +144,11 @@ class MessageTest extends TestCase
      */
     public function testServiceMethodThreadParticipants()
     {
-        $users = factory(User::class, 5)->create();
+        $users = User::factory()
+            ->count(5)
+            ->create();
         $recipients = $users->pluck('id')->toArray();
-        $create = $this->service->newThread('New Thread!', $users->first()->id, ['some' => 'data'], $recipients);
+        $create = $this->service->newThread('New Thread!', $users->first(), ['some' => 'data'], $recipients);
         $thread = $this->service->thread($create->id);
         $participants = $this->service->threadParticipants($create->id);
 
@@ -163,8 +165,8 @@ class MessageTest extends TestCase
      */
     public function testServiceMethodNewThread()
     {
-        $user = factory(User::class)->create();
-        $thread = $this->service->newThread('New Thread!', $user->id, ['some' => 'data']);
+        $user = User::factory()->create();
+        $thread = $this->service->newThread('New Thread!', $user, ['some' => 'data']);
         $retrieve = $this->service->thread($thread->id)->toArray();
 
         $this->assertArrayHasKey('messages', $retrieve);
@@ -183,14 +185,17 @@ class MessageTest extends TestCase
      */
     public function testServiceMethodNewMessage()
     {
-        $users = factory(User::class, 5)->create();
+        $users =
+            User::factory()
+                ->count(5)
+                ->create();;
         $recipients = $users->pluck('id');
-        $thread = $this->service->newThread('New Thread!', $users->first()->id, ['some' => 'data'], $recipients->toArray());
+        $thread = $this->service->newThread('New Thread!', $users->first(), ['some' => 'data'], $recipients->toArray());
         $lastMessage = null;
         $messageNum = rand(1, 10);
 
         for ($i = 1; $i <= $messageNum; $i++) {
-            $lastMessage = $this->service->newMessage($thread->id, $recipients->random(), ['some', "content #{$i}"]);
+            $lastMessage = $this->service->newMessage($thread, $users->random(), ['some', "content #{$i}"]);
             sleep(1); // For message sorting
         }
 
@@ -216,12 +221,14 @@ class MessageTest extends TestCase
      */
     public function testServiceMethodMarkAsRead()
     {
-        $users = factory(User::class, 2)->create();
+        $users = User::factory()
+            ->count(2)
+            ->create();;
         $messageNum = rand(1, 10);
 
         for ($i = 1; $i <= $messageNum; $i++) {
             $title = Str::title(implode(' ', $this->faker->words));
-            $this->service->newThread($title, $users->first()->id, ['some' => 'data'], [$users->last()->id]);
+            $this->service->newThread($title, $users->first(), ['some' => 'data'], [$users->last()->id]);
         }
 
         $retrieve = $this->service->unreadThreads($users->last()->id);
@@ -243,12 +250,14 @@ class MessageTest extends TestCase
      */
     public function testServiceMethodMarkAsReadAll()
     {
-        $users = factory(User::class, 2)->create();
+        $users = User::factory()
+            ->count(2)
+            ->create();
         $messageNum = rand(1, 10);
 
         for ($i = 1; $i <= $messageNum; $i++) {
             $title = Str::title(implode(' ', $this->faker->words));
-            $this->service->newThread($title, $users->first()->id, ['some' => 'data'], [$users->last()->id]);
+            $this->service->newThread($title, $users->first(), ['some' => 'data'], [$users->last()->id]);
         }
 
         $retrieve = $this->service->unreadThreads($users->last()->id);
@@ -268,13 +277,15 @@ class MessageTest extends TestCase
      */
     public function testServiceMethodAddParticipant()
     {
-        $user = factory(User::class)->create();
-        $thread = $this->service->newThread('New Thread!', $user->id, ['some' => 'data']);
+        $user = User::factory()->create();
+        $thread = $this->service->newThread('New Thread!', $user, ['some' => 'data']);
 
-        $newParticipants = factory(User::class, 5)->create();
+        $newParticipants = User::factory()
+            ->count(5)
+            ->create();
 
         $newParticipants->each(function ($participant) use ($thread) {
-            $this->service->addParticipant($thread, $participant->id);
+            $this->service->addParticipant($thread, $participant);
         });
 
         $participants = $this->service->threadParticipants($thread->id);

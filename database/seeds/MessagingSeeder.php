@@ -1,8 +1,8 @@
 <?php
 
-use App\Models\Message;
+namespace Database\Seeders;
+
 use App\Models\Thread;
-use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class MessagingSeeder extends Seeder

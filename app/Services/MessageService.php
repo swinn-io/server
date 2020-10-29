@@ -8,7 +8,7 @@ use App\Models\Participant;
 use App\Models\Thread;
 use App\Models\User;
 use App\Notifications\MessageCreated;
-use App\Notifications\ThreadCreated;
+use App\Notifications\ParticipantCreated;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
@@ -75,29 +75,29 @@ class MessageService implements MessageServiceInterface
      * New message thread.
      *
      * @param string $subject
-     * @param string $user_id
+     * @param User $user
      * @param array $content
      * @param null|array $recipients
      * @return Thread
      */
-    public function newThread(string $subject, string $user_id, array $content, ?array $recipients = []): Thread
+    public function newThread(string $subject, User $user, array $content, ?array $recipients = []): Thread
     {
         /** @var $thread Thread */
         $thread = Thread::create([
             'subject' => $subject,
         ]);
 
-        // Thread creator is a participant
-        $this->addParticipant($thread, $user_id, true);
-
         // Recipients are participants too
-        $recipients = collect($recipients)->each(function ($recipient) use ($thread) {
-            $this->addParticipant($thread, $recipient);
-        });
+        collect($recipients)
+            ->map(function ($recipient) use ($thread) {
+                return User::find($recipient);
+            })
+            ->filter()
+            ->each(function ($recipient) use ($thread){
+                $this->addParticipant($thread, $recipient);
+            });
 
-        $this->newMessage($thread, $user_id, $content);
-
-        Notification::send($recipients, new ThreadCreated($thread));
+        $this->newMessage($thread, $user, $content);
 
         return $thread;
     }
@@ -106,11 +106,11 @@ class MessageService implements MessageServiceInterface
      * New message.
      *
      * @param Thread $thread
-     * @param string $user_id
+     * @param User $user
      * @param array $content
      * @return Message
      */
-    public function newMessage(Thread $thread, string $user_id, array $content): Message
+    public function newMessage(Thread $thread, User $user, array $content): Message
     {
         $activatedParticipants = $thread
             ->activateAllParticipants()
@@ -120,14 +120,15 @@ class MessageService implements MessageServiceInterface
 
         $message = Message::create([
             'thread_id' => $thread->id,
-            'user_id' => $user_id,
+            'user_id' => $user->id,
             'body' => $content,
         ]);
 
-        // Make participant
-        $this->addParticipant($thread, $user_id, true);
+        // Make participant if not
+        $this->addParticipant($thread, $user, true);
 
         $recipients = User::find($activatedParticipants);
+
         Notification::send($recipients, new MessageCreated($message));
 
         return $message;
@@ -164,17 +165,22 @@ class MessageService implements MessageServiceInterface
      * Mark as read all messages of a user.
      *
      * @param Thread $thread
-     * @param string $user_id
+     * @param User $user
      * @param bool $mark_as_read
      * @return Participant
      */
-    public function addParticipant(Thread $thread, string $user_id, bool $mark_as_read = false): Participant
+    public function addParticipant(Thread $thread, User $user, bool $mark_as_read = false): Participant
     {
-        return $thread->participants()->updateOrCreate([
-            'user_id' => $user_id,
+        $return = $thread->participants()->updateOrCreate([
+            'user_id' => $user->id,
             'thread_id' => $thread->id,
         ],
             $mark_as_read ? ['last_read' => now()] : []);
+
+        $users = $thread->users()->get();
+
+        Notification::send($users, new ParticipantCreated($thread));
+        return $return;
     }
 
     /**
