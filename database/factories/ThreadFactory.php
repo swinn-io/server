@@ -46,11 +46,6 @@ class ThreadFactory extends Factory
             // Set message sender as participants.
             $users_ids = $messages->pluck('user_id');
 
-            // Add random recipients
-            User::inRandomOrder()->limit(rand(0, 5))->get()->pluck('id')->each(function ($recipient) use ($users_ids) {
-                $users_ids->push($recipient);
-            });
-
             // Add participants
             $thread->addParticipant($users_ids->unique()->toArray());
 
