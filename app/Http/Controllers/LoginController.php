@@ -74,23 +74,23 @@ class LoginController extends Controller
      */
     public function callback(string $provider, Request $request)
     {
-            $client = $request->session()->get('client', []);
-            $user = $this->service->callback($provider, $client);
-            $URI = Arr::get($client, 'redirect_uri') ?? config('app.uri');
+        $client = $request->session()->get('client', []);
+        $user = $this->service->callback($provider, $client);
+        $URI = Arr::get($client, 'redirect_uri', false);
 
-            /**
-             * Authorize user before redirection, it's required for PKCE
-             * it will also remember the client user
-             */
-            Auth::login($user, true);
+        /**
+         * Authorize user before redirection, it's required for PKCE
+         * it will also remember the client user
+         */
+        Auth::login($user, true);
 
-            $query = http_build_query([
-                'user' => $user->toArray(),
-                'access_token' => $this->service->createToken($user),
-                'state' => Arr::get($client, 'state', null),
-            ]);
+        $query = http_build_query([
+            'user' => $user->toArray(),
+            'access_token' => $this->service->createToken($user),
+            'state' => Arr::get($client, 'state', null),
+        ]);
 
-            return redirect("$URI?{$query}");
+        return $URI ? redirect("$URI?{$query}") : redirect('/');
     }
 
     /**
