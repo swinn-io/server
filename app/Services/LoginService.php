@@ -81,7 +81,7 @@ class LoginService implements LoginServiceInterface
             'provider_name'  => $provider,                       // GitHub, LinkedIn, Google, Apple
             'provider_id'    => $userContract->getId(),          // unsignedBigInteger, uuid
         ], [
-            'name'           => $userContract->getName(),
+            'name'           => $userContract->getName() ?? $userContract->getNickname(),
             /**
              * E-mails, tokens and profile will be synced.
              * E-mail is for e-mail notifications.
