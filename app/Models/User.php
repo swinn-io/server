@@ -42,6 +42,15 @@ class User extends Authenticatable
     ];
 
     /**
+     * The model's default values for attributes.
+     *
+     * @var array
+     */
+    protected $attributes = [
+        'is_online' => false,
+    ];
+
+    /**
      * Get the user's notification preference.
      *
      * @return array

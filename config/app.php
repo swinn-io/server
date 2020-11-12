@@ -189,6 +189,7 @@ return [
 
         App\Providers\Project\LoginServiceProvider::class,
         App\Providers\Project\MessageServiceProvider::class,
+        App\Providers\Project\UserServiceProvider::class,
     ],
 
     /*
