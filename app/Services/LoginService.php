@@ -65,7 +65,8 @@ class LoginService implements LoginServiceInterface
      */
     public function createToken(User $user): string
     {
-        return $user->createToken(config('app.name') . ' Token')->accessToken;
+        $tokenName = config('app.name') . ' Token - ' . now();
+        return $user->createToken($tokenName)->accessToken;
     }
 
     /**
