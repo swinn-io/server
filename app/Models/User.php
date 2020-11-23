@@ -87,14 +87,4 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
-
-    /**
-     * Get the user's notification preference.
-     *
-     * @return array
-     */
-    public function getFullNameAttribute()
-    {
-        return $this->notify_via ?? [];
-    }
 }
