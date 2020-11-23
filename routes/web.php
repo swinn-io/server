@@ -16,9 +16,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', 'FrontEndController@welcome');
-Route::prefix('user')->group(function () {
-    Route::get('me', 'UserController@me')->name('user.me');
-});
 Route::prefix('login')->group(function () {
     Route::get('/', 'LoginController@home')->name('login');
     Route::get('redirect/{provider}', 'LoginController@redirect')->name('login.redirect');
