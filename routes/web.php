@@ -1,5 +1,6 @@
 <?php
 
+use App\Notifications\MessageCreated;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Route;
 
@@ -15,10 +16,14 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', 'FrontEndController@welcome');
-
+Route::prefix('user')->group(function () {
+    Route::get('me', 'UserController@me')->name('user.me');
+});
 Route::prefix('login')->group(function () {
     Route::get('/', 'LoginController@home')->name('login');
     Route::get('redirect/{provider}', 'LoginController@redirect')->name('login.redirect');
     Route::get('callback/{provider}', 'LoginController@callback')->name('login.callback');
 });
-Route::get('logout', 'LoginController@logout')->name('logout');
+Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+    return view('dashboard');
+})->name('dashboard');

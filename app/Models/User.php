@@ -4,14 +4,24 @@ namespace App\Models;
 
 use App\Traits\HasUUID;
 use Cmgmyr\Messenger\Traits\Messagable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Fortify\TwoFactorAuthenticatable;
+use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, HasUUID, Messagable, Notifiable;
+    use HasFactory;
+    use HasUUID;
+    use HasApiTokens;
+    use HasFactory;
+    use HasProfilePhoto;
+    use Messagable;
+    use Notifiable;
+    use TwoFactorAuthenticatable;
 
     /**
      * The attributes that are mass assignable.
@@ -19,7 +29,16 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'notify_via','provider_name', 'provider_id', 'access_token', 'refresh_token', 'profile',
+        'name',
+        'email',
+        'one_time_password',
+        'password_expires_at',
+        'provider_name',
+        'provider_id',
+        'notify_via',
+        'access_token',
+        'refresh_token',
+        'profile',
     ];
 
     /**
@@ -28,7 +47,11 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'provider_name', 'provider_id', 'access_token', 'refresh_token', 'remember_token', 'profile',
+        'one_time_password',
+        'password_expires_at',
+        'remember_token',
+        'two_factor_recovery_codes',
+        'two_factor_secret',
     ];
 
     /**
@@ -39,6 +62,7 @@ class User extends Authenticatable
     protected $casts = [
         'notify_via' => 'array',
         'profile' => 'array',
+        'password_expires_at' => 'datetime',
     ];
 
     /**
@@ -48,6 +72,15 @@ class User extends Authenticatable
      */
     protected $attributes = [
         'is_online' => false,
+    ];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = [
+        'profile_photo_url',
     ];
 
     /**
