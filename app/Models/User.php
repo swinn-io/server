@@ -52,6 +52,11 @@ class User extends Authenticatable
         'remember_token',
         'two_factor_recovery_codes',
         'two_factor_secret',
+        'access_token',
+        'refresh_token',
+        'profile',
+        'provider_name',
+        'provider_id',
     ];
 
     /**
