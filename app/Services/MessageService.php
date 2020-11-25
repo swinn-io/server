@@ -115,6 +115,7 @@ class MessageService implements MessageServiceInterface
         $activatedParticipants = $thread
             ->activateAllParticipants()
             ->pluck('user_id')
+            ->push($user->id)
             ->unique()
             ->toArray();
 
