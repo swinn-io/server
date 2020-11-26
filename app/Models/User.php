@@ -71,15 +71,6 @@ class User extends Authenticatable
     ];
 
     /**
-     * The model's default values for attributes.
-     *
-     * @var array
-     */
-    protected $attributes = [
-        'is_online' => false,
-    ];
-
-    /**
      * The accessors to append to the model's array form.
      *
      * @var array

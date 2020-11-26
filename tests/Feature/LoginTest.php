@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use App\Interfaces\LoginServiceInterface;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
@@ -14,7 +13,7 @@ use Tests\TestCase;
 
 class LoginTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use WithFaker;
 
     /**
      * @var LoginServiceInterface

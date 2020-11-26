@@ -27,7 +27,7 @@ class UserService implements UserServiceInterface
     public function online(string $id): User
     {
         $user = $this->find($id);
-        $user->is_online = true;
+        // todo
         $user->save();
 
         return $user;
@@ -42,7 +42,7 @@ class UserService implements UserServiceInterface
     public function offline(string $id): User
     {
         $user = $this->find($id);
-        $user->is_online = false;
+        // todo
         $user->save();
 
         return $user;

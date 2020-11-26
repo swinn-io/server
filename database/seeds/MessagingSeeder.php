@@ -15,7 +15,7 @@ class MessagingSeeder extends Seeder
     public function run()
     {
         Thread::factory()
-            ->count(150)
+            ->count(15)
             ->create();
     }
 }
