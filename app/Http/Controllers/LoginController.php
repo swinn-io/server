@@ -80,7 +80,7 @@ class LoginController extends Controller
 
         /**
          * Authorize user before redirection, it's required for PKCE
-         * it will also remember the client user
+         * it will also remember the client user.
          */
         Auth::login($user, true);
 

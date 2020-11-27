@@ -13,7 +13,7 @@ class ParticipantCreated extends Notification implements ShouldQueue
     use Queueable;
 
     /**
-     * @var Thread $thread
+     * @var Thread
      */
     public Thread $thread;
 

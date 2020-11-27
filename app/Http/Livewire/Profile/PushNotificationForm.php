@@ -10,7 +10,7 @@ class PushNotificationForm extends Component
 {
     public function pushNotification(MessageServiceInterface $messageService)
     {
-        $subject = 'PING ' . now();
+        $subject = 'PING '.now();
         $messageService->newThread($subject, Auth::user(), ['DUMMY PING']);
     }
 

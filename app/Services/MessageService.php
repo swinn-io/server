@@ -89,11 +89,11 @@ class MessageService implements MessageServiceInterface
 
         // Recipients are participants too
         collect($recipients)
-            ->map(function ($recipient) use ($thread) {
+            ->map(function ($recipient) {
                 return User::find($recipient);
             })
             ->filter()
-            ->each(function ($recipient) use ($thread){
+            ->each(function ($recipient) use ($thread) {
                 $this->addParticipant($thread, $recipient);
             });
 
@@ -181,6 +181,7 @@ class MessageService implements MessageServiceInterface
         $users = $thread->users()->get();
 
         Notification::send($users, new ParticipantCreated($thread));
+
         return $return;
     }
 

@@ -55,6 +55,7 @@ class LoginService implements LoginServiceInterface
     public function callback(string $provider, array $clientInfo): User
     {
         $profile = Socialite::driver($provider)->user();
+
         return $this->user($provider, $profile);
     }
 
@@ -66,7 +67,8 @@ class LoginService implements LoginServiceInterface
      */
     public function createToken(User $user): string
     {
-        $tokenName = config('app.name') . ' Token - ' . now();
+        $tokenName = config('app.name').' Token - '.now();
+
         return $user->createToken($tokenName)->accessToken;
     }
 
