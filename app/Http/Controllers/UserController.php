@@ -57,8 +57,9 @@ class UserController extends Controller
     public function online(string $id, Request $request)
     {
         //@todo: beautify
-        if($request->user()->id !== $id)
+        if ($request->user()->id !== $id) {
             abort(404);
+        }
 
         return new UserResource(
             $this->service->online($id)
@@ -75,8 +76,9 @@ class UserController extends Controller
     public function offline(string $id, Request $request)
     {
         //@todo: beautify
-        if($request->user()->id !== $id)
+        if ($request->user()->id !== $id) {
             abort(404);
+        }
 
         return new UserResource(
             $this->service->offline($id)

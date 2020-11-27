@@ -2,7 +2,6 @@
 
 namespace Tests\Traits;
 
-
 use App\Models\User;
 use Illuminate\Support\Arr;
 use Laravel\Passport\Client;
@@ -67,6 +66,6 @@ trait WithAccessToken
     {
         // Behave like an API call
         $this->withHeader('Accept', 'application/json');
-        $this->withHeader('Authorization', 'Bearer ' . $this->token);
+        $this->withHeader('Authorization', 'Bearer '.$this->token);
     }
 }

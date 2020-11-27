@@ -13,7 +13,7 @@ class MessageCreated extends Notification implements ShouldQueue
     use Queueable;
 
     /**
-     * @var Message $message
+     * @var Message
      */
     public Message $message;
 
@@ -62,8 +62,9 @@ class MessageCreated extends Notification implements ShouldQueue
     {
         $body = json_encode($this->message->body);
         $user = $this->message->user();
+
         return (new MailMessage)
-            ->subject('New Message from: ' . $user->name)
+            ->subject('New Message from: '.$user->name)
             ->greeting('Hello!')
             ->line("{$user->name} pinged you!")
             ->line("{$body}")

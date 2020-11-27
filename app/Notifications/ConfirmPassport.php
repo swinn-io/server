@@ -41,8 +41,9 @@ class ConfirmPassport extends Notification
     public function toMail($notifiable)
     {
         $appName = config('app.name');
+
         return (new MailMessage)
-            ->subject($appName . ' One Time Password')
+            ->subject($appName.' One Time Password')
             ->greeting('Hello!')
             ->line('You have re.')
             ->line(': '.$this->token->plainText())

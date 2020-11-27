@@ -39,7 +39,6 @@ class Thread extends BaseThread
         $participant->last_read = now();
         $participant->save();
 
-
         return $participant;
     }
 
