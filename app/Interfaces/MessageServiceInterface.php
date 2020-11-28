@@ -99,12 +99,4 @@ interface MessageServiceInterface
      * @return Participant
      */
     public function addParticipant(Thread $thread, User $user, bool $mark_as_read = false): Participant;
-
-    /**
-     * All possible participants.
-     *
-     * @param string $user_id
-     * @return LengthAwarePaginator
-     */
-    public function allParticipants(string $user_id): LengthAwarePaginator;
 }

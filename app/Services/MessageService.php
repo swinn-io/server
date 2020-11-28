@@ -184,32 +184,4 @@ class MessageService implements MessageServiceInterface
 
         return $return;
     }
-
-    /**
-     * All possible participants.
-     *
-     * @param string $user_id
-     * @return LengthAwarePaginator
-     */
-    public function allParticipants(string $user_id): LengthAwarePaginator
-    {
-        $allThreads = Participant::where([
-            'user_id' => $user_id,
-        ])
-            ->get('thread_id')
-            ->pluck('thread_id')
-            ->toArray();
-
-        $participants = Thread::with('participants')
-            ->find($allThreads)
-            ->pluck('participants.*.user_id')
-            ->flatten()
-            ->unique()
-            ->diff([$user_id]);
-
-        /**
-         * @todo UserService would be nicer.
-         */
-        return User::whereIn('id', $participants)->paginate();
-    }
 }
