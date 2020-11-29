@@ -34,11 +34,11 @@ class MessageTest extends TestCase
     }
 
     /**
-     * Check if all method returns pagination of thread models.
+     * Check if threads method returns pagination of threads models of a user model.
      *
      * @return void
      */
-    public function testServiceMethodAll()
+    public function testServiceMethodThreads()
     {
         $user = User::factory()->create();
         $create = 5;
@@ -48,31 +48,10 @@ class MessageTest extends TestCase
             $this->service->newThread("Test Thread {$i}", $user, ['some' => 'data']);
         }
 
-        $allThreads = $this->service->all($user);
+        $allThreads = $this->service->threads($user);
         $modelName = get_class(Arr::get($allThreads->items(), 0));
 
         $this->assertEquals($create, $allThreads->total());
-        $this->assertEquals(Thread::class, $modelName);
-    }
-
-    /**
-     * Check if threads method returns pagination of threads models of a user model.
-     *
-     * @return void
-     */
-    public function testServiceMethodThreads()
-    {
-        $thread = Thread::with('participants.user')->inRandomOrder()->first();
-        $participant = $thread->participants->first();
-        $threads = $this->service->threads($participant->user);
-
-        $count = Participant::where([
-            'user_id' => $participant->user_id,
-        ])->count();
-
-        $this->assertEquals($count, $threads->total());
-
-        $modelName = get_class(Arr::get($threads->items(), 0));
         $this->assertEquals(Thread::class, $modelName);
     }
 

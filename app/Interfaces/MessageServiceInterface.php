@@ -13,14 +13,6 @@ use Illuminate\Support\Collection;
 interface MessageServiceInterface
 {
     /**
-     * All threads.
-     *
-     * @param User $user
-     * @return LengthAwarePaginator
-     */
-    public function all(User $user): LengthAwarePaginator;
-
-    /**
      * All threads that user is participating in.
      *
      * @param User $user

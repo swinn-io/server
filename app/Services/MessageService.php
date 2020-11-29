@@ -17,17 +17,6 @@ use Illuminate\Support\Facades\Notification;
 class MessageService implements MessageServiceInterface
 {
     /**
-     * All threads, ignore deleted/archived participants.
-     *
-     * @param User $user
-     * @return LengthAwarePaginator
-     */
-    public function all(User $user): LengthAwarePaginator
-    {
-        return Thread::forUser($user->id)->latest('updated_at')->paginate();
-    }
-
-    /**
      * All threads that user is participating in.
      *
      * @param User $user
