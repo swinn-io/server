@@ -13,28 +13,29 @@ use Illuminate\Support\Collection;
 interface MessageServiceInterface
 {
     /**
-     * All threads, ignore deleted/archived participants.
+     * All threads.
      *
+     * @param User $user
      * @return LengthAwarePaginator
      */
-    public function all(): LengthAwarePaginator;
+    public function all(User $user): LengthAwarePaginator;
 
     /**
      * All threads that user is participating in.
      *
-     * @param string $user_id
+     * @param User $user
      * @return LengthAwarePaginator
      */
-    public function threads(string $user_id): LengthAwarePaginator;
+    public function threads(User $user): LengthAwarePaginator;
 
     /**
      * All threads that user is participating in, with new messages.
      *
-     * @param string $user_id
+     * @param User $user
      * @return Collection
      * @throws ModelNotFoundException
      */
-    public function unreadThreads(string $user_id): Collection;
+    public function unreadThreads(User $user): Collection;
 
     /**
      * Retrieve a thread.
@@ -77,18 +78,18 @@ interface MessageServiceInterface
      * Mark as read a tread of a user.
      *
      * @param Thread $thread
-     * @param string $user_id
+     * @param User $user
      * @return Participant
      */
-    public function markAsRead(Thread $thread, string $user_id): Participant;
+    public function markAsRead(Thread $thread, User $user): Participant;
 
     /**
      * Mark as read all messages of a user.
      *
-     * @param string $user_id
+     * @param User $user
      * @return bool
      */
-    public function markAsReadAll(string $user_id): bool;
+    public function markAsReadAll(User $user): bool;
 
     /**
      * Mark as read all messages of a user.

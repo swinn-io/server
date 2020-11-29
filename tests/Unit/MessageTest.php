@@ -40,11 +40,19 @@ class MessageTest extends TestCase
      */
     public function testServiceMethodAll()
     {
-        $count = Thread::count();
-        $all = $this->service->all();
-        $modelName = get_class(Arr::get($all->items(), 0));
+        $user = User::factory()->create();
+        $create = 5;
 
-        $this->assertEquals($count, $all->total());
+        // Create 5 threads for created user.
+        for ($i = 1; $i <= $create; $i++)
+        {
+            $this->service->newThread("Test Thread {$i}", $user, ["some" => "data"]);
+        }
+
+        $allThreads = $this->service->all($user);
+        $modelName = get_class(Arr::get($allThreads->items(), 0));
+
+        $this->assertEquals($create, $allThreads->total());
         $this->assertEquals(Thread::class, $modelName);
     }
 
@@ -55,9 +63,9 @@ class MessageTest extends TestCase
      */
     public function testServiceMethodThreads()
     {
-        $thread = Thread::with('participants')->inRandomOrder()->first();
+        $thread = Thread::with('participants.user')->inRandomOrder()->first();
         $participant = $thread->participants->first();
-        $threads = $this->service->threads($participant->user_id);
+        $threads = $this->service->threads($participant->user);
 
         $count = Participant::where([
             'user_id' => $participant->user_id,
@@ -79,13 +87,13 @@ class MessageTest extends TestCase
         // Random participant for utilizing user id
         $participant = Participant::inRandomOrder()->first();
         // Chosen user to test
-        $user_id = $participant->user_id;
+        $user = User::find($participant->user_id);
 
         // All threads of a user that participated
-        $allThreads = $this->service->threads($user_id);
+        $allThreads = $this->service->threads($user);
         // Retrieve all the participation of a user
         $participated = Participant::where([
-            'user_id' => $user_id,
+            'user_id' => $user->id,
         ]);
 
         // Cross-check for thread and participation counts.
@@ -99,7 +107,7 @@ class MessageTest extends TestCase
         });
 
         // Collection of unread threads to match
-        $unreadThreads = $this->service->unreadThreads($user_id);
+        $unreadThreads = $this->service->unreadThreads($user);
 
         $participated = $participated->get();
         $filtered = $participated->filter(function ($participation) {
@@ -230,15 +238,15 @@ class MessageTest extends TestCase
             $this->service->newThread($title, $users->first(), ['some' => 'data'], [$users->last()->id]);
         }
 
-        $retrieve = $this->service->unreadThreads($users->last()->id);
+        $retrieve = $this->service->unreadThreads($users->last());
 
         $this->assertCount($messageNum, $retrieve);
 
         // Mark as read each threads.
         $retrieve->each(function ($thread) use ($users) {
-            $this->service->markAsRead($thread, $users->last()->id);
+            $this->service->markAsRead($thread, $users->last());
         });
-        $retrieve = $this->service->unreadThreads($users->last()->id);
+        $retrieve = $this->service->unreadThreads($users->last());
         $this->assertCount(0, $retrieve);
     }
 
@@ -259,13 +267,13 @@ class MessageTest extends TestCase
             $this->service->newThread($title, $users->first(), ['some' => 'data'], [$users->last()->id]);
         }
 
-        $retrieve = $this->service->unreadThreads($users->last()->id);
+        $retrieve = $this->service->unreadThreads($users->last());
 
         $this->assertCount($messageNum, $retrieve);
 
         // Mark as read all threads.
-        $this->service->markAsReadAll($users->last()->id);
-        $retrieve = $this->service->unreadThreads($users->last()->id);
+        $this->service->markAsReadAll($users->last());
+        $retrieve = $this->service->unreadThreads($users->last());
         $this->assertCount(0, $retrieve);
     }
 

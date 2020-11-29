@@ -19,33 +19,34 @@ class MessageService implements MessageServiceInterface
     /**
      * All threads, ignore deleted/archived participants.
      *
+     * @param User $user
      * @return LengthAwarePaginator
      */
-    public function all(): LengthAwarePaginator
+    public function all(User $user): LengthAwarePaginator
     {
-        return Thread::getAllLatest()->paginate();
+        return Thread::forUser($user->id)->latest('updated_at')->paginate();
     }
 
     /**
      * All threads that user is participating in.
      *
-     * @param string $user_id
+     * @param User $user
      * @return LengthAwarePaginator
      */
-    public function threads(string $user_id): LengthAwarePaginator
+    public function threads(User $user): LengthAwarePaginator
     {
-        return Thread::forUser($user_id)->latest('updated_at')->paginate();
+        return Thread::forUser($user->id)->latest('updated_at')->paginate();
     }
 
     /**
      * All threads that user is participating in, with new messages.
      *
-     * @param string $user_id
+     * @param User $user
      * @return Collection
      */
-    public function unreadThreads(string $user_id): Collection
+    public function unreadThreads(User $user): Collection
     {
-        return Thread::forUserWithNewMessages($user_id)->latest('updated_at')->get();
+        return Thread::forUserWithNewMessages($user->id)->latest('updated_at')->get();
     }
 
     /**
@@ -139,24 +140,24 @@ class MessageService implements MessageServiceInterface
      * Mark as read a tread of a user.
      *
      * @param Thread $thread
-     * @param string $user_id
+     * @param User $user
      * @return Participant
      */
-    public function markAsRead(Thread $thread, string $user_id): Participant
+    public function markAsRead(Thread $thread, User $user): Participant
     {
-        return $thread->markAsRead($user_id);
+        return $thread->markAsRead($user->id);
     }
 
     /**
      * Mark as read all messages of a user.
      *
-     * @param string $user_id
+     * @param User $user
      * @return bool
      */
-    public function markAsReadAll(string $user_id): bool
+    public function markAsReadAll(User $user): bool
     {
         return Participant::where([
-            'user_id' => $user_id,
+            'user_id' => $user->id,
         ])->update([
             'last_read' => now(),
         ]);

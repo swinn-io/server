@@ -36,7 +36,7 @@ class MessageController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
-        $threads = $this->service->threads($user->id);
+        $threads = $this->service->threads($user);
 
         return ThreadResource::collection($threads);
     }
