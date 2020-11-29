@@ -6,8 +6,8 @@ use App\Interfaces\MessageServiceInterface;
 use App\Models\Participant;
 use App\Models\Thread;
 use App\Models\User;
-use Database\Seeders\UserSeeder;
 use Database\Seeders\MessagingSeeder;
+use Database\Seeders\UserSeeder;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
@@ -44,9 +44,8 @@ class MessageTest extends TestCase
         $create = 5;
 
         // Create 5 threads for created user.
-        for ($i = 1; $i <= $create; $i++)
-        {
-            $this->service->newThread("Test Thread {$i}", $user, ["some" => "data"]);
+        for ($i = 1; $i <= $create; $i++) {
+            $this->service->newThread("Test Thread {$i}", $user, ['some' => 'data']);
         }
 
         $allThreads = $this->service->all($user);
@@ -195,7 +194,7 @@ class MessageTest extends TestCase
         $users =
             User::factory()
                 ->count(5)
-                ->create();;
+                ->create();
         $recipients = $users->pluck('id');
         $thread = $this->service->newThread('New Thread!', $users->first(), ['some' => 'data'], $recipients->toArray());
         $lastMessage = null;
@@ -230,7 +229,7 @@ class MessageTest extends TestCase
     {
         $users = User::factory()
             ->count(2)
-            ->create();;
+            ->create();
         $messageNum = rand(1, 10);
 
         for ($i = 1; $i <= $messageNum; $i++) {
