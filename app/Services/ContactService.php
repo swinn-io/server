@@ -1,6 +1,6 @@
 <?php
-namespace App\Services;
 
+namespace App\Services;
 
 use App\Interfaces\ContactServiceInterface;
 use App\Models\Contact;
@@ -32,7 +32,7 @@ class ContactService implements ContactServiceInterface
     }
 
     /**
-     * Creates contact
+     * Creates contact.
      * @param User $user
      * @param User $contact
      * @return Contact

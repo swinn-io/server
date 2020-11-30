@@ -37,7 +37,7 @@ class ContactTest extends TestCase
         $user = User::factory()->create();
         $create = 5;
         // Create 5 contacts for created user.
-        User::factory($create)->create()->each(function ($item) use ($user){
+        User::factory($create)->create()->each(function ($item) use ($user) {
             $this->service->addContact($user, $item);
         });
 
