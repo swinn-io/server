@@ -189,6 +189,7 @@ return [
         App\Providers\JetstreamServiceProvider::class,
         App\Providers\TelescopeServiceProvider::class,
 
+        App\Providers\Project\ContactServiceProvider::class,
         App\Providers\Project\LoginServiceProvider::class,
         App\Providers\Project\MessageServiceProvider::class,
         App\Providers\Project\UserServiceProvider::class,
