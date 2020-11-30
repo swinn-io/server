@@ -47,7 +47,7 @@ class MessageService implements MessageServiceInterface
      */
     public function thread(string $thread_id): Thread
     {
-        return Thread::with(['messages', 'participants.user'])->findOrFail($thread_id);
+        return Thread::with(['messages', 'participants.user'])->find($thread_id);
     }
 
     /**
@@ -58,7 +58,7 @@ class MessageService implements MessageServiceInterface
      */
     public function threadParticipants(string $thread_id): Collection
     {
-        return Thread::with('participants.user')->findOrFail($thread_id)->participants;
+        return Thread::with('participants.user')->find($thread_id)->participants;
     }
 
     /**
