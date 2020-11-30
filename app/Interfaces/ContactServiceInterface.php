@@ -25,7 +25,7 @@ interface ContactServiceInterface
     public function contact(string $contact_id): Contact;
 
     /**
-     * Creates contact
+     * Creates contact.
      * @param User $user
      * @param User $contact
      * @return Contact
