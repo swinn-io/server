@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Traits\HasContact;
 use App\Traits\HasUUID;
 use Cmgmyr\Messenger\Traits\Messagable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -15,11 +14,9 @@ use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasContact;
-    use HasFactory;
-    use HasUUID;
     use HasApiTokens;
     use HasFactory;
+    use HasUUID;
     use HasProfilePhoto;
     use Messagable;
     use Notifiable;
