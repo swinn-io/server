@@ -15,36 +15,6 @@ class UserService implements UserServiceInterface
      */
     public function find(string $id): User
     {
-        return User::findOrFail($id);
-    }
-
-    /**
-     * Set user status online.
-     *
-     * @param string $id
-     * @return User
-     */
-    public function online(string $id): User
-    {
-        $user = $this->find($id);
-        // todo
-        $user->save();
-
-        return $user;
-    }
-
-    /**
-     * Set user status online.
-     *
-     * @param string $id
-     * @return User
-     */
-    public function offline(string $id): User
-    {
-        $user = $this->find($id);
-        // todo
-        $user->save();
-
-        return $user;
+        return User::find($id);
     }
 }
