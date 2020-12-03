@@ -26,7 +26,7 @@ class MessageStoreRequest extends FormRequest
         return [
             'subject'    => 'required|string|max:255',
             'content'    => 'required|array',
-            'recipients' => 'array',
+            'recipients.*' => 'string|exists:users,id',
         ];
     }
 }
