@@ -177,7 +177,7 @@ class MessageTest extends TestCase
         $recipients = $users->pluck('id');
         $thread = $this->service->newThread('New Thread!', $users->first(), ['some' => 'data'], $recipients->toArray());
         $lastMessage = null;
-        $messageNum = rand(1, 10);
+        $messageNum = rand(2, 10);
 
         for ($i = 1; $i <= $messageNum; $i++) {
             $lastMessage = $this->service->newMessage($thread, $users->random(), ['some', "content #{$i}"]);
@@ -194,7 +194,7 @@ class MessageTest extends TestCase
         $this->assertCount(($messageNum + 1), Arr::get($retrieve, 'messages'));
 
         $lastMessage = json_encode(Arr::get($lastMessage->toArray(), 'body'));
-        $lastInsertedMessage = json_encode(Arr::get(Arr::first(Arr::get($retrieve, 'messages')), 'body'));
+        $lastInsertedMessage = json_encode(Arr::get($retrieve, 'messages.0.body'));
 
         $this->assertSame($lastMessage, $lastInsertedMessage);
     }
