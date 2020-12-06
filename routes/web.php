@@ -21,6 +21,12 @@ Route::prefix('login')->group(function () {
     Route::get('redirect/{provider}', 'LoginController@redirect')->name('login.redirect');
     Route::get('callback/{provider}', 'LoginController@callback')->name('login.callback');
 });
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
+
+Route::middleware(['auth:sanctum', 'verified'])->group(function (){
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+    Route::get('/data', function () {
+        return view('data.index');
+    })->name('data.index');
+});

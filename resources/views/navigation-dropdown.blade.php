@@ -49,6 +49,11 @@
                             {{ __('Profile') }}
                         </x-jet-dropdown-link>
 
+                        <!-- Data Management -->
+                        <x-jet-dropdown-link href="{{ route('data.index') }}">
+                            {{ __('Data') }}
+                        </x-jet-dropdown-link>
+
                         @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
                             <x-jet-dropdown-link href="{{ route('api-tokens.index') }}">
                                 {{ __('API Tokens') }}
@@ -139,6 +144,11 @@
                 <!-- Account Management -->
                 <x-jet-responsive-nav-link href="{{ route('profile.show') }}" :active="request()->routeIs('profile.show')">
                     {{ __('Profile') }}
+                </x-jet-responsive-nav-link>
+
+                <!-- Data Management -->
+                <x-jet-responsive-nav-link href="{{ route('data.index') }}" :active="request()->routeIs('data.index')">
+                    {{ __('Data') }}
                 </x-jet-responsive-nav-link>
 
                 @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
