@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Unit;
 
 use App\Interfaces\LoginServiceInterface;
 use App\Models\User;
@@ -72,9 +72,9 @@ class LoginTest extends TestCase
             'getNickname' => $nick,
             'getAvatar'   => $this->faker->url,
         ])
-        ->andSet('user', $user)
-        ->andSet('token', Str::random(40))
-        ->andSet('refreshToken', Str::random(40));
+            ->andSet('user', $user)
+            ->andSet('token', Str::random(40))
+            ->andSet('refreshToken', Str::random(40));
 
         $new_class = $this->service->user('github', $socialiteUser);
         $this->assertEquals($user->name, $new_class->name);
