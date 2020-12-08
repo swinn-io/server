@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Interfaces\ContactServiceInterface;
 use App\Interfaces\MessageServiceInterface;
 use App\Models\Message;
 use App\Models\Participant;
@@ -16,6 +17,20 @@ use Illuminate\Support\Facades\Notification;
 
 class MessageService implements MessageServiceInterface
 {
+    /**
+     * @var ContactServiceInterface
+     */
+    public ContactServiceInterface $contactService;
+
+    /**
+     * MessageService constructor.
+     * @param ContactServiceInterface $contactService
+     */
+    public function __construct(ContactServiceInterface $contactService)
+    {
+        $this->contactService = $contactService;
+    }
+
     /**
      * All threads that user is participating in.
      *
@@ -169,6 +184,15 @@ class MessageService implements MessageServiceInterface
             $mark_as_read ? ['last_read' => now()] : []);
 
         $users = $thread->users()->get();
+
+        $users->each(function ($user) use ($users){
+            $users->each(function ($contact) use ($user){
+                if(!$user->is($contact))
+                {
+                    $this->contactService->addContact($user, $contact);
+                }
+            });
+        });
 
         Notification::send($users, new ParticipantCreated($thread));
 

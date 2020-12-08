@@ -6,6 +6,7 @@ use App\Traits\HasUUID;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Contact extends Model
 {
@@ -34,5 +35,15 @@ class Contact extends Model
     public function scopeForUser($query, $user_id)
     {
         return $query->where('user_id', $user_id);
+    }
+
+    /**
+     * Get the owner model of the contact.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     */
+    public function source(): MorphTo
+    {
+        return $this->morphTo('source', 'source_type', 'source_id', 'id');
     }
 }

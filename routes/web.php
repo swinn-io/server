@@ -29,4 +29,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function (){
     Route::get('/data', function () {
         return view('data.index');
     })->name('data.index');
+    Route::get('/contact', function () {
+        return view('contact');
+    })->name('contact.index');
 });

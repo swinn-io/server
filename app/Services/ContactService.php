@@ -17,7 +17,7 @@ class ContactService implements ContactServiceInterface
      */
     public function contacts(User $user): LengthAwarePaginator
     {
-        return Contact::forUser($user->id)->paginate();
+        return Contact::forUser($user->id)->with('source')->paginate();
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Providers\Project;
 
+use App\Interfaces\ContactServiceInterface;
 use App\Interfaces\MessageServiceInterface;
 use App\Services\MessageService;
 use Illuminate\Support\ServiceProvider;
@@ -16,7 +17,9 @@ class MessageServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(MessageServiceInterface::class, function ($app) {
-            return new MessageService();
+            return new MessageService(
+                $this->app->make(ContactServiceInterface::class)
+            );
         });
     }
 

@@ -15,6 +15,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:api')->group(function () {
+    Route::group(['prefix' => 'contact'], function () {
+        Route::get('/', ['as' => 'contact', 'uses' => 'ContactController@index']);
+        Route::get('{id}', ['as' => 'contact.show', 'uses' => 'ContactController@show']);
+    });
     Route::group(['prefix' => 'message'], function () {
         Route::get('/', ['as' => 'message', 'uses' => 'MessageController@index']);
         Route::post('/', ['as' => 'message.store', 'uses' => 'MessageController@store']);
