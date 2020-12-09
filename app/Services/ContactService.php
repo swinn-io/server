@@ -6,6 +6,7 @@ use App\Interfaces\ContactServiceInterface;
 use App\Models\Contact;
 use App\Models\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 
 class ContactService implements ContactServiceInterface
 {
@@ -46,6 +47,26 @@ class ContactService implements ContactServiceInterface
         ], [
             'name' => $contact->name,
         ]);
+    }
+
+    /**
+     * Creates contact by user collection and returns contact.
+     *
+     * @param Collection $users
+     * @return Collection
+     */
+    public function setContacts(Collection $users): Collection
+    {
+        return $users->map(function ($user) use ($users){
+            return $users
+                    ->filter(function ($item) use ($user) {
+                        return !$item->is($user);
+                    })
+                    ->map(function ($contact) use ($user) {
+                        return $this->addContact($user, $contact);
+                    });
+                })
+                ->flatten();
     }
 
     /**

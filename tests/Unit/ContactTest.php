@@ -82,6 +82,20 @@ class ContactTest extends TestCase
     }
 
     /**
+     * Check if a set of users can be contacts.
+     *
+     * @return void
+     */
+    public function testServiceMethodSetContact()
+    {
+        $userNumber = 5;
+        $users = User::factory($userNumber)->create();
+        $contacts = $this->service->setContacts($users);
+
+        $this->assertEquals(($userNumber * ($userNumber - 1)), $contacts->count());
+    }
+
+    /**
      * Check if can remove a Contact model.
      *
      * @return void

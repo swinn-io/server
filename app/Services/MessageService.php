@@ -185,14 +185,7 @@ class MessageService implements MessageServiceInterface
 
         $users = $thread->users()->get();
 
-        $users->each(function ($user) use ($users){
-            $users->each(function ($contact) use ($user){
-                if(!$user->is($contact))
-                {
-                    $this->contactService->addContact($user, $contact);
-                }
-            });
-        });
+        $this->contactService->setContacts($users);
 
         Notification::send($users, new ParticipantCreated($thread));
 

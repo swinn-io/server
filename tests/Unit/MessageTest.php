@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Interfaces\ContactServiceInterface;
 use App\Interfaces\MessageServiceInterface;
 use App\Models\Participant;
 use App\Models\Thread;
@@ -23,12 +24,18 @@ class MessageTest extends TestCase
     private $service;
 
     /**
+     * @var ContactServiceInterface
+     */
+    private $contactService;
+
+    /**
      * Setup testing.
      */
     protected function setUp(): void
     {
         parent::setUp();
         $this->service = app(MessageServiceInterface::class);
+        $this->contactService = app(ContactServiceInterface::class);
         $this->seed(UserSeeder::class);
         $this->seed(MessagingSeeder::class);
     }
@@ -265,8 +272,9 @@ class MessageTest extends TestCase
         $user = User::factory()->create();
         $thread = $this->service->newThread('New Thread!', $user, ['some' => 'data']);
 
+        $userNumber = 5;
         $newParticipants = User::factory()
-            ->count(5)
+            ->count($userNumber)
             ->create();
 
         $newParticipants->each(function ($participant) use ($thread) {
@@ -274,7 +282,9 @@ class MessageTest extends TestCase
         });
 
         $participants = $this->service->threadParticipants($thread->id);
+        $contacts = $this->contactService->contacts($user)->total();
 
         $this->assertCount($newParticipants->count() + 1, $participants);
+        $this->assertEquals($userNumber, $contacts);
     }
 }
