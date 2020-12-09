@@ -46,42 +46,4 @@ class UserController extends Controller
             $this->service->find($id)
         );
     }
-
-    /**
-     * Returns authenticated API user.
-     *
-     * @param string $id
-     * @param Request $request
-     * @return UserResource
-     */
-    public function online(string $id, Request $request)
-    {
-        //@todo: beautify
-        if ($request->user()->id !== $id) {
-            abort(404);
-        }
-
-        return new UserResource(
-            $this->service->online($id)
-        );
-    }
-
-    /**
-     * Returns authenticated API user.
-     *
-     * @param string $id
-     * @param Request $request
-     * @return UserResource
-     */
-    public function offline(string $id, Request $request)
-    {
-        //@todo: beautify
-        if ($request->user()->id !== $id) {
-            abort(404);
-        }
-
-        return new UserResource(
-            $this->service->offline($id)
-        );
-    }
 }

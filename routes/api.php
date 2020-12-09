@@ -28,7 +28,5 @@ Route::middleware('auth:api')->group(function () {
     Route::group(['prefix' => 'user'], function () {
         Route::get('/me', ['as' => 'user.me', 'uses' => 'UserController@me']);
         Route::get('/{id}', ['as' => 'user.show', 'uses' => 'UserController@show']);
-        Route::get('/{id}/online', ['as' => 'user.online', 'uses' => 'UserController@online']);
-        Route::get('/{id}/offline', ['as' => 'user.offline', 'uses' => 'UserController@offline']);
     });
 });
