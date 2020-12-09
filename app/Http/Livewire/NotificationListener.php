@@ -16,6 +16,7 @@ class NotificationListener extends Component
     public function getCountProperty()
     {
         dump('getCountProperty()');
+
         return 999; //$this->user->unreadNotifications()->count();
     }
 
@@ -28,7 +29,7 @@ class NotificationListener extends Component
     public function getListeners()
     {
         return [ // @todo {$this->user->id}
-            "echo-private:App.Models.User.3dd6a60f-8c5d-49f8-b723-514ba4a941d6,BroadcastNotificationCreated" => 'showNewNotificationBadge',
+            'echo-private:App.Models.User.3dd6a60f-8c5d-49f8-b723-514ba4a941d6,BroadcastNotificationCreated' => 'showNewNotificationBadge',
         ];
     }
 
