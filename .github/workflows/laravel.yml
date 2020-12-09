@@ -37,6 +37,8 @@ jobs:
       run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
     - name: Generate key
       run: php artisan key:generate
+    - name: Migrate
+      run: php artisan migrate --force
     - name: Install Laravel Passport
       run: php artisan passport:install
     - name: Directory Permissions
