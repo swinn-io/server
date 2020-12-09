@@ -57,15 +57,15 @@ class ContactService implements ContactServiceInterface
      */
     public function setContacts(Collection $users): Collection
     {
-        return $users->map(function ($user) use ($users){
+        return $users->map(function ($user) use ($users) {
             return $users
                     ->filter(function ($item) use ($user) {
-                        return !$item->is($user);
+                        return ! $item->is($user);
                     })
                     ->map(function ($contact) use ($user) {
                         return $this->addContact($user, $contact);
                     });
-                })
+        })
                 ->flatten();
     }
 

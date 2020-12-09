@@ -45,6 +45,7 @@ class ContactController extends Controller
     public function index()
     {
         $user = Auth::user();
+
         return ContactResource::collection($this->service->contacts($user));
     }
 }

@@ -22,7 +22,7 @@ Route::prefix('login')->group(function () {
     Route::get('callback/{provider}', 'LoginController@callback')->name('login.callback');
 });
 
-Route::middleware(['auth:sanctum', 'verified'])->group(function (){
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
