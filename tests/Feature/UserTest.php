@@ -18,6 +18,7 @@ class UserTest extends TestCase
      */
     public function testUserControllerMeMethodWithoutAuthentication()
     {
+        $this->withoutExceptionHandling();
         $response = $this
             ->get(route('user.me'));
 
@@ -56,6 +57,7 @@ class UserTest extends TestCase
      */
     public function testUserControllerShowMethodWithoutAuthentication()
     {
+        $this->withoutExceptionHandling();
         $user = User::factory()->create();
         $response = $this
             ->get(route('user.show', ['id' => $user->id]));
