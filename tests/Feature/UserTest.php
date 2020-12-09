@@ -12,7 +12,21 @@ class UserTest extends TestCase
     use WithFaker;
 
     /**
-     * A basic feature test example.
+     * Me method for an authenticated user.
+     *
+     * @return void
+     */
+    public function testUserControllerMeMethodWithoutAuthentication()
+    {
+        $response = $this
+            ->get(route('user.me'));
+
+        $response->assertRedirect();
+        $response->isRedirect(route('login'));
+    }
+
+    /**
+     * Me method for an authenticated user.
      *
      * @return void
      */
@@ -36,7 +50,22 @@ class UserTest extends TestCase
     }
 
     /**
-     * A basic feature test example.
+     * Show method for a user id.
+     *
+     * @return void
+     */
+    public function testUserControllerShowMethodWithoutAuthentication()
+    {
+        $user = User::factory()->create();
+        $response = $this
+            ->get(route('user.show', ['id' => $user->id]));
+
+        $response->assertRedirect();
+        $response->isRedirect(route('login'));
+    }
+
+    /**
+     * Show method for a user id.
      *
      * @return void
      */
