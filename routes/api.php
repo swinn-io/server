@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,9 +24,6 @@ Route::middleware('auth:api')->group(function () {
         Route::get('{id}', ['as' => 'message.show', 'uses' => 'MessageController@show']);
         Route::put('{id}', ['as' => 'message.update', 'uses' => 'MessageController@update']);
         Route::post('{id}', ['as' => 'message.new', 'uses' => 'MessageController@new']);
-    });
-    Route::group(['prefix' => 'participant'], function () {
-        Route::get('/', ['as' => 'participant', 'uses' => 'ParticipantController@index']);
     });
     Route::group(['prefix' => 'user'], function () {
         Route::get('/me', ['as' => 'user.me', 'uses' => 'UserController@me']);
