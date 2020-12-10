@@ -50,4 +50,5 @@ jobs:
       run: php artisan migrate --force
     - name: Install Laravel Passport
       run: php artisan passport:install
-    - run: vendor/bin/phpunit
+    - name: Run tests
+      run: vendor/bin/phpunit
