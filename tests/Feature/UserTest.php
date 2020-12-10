@@ -16,21 +16,6 @@ class UserTest extends TestCase
      *
      * @return void
      */
-    public function testUserControllerMeMethodWithoutAuthentication()
-    {
-        $this->withoutExceptionHandling();
-        $response = $this
-            ->get(route('user.me'));
-
-        $response->assertRedirect();
-        $response->isRedirect(route('login'));
-    }
-
-    /**
-     * Me method for an authenticated user.
-     *
-     * @return void
-     */
     public function testUserControllerMeMethod()
     {
         $user = User::factory()->create();
@@ -48,22 +33,6 @@ class UserTest extends TestCase
                 ]
             ]
         ]);
-    }
-
-    /**
-     * Show method for a user id.
-     *
-     * @return void
-     */
-    public function testUserControllerShowMethodWithoutAuthentication()
-    {
-        $this->withoutExceptionHandling();
-        $user = User::factory()->create();
-        $response = $this
-            ->get(route('user.show', ['id' => $user->id]));
-
-        $response->assertRedirect();
-        $response->isRedirect(route('login'));
     }
 
     /**
