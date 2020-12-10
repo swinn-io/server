@@ -83,7 +83,7 @@ class MessageTest extends TestCase
                 'subject' => $thread->subject,
                 'content' => $message->body,
                 'recipients' => $users->pluck('id')->toArray(),
-            ])->dump();
+            ]);
 
         $response->assertCreated();
         $response->assertJson([
