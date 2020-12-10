@@ -30,8 +30,8 @@ class UserTest extends TestCase
                 'id' => $user->id,
                 'attributes' => [
                     'name' => $user->name,
-                ]
-            ]
+                ],
+            ],
         ]);
     }
 
@@ -54,8 +54,8 @@ class UserTest extends TestCase
                 'id' => $user->id,
                 'attributes' => [
                     'name' => $user->name,
-                ]
-            ]
+                ],
+            ],
         ]);
     }
 }
