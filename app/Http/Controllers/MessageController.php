@@ -85,7 +85,7 @@ class MessageController extends Controller
         $message = $this->service->newMessage(
             $thread,
             $user,
-            $values['content'],
+            $values['body'],
         );
 
         return new MessageResource($message);
