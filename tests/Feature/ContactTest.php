@@ -30,7 +30,7 @@ class ContactTest extends TestCase
     }
 
     /**
-     * A basic feature test example.
+     * Check index method of ContactController.
      *
      * @return void
      */
@@ -59,7 +59,7 @@ class ContactTest extends TestCase
     }
 
     /**
-     * A basic feature test example.
+     * Check show method of ContactController.
      *
      * @return void
      */
