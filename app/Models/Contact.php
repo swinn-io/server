@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Traits\HasUUID;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -35,6 +34,14 @@ class Contact extends Model
     public function scopeForUser($query, $user_id)
     {
         return $query->where('user_id', $user_id);
+    }
+
+    /**
+     * Get the user that owns the contact.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
     /**
