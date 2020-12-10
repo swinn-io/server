@@ -46,8 +46,4 @@ jobs:
         DB_PORT: 33306
         DB_USER: root
         DB_PASSWORD: root
-      run: php artisan migrate --force
-    - name: Install Laravel Passport
-      run: php artisan passport:install
-    - name: Run unit tests
-      run: vendor/bin/phpunit
+      run: php artisan migrate --force && php artisan passport:install && vendor/bin/phpunit
