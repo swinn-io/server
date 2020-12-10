@@ -18,7 +18,6 @@ class ContactTest extends TestCase
      */
     private ContactServiceInterface $service;
 
-
     /**
      * Setup testing.
      */
@@ -49,13 +48,13 @@ class ContactTest extends TestCase
                 0 => [
                     'type' => 'contact',
                     'attributes' => [
-                        'user_id' => $contact->user->id
+                        'user_id' => $contact->user->id,
                     ],
-                ]
+                ],
             ],
             'meta' => [
-                'total' => $contacts->total()
-            ]
+                'total' => $contacts->total(),
+            ],
         ]);
     }
 
@@ -78,9 +77,9 @@ class ContactTest extends TestCase
                 'id' => $contact->id,
                 'attributes' => [
                     'name' => $contact->name,
-                    'user_id' => $contact->user->id
+                    'user_id' => $contact->user->id,
                 ],
-            ]
+            ],
         ]);
     }
 }

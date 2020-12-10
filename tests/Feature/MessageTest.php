@@ -28,8 +28,8 @@ class MessageTest extends TestCase
     private ContactServiceInterface $contactService;
 
     /**
-    put('{id}', ['as' => 'message.update', 'uses' => 'MessageController@update']);
-    post('{id}', ['as' => 'message.new', 'uses' => 'MessageController@new']);
+     * put('{id}', ['as' => 'message.update', 'uses' => 'MessageController@update']);
+     * post('{id}', ['as' => 'message.new', 'uses' => 'MessageController@new']);
      */
 
     /**
@@ -61,8 +61,8 @@ class MessageTest extends TestCase
         $response->assertOk();
         $response->assertJson([
             'meta' => [
-                'total' => $messages->total()
-            ]
+                'total' => $messages->total(),
+            ],
         ]);
     }
 
@@ -97,11 +97,11 @@ class MessageTest extends TestCase
                             'attributes' => [
                                 'user_id' => $user->id,
                                 'body' => $message->body,
-                            ]
-                        ]
-                    ]
-                ]
-            ]
+                            ],
+                        ],
+                    ],
+                ],
+            ],
         ]);
         $response->assertJsonCount(1, 'data.attributes.messages');
         $response->assertJsonCount(4, 'data.attributes.participants');
@@ -128,9 +128,9 @@ class MessageTest extends TestCase
                 'type' => 'thread',
                 'id' => $thread->id,
                 'attributes' => [
-                    'subject' => $thread->subject
-                ]
-            ]
+                    'subject' => $thread->subject,
+                ],
+            ],
         ]);
         $response->assertJsonCount($messagesCount, 'data.attributes.messages');
         $response->assertJsonCount($participantsCount, 'data.attributes.participants');
@@ -161,8 +161,8 @@ class MessageTest extends TestCase
                     'thread_id' => $thread->id,
                     'user_id' => $user->id,
                     'body' => $content,
-                ]
-            ]
+                ],
+            ],
         ]);
 
         $response = $this
