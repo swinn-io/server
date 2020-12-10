@@ -9,7 +9,6 @@ use App\Models\Thread;
 use App\Models\User;
 use Database\Seeders\MessagingSeeder;
 use Database\Seeders\UserSeeder;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
@@ -26,11 +25,6 @@ class MessageTest extends TestCase
      * @var ContactServiceInterface
      */
     private ContactServiceInterface $contactService;
-
-    /**
-     * put('{id}', ['as' => 'message.update', 'uses' => 'MessageController@update']);
-     * post('{id}', ['as' => 'message.new', 'uses' => 'MessageController@new']);
-     */
 
     /**
      * Setup testing.
