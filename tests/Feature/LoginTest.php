@@ -25,7 +25,7 @@ class LoginTest extends TestCase
     }
 
     /**
-     * A basic feature test example.
+     * Test Socialite provider list page.
      *
      * @return void
      */
@@ -38,7 +38,7 @@ class LoginTest extends TestCase
     }
 
     /**
-     * A basic feature test example.
+     * Test Socialite redirection callback.
      *
      * @return void
      */
@@ -51,7 +51,7 @@ class LoginTest extends TestCase
     }
 
     /**
-     * A basic feature test example.
+     * Test Socialite authentication callback.
      *
      * @return void
      */
