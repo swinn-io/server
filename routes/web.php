@@ -1,7 +1,5 @@
 <?php
 
-use App\Notifications\MessageCreated;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,11 +13,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', 'FrontEndController@welcome');
+Route::get('/', 'App\Http\Controllers\FrontEndController@welcome');
 Route::prefix('login')->group(function () {
-    Route::get('/', 'LoginController@home')->name('login');
-    Route::get('redirect/{provider}', 'LoginController@redirect')->name('login.redirect');
-    Route::get('callback/{provider}', 'LoginController@callback')->name('login.callback');
+    Route::get('/', 'App\Http\Controllers\LoginController@home')->name('login');
+    Route::get('redirect/{provider}', 'App\Http\Controllers\LoginController@redirect')->name('login.redirect');
+    Route::get('callback/{provider}', 'App\Http\Controllers\LoginController@callback')->name('login.callback');
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
