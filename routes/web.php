@@ -29,5 +29,4 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     })->name('data.index');
     Route::get('/contact', \App\Http\Livewire\Contact\Index::class)->name('contact.index');
     Route::get('/message', \App\Http\Livewire\Message\Index::class)->name('message.index');
-    Route::get('/message/create', \App\Http\Livewire\Message\Create::class)->name('message.create');
 });
