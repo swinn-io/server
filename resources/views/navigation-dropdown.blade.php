@@ -17,6 +17,11 @@
                     </x-jet-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-jet-nav-link href="{{ route('message.index') }}" :active="request()->routeIs('message.index')">
+                        {{ __('Messages') }}
+                    </x-jet-nav-link>
+                </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-jet-nav-link href="{{ route('contact.index') }}" :active="request()->routeIs('contact.index')">
                         {{ __('Contacts') }}
                     </x-jet-nav-link>

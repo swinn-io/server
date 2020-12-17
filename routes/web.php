@@ -27,7 +27,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/data', function () {
         return view('data.index');
     })->name('data.index');
-    Route::get('/contact', function () {
-        return view('contact');
-    })->name('contact.index');
+    Route::get('/contact', \App\Http\Livewire\Contact\Index::class)->name('contact.index');
+    Route::get('/message', \App\Http\Livewire\Message\Index::class)->name('message.index');
+    Route::get('/message/create', \App\Http\Livewire\Message\Create::class)->name('message.create');
 });
