@@ -7,6 +7,11 @@
 
     <div>
         <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
+
+            @livewire('data.push-notification-form')
+
+            <x-jet-section-border />
+
             @livewire('data.delete-notifications-form')
 
             {{--
