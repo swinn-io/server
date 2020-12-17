@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Contracts\User as SocialiteUser;
@@ -72,7 +71,7 @@ class LoginTest extends TestCase
 
         Socialite::shouldReceive('driver->user')->andReturn($socialiteUser);
 
-        $response = $this->get(route('login.callback', ['provider' => 'github']));
+        $response = $this->get(route('login.callback', ['provider' => 'github']))->dump();
         $response->assertRedirect();
     }
 }
