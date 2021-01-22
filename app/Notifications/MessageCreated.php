@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Http\Resources\MessageResource;
 use App\Models\Message;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -47,9 +48,7 @@ class MessageCreated extends Notification implements ShouldQueue
      */
     public function toArray($notifiable)
     {
-        return [
-            'message' => $this->message,
-        ];
+        return (new MessageResource($this->message))->resolve();
     }
 
     /**
