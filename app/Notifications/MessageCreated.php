@@ -48,9 +48,7 @@ class MessageCreated extends Notification implements ShouldQueue
      */
     public function toArray($notifiable)
     {
-        return [
-            'message' => (new MessageResource($this->message))->resolve()
-        ];
+        return (new MessageResource($this->message))->resolve();
     }
 
     /**
