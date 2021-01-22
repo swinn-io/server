@@ -6,6 +6,7 @@ use App\Http\Resources\MessageResource;
 use App\Models\Message;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -49,6 +50,19 @@ class MessageCreated extends Notification implements ShouldQueue
     public function toArray($notifiable)
     {
         return (new MessageResource($this->message))->resolve();
+    }
+
+    /**
+     * Get the broadcastable representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return BroadcastMessage
+     */
+    public function toBroadcast($notifiable)
+    {
+        return new BroadcastMessage(
+            (new MessageResource($this->message))->resolve()
+        );
     }
 
     /**
