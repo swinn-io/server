@@ -41,7 +41,6 @@ class LoginService implements LoginServiceInterface
         return Socialite::driver($provider)
             // Define custom scopes if needed under "services.{provider}"
             ->scopes(config("services.{$provider}.scopes") ?? '*')
-            ->stateless()
             ->redirect();
     }
 
