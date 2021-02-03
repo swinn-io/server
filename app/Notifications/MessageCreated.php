@@ -53,19 +53,6 @@ class MessageCreated extends Notification implements ShouldQueue
     }
 
     /**
-     * Get the broadcastable representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return BroadcastMessage
-     */
-    public function toBroadcast($notifiable)
-    {
-        return new BroadcastMessage(
-            (new MessageResource($this->message))->resolve()
-        );
-    }
-
-    /**
      * Get the mail representation of the notification.
      *
      * @param  mixed  $notifiable
