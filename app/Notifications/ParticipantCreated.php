@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Http\Resources\ParticipantResource;
 use App\Models\Thread;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -60,6 +61,6 @@ class ParticipantCreated extends Notification implements ShouldQueue
      */
     public function toArray($notifiable)
     {
-        return $this->thread->toArray();
+        return (new ParticipantResource($this->thread))->resolve();
     }
 }
