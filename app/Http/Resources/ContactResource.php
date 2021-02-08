@@ -21,6 +21,8 @@ class ContactResource extends JsonResource
                 'name'         => $this->name,
                 'user_id'      => $this->user_id,
                 'user'         => new UserResource($this->whenLoaded('user')),
+                'source_type'  => $this->source_type,
+                'source_id'    => $this->source_id,
                 'source'       => new UserResource($this->whenLoaded('source')),
                 'created_at'   => $this->created_at,
                 'updated_at'   => $this->updated_at,

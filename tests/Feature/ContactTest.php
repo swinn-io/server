@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Interfaces\ContactServiceInterface;
 use App\Models\Contact;
+use App\Models\User;
 use Database\Seeders\ContactSeeder;
 use Database\Seeders\UserSeeder;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -78,6 +79,33 @@ class ContactTest extends TestCase
                 'attributes' => [
                     'name' => $contact->name,
                     'user_id' => $contact->user->id,
+                ],
+            ],
+        ]);
+    }
+
+    /**
+     * Check show method of ContactController.
+     *
+     * @return void
+     */
+    public function testContactControllerStoreMethod()
+    {
+        $user = User::factory()->create();
+        $contact = User::factory()->create();
+        $response = $this
+            ->actingAs($user, 'api')
+            ->post(route('contact.store', ['user_id' => $contact->id]));
+
+        $response->assertCreated();
+        $response->assertJson([
+            'data' => [
+                'type' => 'contact',
+                'attributes' => [
+                    'name' => $contact->name,
+                    'user_id' => $user->id,
+                    'source_type' => get_class($contact),
+                    'source_id' => $contact->id,
                 ],
             ],
         ]);

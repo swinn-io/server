@@ -17,6 +17,7 @@ Route::middleware('auth:api')->group(function () {
     Route::group(['prefix' => 'contact'], function () {
         Route::get('/', ['as' => 'contact', 'uses' => 'ContactController@index']);
         Route::get('{id}', ['as' => 'contact.show', 'uses' => 'ContactController@show']);
+        Route::post('{user_id}', ['as' => 'contact.store', 'uses' => 'ContactController@store']);
     });
     Route::group(['prefix' => 'message'], function () {
         Route::get('/', ['as' => 'message', 'uses' => 'MessageController@index']);
