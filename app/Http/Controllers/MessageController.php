@@ -49,14 +49,14 @@ class MessageController extends Controller
     {
         $values = $request->validated();
         $user = $request->user();
-        $threads = $this->service->newThread(
+        $thread = $this->service->newThread(
             $values['subject'],
             $user,
             $values['content'],
             Arr::get($values, 'recipients', [])
         );
 
-        return new ThreadResource($threads);
+        return new ThreadResource($thread);
     }
 
     /**

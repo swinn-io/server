@@ -10,6 +10,7 @@ use App\Models\Thread;
 use App\Models\User;
 use App\Notifications\MessageCreated;
 use App\Notifications\ParticipantCreated;
+use App\Notifications\ThreadCreated;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
@@ -92,18 +93,22 @@ class MessageService implements MessageServiceInterface
             'subject' => $subject,
         ]);
 
+        $message = $this->newMessage($thread, $user, $content);
+
         // Recipients are participants too
-        collect($recipients)
+        $recipients = collect($recipients)
             ->map(function ($recipient) {
                 return User::find($recipient);
             })
-            ->filter()
-            ->each(function ($recipient) use ($thread) {
-                $this->addParticipant($thread, $recipient);
+            ->add($user)
+            ->unique('id')
+            ->map(function ($recipient) use ($thread) {
+                return $this->addParticipant($thread, $recipient);
             });
 
-        $this->newMessage($thread, $user, $content);
-
+        $thread->setRelation('messages', collect([$message]));
+        $thread->setRelation('participants', $recipients);
+        Notification::send($recipients, new ThreadCreated($thread));
         return $thread;
     }
 
@@ -129,9 +134,6 @@ class MessageService implements MessageServiceInterface
             'user_id' => $user->id,
             'body' => $content,
         ]);
-
-        // Make participant if not
-        $this->addParticipant($thread, $user, true);
 
         $recipients = User::find($activatedParticipants);
 
