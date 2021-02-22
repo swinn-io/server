@@ -189,7 +189,7 @@ class MessageService implements MessageServiceInterface
 
         $this->contactService->setContacts($users);
 
-        Notification::send($users, new ParticipantCreated($thread));
+        Notification::send($users, new ParticipantCreated($return));
 
         return $return;
     }

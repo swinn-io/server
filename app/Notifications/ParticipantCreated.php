@@ -3,7 +3,7 @@
 namespace App\Notifications;
 
 use App\Http\Resources\ParticipantResource;
-use App\Models\Thread;
+use App\Models\Participant;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -14,19 +14,19 @@ class ParticipantCreated extends Notification implements ShouldQueue
     use Queueable;
 
     /**
-     * @var Thread
+     * @var Participant
      */
-    public Thread $thread;
+    public Participant $participant;
 
     /**
      * Create a new notification instance.
      *
-     * @param Thread $thread
+     * @param Participant $participant
      * @return void
      */
-    public function __construct(Thread $thread)
+    public function __construct(Participant $participant)
     {
-        $this->thread = $thread;
+        $this->participant = $participant;
     }
 
     /**
@@ -41,19 +41,6 @@ class ParticipantCreated extends Notification implements ShouldQueue
     }
 
     /**
-     * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
-     */
-    public function toMail($notifiable)
-    {
-        return (new MailMessage)
-                    ->line("New Thread: {$this->thread->name}")
-                    ->line('Thank you for using our application!');
-    }
-
-    /**
      * Get the array representation of the notification.
      *
      * @param  mixed  $notifiable
@@ -61,6 +48,8 @@ class ParticipantCreated extends Notification implements ShouldQueue
      */
     public function toArray($notifiable)
     {
-        return (new ParticipantResource($this->thread))->resolve();
+        return [
+            'payload' => (new ParticipantResource($this->participant))->resolve(),
+        ];
     }
 }

@@ -41,6 +41,19 @@ class ThreadCreated extends Notification implements ShouldQueue
     }
 
     /**
+     * Get the array representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return array
+     */
+    public function toArray($notifiable)
+    {
+        return [
+            'payload' => (new ThreadResource($this->thread))->resolve(),
+        ];
+    }
+
+    /**
      * Get the mail representation of the notification.
      *
      * @param  mixed  $notifiable
@@ -52,16 +65,5 @@ class ThreadCreated extends Notification implements ShouldQueue
                     ->line('The introduction to the notification.')
                     ->action('Notification Action', url('/'))
                     ->line('Thank you for using our application!');
-    }
-
-    /**
-     * Get the array representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function toArray($notifiable)
-    {
-        return (new ThreadResource($this->thread))->resolve();
     }
 }
