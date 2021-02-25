@@ -35,7 +35,7 @@ class MessageFactory extends Factory
                         'EUR' => 0.806942,
                         'GBP' => 0.719154,
                     ],
-                ]
+                ],
             ],
             [
                 'type' => 'weather',
@@ -50,7 +50,7 @@ class MessageFactory extends Factory
                             'main' => 'Clear',
                             'description' => 'clear sky',
                             'icon' => '01d',
-                        ]
+                        ],
                     ],
                     'base' => 'stations',
                     'main' => [
@@ -70,21 +70,20 @@ class MessageFactory extends Factory
                         'all' => 1,
                     ],
                     'dt' => 1560350645,
-                    'sys' =>
-                        [
-                            'type' => 1,
-                            'id' => 5122,
-                            'message' => 0.0139,
-                            'country' => 'US',
-                            'sunrise' => 1560343627,
-                            'sunset' => 1560396563,
-                        ],
+                    'sys' => [
+                        'type' => 1,
+                        'id' => 5122,
+                        'message' => 0.0139,
+                        'country' => 'US',
+                        'sunrise' => 1560343627,
+                        'sunset' => 1560396563,
+                    ],
                     'timezone' => -25200,
                     'id' => 420006353,
                     'name' => 'Mountain View',
                     'cod' => 200,
-                ]
-            ]
+                ],
+            ],
         ])->random();
 
         return [
