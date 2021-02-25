@@ -18,6 +18,7 @@ class Index extends Component
     public function render()
     {
         $threads = $this->service->threads(Auth::user());
+
         return view('livewire.message.index', ['threads' => $threads]);
     }
 }
