@@ -8,6 +8,13 @@ use Livewire\Component;
 
 class Index extends Component
 {
+    public bool $displayQR = false;
+
+    public function toggleQR()
+    {
+        $this->displayQR = false;
+    }
+
     public function render(ContactServiceInterface $contactService)
     {
         $user = Auth::user();

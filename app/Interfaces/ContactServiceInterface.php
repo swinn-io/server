@@ -21,9 +21,10 @@ interface ContactServiceInterface
      * Retrieve a contact.
      *
      * @param string $contact_id
+     * @param User $user
      * @return Contact
      */
-    public function contact(string $contact_id): Contact;
+    public function contact(string $contact_id, User $user): ?Contact;
 
     /**
      * Creates contact.

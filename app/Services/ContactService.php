@@ -25,11 +25,12 @@ class ContactService implements ContactServiceInterface
      * Retrieve a contact.
      *
      * @param string $contact_id
-     * @return Contact
+     * @param User $user
+     * @return Contact|null
      */
-    public function contact(string $contact_id): Contact
+    public function contact(string $contact_id, User $user): ?Contact
     {
-        return Contact::find($contact_id);
+        return Contact::where('id', $contact_id)->forUser($user->id)->first();
     }
 
     /**
