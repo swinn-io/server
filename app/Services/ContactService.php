@@ -30,7 +30,7 @@ class ContactService implements ContactServiceInterface
      */
     public function contact(string $contact_id, User $user): ?Contact
     {
-        return Contact::where('id', $contact_id)->forUser($user->id)->first();
+        return Contact::with('user')->where('id', $contact_id)->forUser($user->id)->first();
     }
 
     /**

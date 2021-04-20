@@ -76,9 +76,7 @@
                                         {{ $contact->source->created_at }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <a href="#" class="text-indigo-600 hover:text-indigo-900">{{ __('Mutual Threads') }}</a>
-                                        <br>
-                                        <a href="#" class="text-indigo-600 hover:text-indigo-900">{{ __('Edit Contact') }}</a>
+                                        <a href="{{ route('contact.show', ['id' => $contact->id]) }}" class="text-indigo-600 hover:text-indigo-900">{{ __('Details') }}</a>
                                     </td>
                                 </tr>
                             @endforeach
