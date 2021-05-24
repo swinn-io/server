@@ -74,7 +74,7 @@ class ContactTest extends TestCase
         $user = User::factory()->create();
         $contact = User::factory()->create();
         $created = $this->service->addContact($user, $contact);
-        $find = $this->service->contact($created->id);
+        $find = $this->service->contact($created->id, $user);
 
         $this->assertEquals($find->user_id, $user->id);
         $this->assertEquals($find->source_id, $contact->id);

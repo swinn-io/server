@@ -40,8 +40,10 @@ class ContactController extends Controller
      */
     public function show(string $id)
     {
+        $user = Auth::user();
+
         return new ContactResource(
-            $this->service->contact($id)
+            $this->service->contact($id, $user)
         );
     }
 
