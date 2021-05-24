@@ -110,6 +110,7 @@ class MessageService implements MessageServiceInterface
         $thread->setRelation('participants', $recipients);
         $users = User::find($recipients->pluck('user_id'));
         Notification::send($users, new ThreadCreated($thread));
+
         return $thread;
     }
 
