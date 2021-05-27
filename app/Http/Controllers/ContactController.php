@@ -6,6 +6,7 @@ use App\Http\Requests\ContactStoreRequest;
 use App\Http\Resources\ContactResource;
 use App\Interfaces\ContactServiceInterface;
 use App\Interfaces\UserServiceInterface;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ContactController extends Controller
@@ -73,5 +74,26 @@ class ContactController extends Controller
         return new ContactResource(
             $this->service->addContact($user, $contact)
         );
+    }
+
+    /**
+     * Redirects to URI.
+     *
+     * @param Request $request
+     * @param string $id
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function redirect(Request $request, string $id)
+    {
+        $user = Auth::user();
+        $contact = $this->service->contact($id, $user);
+
+        if(null === $contact) {
+            abort(404);
+        }
+
+        $URI = $request->get('redirect_uri', config('app.uri'));
+
+        return redirect($URI ?? '/');
     }
 }

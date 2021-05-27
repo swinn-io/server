@@ -18,6 +18,7 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/', ['as' => 'contact', 'uses' => 'ContactController@index']);
         Route::get('{id}', ['as' => 'contact.show', 'uses' => 'ContactController@show']);
         Route::post('{user_id}', ['as' => 'contact.store', 'uses' => 'ContactController@store']);
+        Route::get('redirect/{id}', ['as' => 'contact.redirect', 'uses' => 'ContactController@redirect']);
     });
     Route::group(['prefix' => 'message'], function () {
         Route::get('/', ['as' => 'message', 'uses' => 'MessageController@index']);
