@@ -19,7 +19,7 @@ Route::prefix('login')->group(function () {
     Route::get('redirect/{provider}', 'App\Http\Controllers\LoginController@redirect')->name('login.redirect');
     Route::get('callback/{provider}', 'App\Http\Controllers\LoginController@callback')->name('login.callback');
 });
-Route::post('logout', 'LoginController@logout')->name('logout');
+Route::post('logout', 'App\Http\Controllers\LoginController@logout')->name('logout');
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
