@@ -141,7 +141,7 @@ class MessageService implements MessageServiceInterface
             'body' => $content,
         ]);
 
-        $recipients = $thread->users();
+        $recipients = $thread->users()->get();
 
         Notification::send($recipients, new MessageCreated($message));
 
