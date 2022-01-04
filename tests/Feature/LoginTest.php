@@ -71,7 +71,7 @@ class LoginTest extends TestCase
 
         Socialite::shouldReceive('driver->user')->andReturn($socialiteUser);
 
-        $response = $this->get(route('login.callback', ['provider' => 'github']))->dump();
+        $response = $this->get(route('login.callback', ['provider' => 'github']));
         $response->assertRedirect();
     }
 }

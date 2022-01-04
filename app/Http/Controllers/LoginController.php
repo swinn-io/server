@@ -39,7 +39,7 @@ class LoginController extends Controller
 
         $params = http_build_query($allParams);
 
-        return view('auth.login', compact('params'));
+        return view('login', compact('params'));
     }
 
     /**
