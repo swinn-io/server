@@ -21,10 +21,10 @@ Route::prefix('login')->group(function () {
 });
 Route::post('logout', 'App\Http\Controllers\LoginController@logout')->name('logout');
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
-    Route::get('/data', function () {
-        return view('data.index');
-    })->name('data.index');
+    Route::prefix('dashboard')->group(function () {
+        Route::get('/', [\App\Http\Controllers\FrontEnd\DashboardController::class, 'index'])->name('dashboard');
+    });
+    Route::prefix('thread')->group(function () {
+        Route::get('{thread}', [\App\Http\Controllers\FrontEnd\ThreadController::class, 'show'])->name('thread.show');
+    });
 });
