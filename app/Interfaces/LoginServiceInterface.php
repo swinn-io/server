@@ -10,7 +10,7 @@ interface LoginServiceInterface
     /**
      * Redirect to OAuth authorization service URL.
      *
-     * @param string $provider
+     * @param  string  $provider
      * @return RedirectResponse
      */
     public function redirect(string $provider): RedirectResponse;
@@ -18,8 +18,8 @@ interface LoginServiceInterface
     /**
      * Handle callback.
      *
-     * @param string $provider
-     * @param array $clientInfo
+     * @param  string  $provider
+     * @param  array  $clientInfo
      * @return User
      */
     public function callback(string $provider, array $clientInfo): User;
@@ -27,7 +27,7 @@ interface LoginServiceInterface
     /**
      * Handle callback.
      *
-     * @param User $user
+     * @param  User  $user
      * @return string
      */
     public function createToken(User $user): string;

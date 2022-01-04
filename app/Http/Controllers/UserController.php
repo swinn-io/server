@@ -16,7 +16,7 @@ class UserController extends Controller
     /**
      * UserController constructor.
      *
-     * @param UserServiceInterface $service
+     * @param  UserServiceInterface  $service
      */
     public function __construct(UserServiceInterface $service)
     {
@@ -26,7 +26,7 @@ class UserController extends Controller
     /**
      * Returns authenticated API user.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return UserResource
      */
     public function me(Request $request)
@@ -37,7 +37,7 @@ class UserController extends Controller
     /**
      * Returns user by id.
      *
-     * @param string $id
+     * @param  string  $id
      * @return UserResource
      */
     public function show(string $id)

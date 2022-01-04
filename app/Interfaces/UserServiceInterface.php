@@ -9,7 +9,7 @@ interface UserServiceInterface
     /**
      * Find user.
      *
-     * @param string $id
+     * @param  string  $id
      * @return User
      */
     public function find(string $id): User;

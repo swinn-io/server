@@ -25,7 +25,8 @@ class MessageService implements MessageServiceInterface
 
     /**
      * MessageService constructor.
-     * @param ContactServiceInterface $contactService
+     *
+     * @param  ContactServiceInterface  $contactService
      */
     public function __construct(ContactServiceInterface $contactService)
     {
@@ -35,7 +36,7 @@ class MessageService implements MessageServiceInterface
     /**
      * All threads that user is participating in.
      *
-     * @param User $user
+     * @param  User  $user
      * @return LengthAwarePaginator
      */
     public function threads(User $user): LengthAwarePaginator
@@ -46,7 +47,7 @@ class MessageService implements MessageServiceInterface
     /**
      * All threads that user is participating in, with new messages.
      *
-     * @param User $user
+     * @param  User  $user
      * @return Collection
      */
     public function unreadThreads(User $user): Collection
@@ -57,8 +58,9 @@ class MessageService implements MessageServiceInterface
     /**
      * Retrieve a thread.
      *
-     * @param string $thread_id
+     * @param  string  $thread_id
      * @return Thread
+     *
      * @throws ModelNotFoundException
      */
     public function thread(string $thread_id): Thread
@@ -69,7 +71,7 @@ class MessageService implements MessageServiceInterface
     /**
      * User ids that are associated with the thread.
      *
-     * @param string $thread_id
+     * @param  string  $thread_id
      * @return Collection
      */
     public function threadParticipant(string $thread_id): Collection
@@ -80,7 +82,7 @@ class MessageService implements MessageServiceInterface
     /**
      * User ids that are associated with the thread.
      *
-     * @param string $thread_id
+     * @param  string  $thread_id
      * @return Collection
      */
     public function threadParticipants(string $thread_id): Collection
@@ -91,10 +93,10 @@ class MessageService implements MessageServiceInterface
     /**
      * New message thread.
      *
-     * @param string $subject
-     * @param User $user
-     * @param array $content
-     * @param null|array $recipients
+     * @param  string  $subject
+     * @param  User  $user
+     * @param  array  $content
+     * @param  null|array  $recipients
      * @return Thread
      */
     public function newThread(string $subject, User $user, array $content, ?array $recipients = []): Thread
@@ -128,9 +130,9 @@ class MessageService implements MessageServiceInterface
     /**
      * New message.
      *
-     * @param Thread $thread
-     * @param User $user
-     * @param array $content
+     * @param  Thread  $thread
+     * @param  User  $user
+     * @param  array  $content
      * @return Message
      */
     public function newMessage(Thread $thread, User $user, array $content): Message
@@ -151,20 +153,21 @@ class MessageService implements MessageServiceInterface
     /**
      * Mark as read a tread of a user.
      *
-     * @param Thread $thread
-     * @param User $user
+     * @param  Thread  $thread
+     * @param  User  $user
      * @return Participant
      */
     public function markAsRead(Thread $thread, User $user): Participant
     {
         $thread->markAsRead($user->id);
+
         return $thread->participants()->where('user_id', $user->id)->first();
     }
 
     /**
      * Mark as read all messages of a user.
      *
-     * @param User $user
+     * @param  User  $user
      * @return bool
      */
     public function markAsReadAll(User $user): bool
@@ -179,9 +182,9 @@ class MessageService implements MessageServiceInterface
     /**
      * Mark as read all messages of a user.
      *
-     * @param Thread $thread
-     * @param User $user
-     * @param bool $mark_as_read
+     * @param  Thread  $thread
+     * @param  User  $user
+     * @param  bool  $mark_as_read
      * @return Participant
      */
     public function addParticipant(Thread $thread, User $user, bool $mark_as_read = false): Participant

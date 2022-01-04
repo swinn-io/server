@@ -21,7 +21,7 @@ class ParticipantCreated extends Notification implements ShouldQueue
     /**
      * Create a new notification instance.
      *
-     * @param Participant $participant
+     * @param  Participant  $participant
      * @return void
      */
     public function __construct(Participant $participant)

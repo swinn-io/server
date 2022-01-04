@@ -20,7 +20,7 @@ class MessageController extends Controller
     /**
      * MessageController constructor.
      *
-     * @param MessageServiceInterface $service
+     * @param  MessageServiceInterface  $service
      */
     public function __construct(MessageServiceInterface $service)
     {
@@ -30,7 +30,7 @@ class MessageController extends Controller
     /**
      * Returns pagination of all threads.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index(Request $request)
@@ -42,7 +42,7 @@ class MessageController extends Controller
     }
 
     /**
-     * @param MessageStoreRequest $request
+     * @param  MessageStoreRequest  $request
      * @return ThreadResource
      */
     public function store(MessageStoreRequest $request)
@@ -62,7 +62,7 @@ class MessageController extends Controller
     /**
      * Returns pagination of all threads.
      *
-     * @param string $id
+     * @param  string  $id
      * @return ThreadResource
      */
     public function show(string $id)
@@ -73,8 +73,8 @@ class MessageController extends Controller
     }
 
     /**
-     * @param string $id
-     * @param MessageNewRequest $request
+     * @param  string  $id
+     * @param  MessageNewRequest  $request
      * @return MessageResource
      */
     public function new(string $id, MessageNewRequest $request)

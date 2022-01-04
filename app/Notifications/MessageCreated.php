@@ -22,7 +22,7 @@ class MessageCreated extends Notification implements ShouldQueue
     /**
      * Create a new notification instance.
      *
-     * @param Message $message
+     * @param  Message  $message
      * @return void
      */
     public function __construct(Message $message)
