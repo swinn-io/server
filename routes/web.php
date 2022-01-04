@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', 'App\Http\Controllers\FrontEndController@welcome');
+Route::get('/', [\App\Http\Controllers\FrontEnd\PageController::class, '']);
 Route::prefix('login')->group(function () {
     Route::get('/', 'App\Http\Controllers\LoginController@home')->name('login');
     Route::get('redirect/{provider}', 'App\Http\Controllers\LoginController@redirect')->name('login.redirect');
