@@ -23,7 +23,7 @@ class LoginService implements LoginServiceInterface
     /**
      * LoginService constructor.
      *
-     * @param ClientRepository $repository
+     * @param  ClientRepository  $repository
      */
     public function __construct(ClientRepository $repository)
     {
@@ -33,7 +33,7 @@ class LoginService implements LoginServiceInterface
     /**
      * Redirect to OAuth authorization service URL.
      *
-     * @param string $provider
+     * @param  string  $provider
      * @return RedirectResponse
      */
     public function redirect(string $provider): RedirectResponse
@@ -47,8 +47,8 @@ class LoginService implements LoginServiceInterface
     /**
      * Handle callback.
      *
-     * @param string $provider
-     * @param array $clientInfo
+     * @param  string  $provider
+     * @param  array  $clientInfo
      * @return User
      */
     public function callback(string $provider, array $clientInfo): User
@@ -61,7 +61,7 @@ class LoginService implements LoginServiceInterface
     /**
      * Handle callback.
      *
-     * @param User $user
+     * @param  User  $user
      * @return string
      */
     public function createToken(User $user): string
@@ -74,8 +74,8 @@ class LoginService implements LoginServiceInterface
     /**
      * Create a new user or update existing one.
      *
-     * @param string $provider
-     * @param UserContract $userContract
+     * @param  string  $provider
+     * @param  UserContract  $userContract
      * @return User
      */
     public function user(string $provider, UserContract $userContract): User
@@ -102,8 +102,8 @@ class LoginService implements LoginServiceInterface
     /**
      * Get or create client for user.
      *
-     * @param User $user
-     * @param array $clientInfo
+     * @param  User  $user
+     * @param  array  $clientInfo
      * @return Client
      */
     public function client(User $user, array $clientInfo): Client

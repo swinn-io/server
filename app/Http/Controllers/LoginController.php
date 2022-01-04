@@ -19,7 +19,7 @@ class LoginController extends Controller
     /**
      * LoginController constructor.
      *
-     * @param LoginServiceInterface $service
+     * @param  LoginServiceInterface  $service
      */
     public function __construct(LoginServiceInterface $service)
     {
@@ -29,7 +29,7 @@ class LoginController extends Controller
     /**
      * Socialite integrations provider selection to authenticate.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function home(Request $request)
@@ -45,8 +45,8 @@ class LoginController extends Controller
     /**
      * Redirect the user to the provider authentication page.
      *
-     * @param string $provider
-     * @param Request $request
+     * @param  string  $provider
+     * @param  Request  $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function redirect(string $provider, Request $request)
@@ -68,8 +68,8 @@ class LoginController extends Controller
     /**
      * Obtain the user information from the provider.
      *
-     * @param string $provider
-     * @param Request $request
+     * @param  string  $provider
+     * @param  Request  $request
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function callback(string $provider, Request $request)

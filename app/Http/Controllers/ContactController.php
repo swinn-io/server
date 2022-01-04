@@ -24,8 +24,8 @@ class ContactController extends Controller
     /**
      * ContactController constructor.
      *
-     * @param ContactServiceInterface $service
-     * @param UserServiceInterface $userService
+     * @param  ContactServiceInterface  $service
+     * @param  UserServiceInterface  $userService
      */
     public function __construct(ContactServiceInterface $service, UserServiceInterface $userService)
     {
@@ -36,7 +36,7 @@ class ContactController extends Controller
     /**
      * Returns user by id.
      *
-     * @param string $id
+     * @param  string  $id
      * @return ContactResource
      */
     public function show(string $id)
@@ -63,7 +63,7 @@ class ContactController extends Controller
     /**
      * Store a contact.
      *
-     * @param string $user_id
+     * @param  string  $user_id
      * @return ContactResource
      */
     public function store(string $user_id): ContactResource
@@ -79,8 +79,8 @@ class ContactController extends Controller
     /**
      * Redirects to URI.
      *
-     * @param Request $request
-     * @param string $id
+     * @param  Request  $request
+     * @param  string  $id
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function redirect(Request $request, string $id)
@@ -88,7 +88,7 @@ class ContactController extends Controller
         $user = Auth::user();
         $contact = $this->service->contact($id, $user);
 
-        if(null === $contact) {
+        if (null === $contact) {
             abort(404);
         }
 

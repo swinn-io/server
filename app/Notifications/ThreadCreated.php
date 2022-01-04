@@ -21,7 +21,7 @@ class ThreadCreated extends Notification implements ShouldQueue
     /**
      * Create a new notification instance.
      *
-     * @param Thread $thread
+     * @param  Thread  $thread
      * @return void
      */
     public function __construct(Thread $thread)

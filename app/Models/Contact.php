@@ -28,7 +28,7 @@ class Contact extends Model
      * Scope a query to only include active users.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  string $user_id
+     * @param  string  $user_id
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeForUser($query, $user_id)

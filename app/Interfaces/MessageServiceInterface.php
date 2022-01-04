@@ -15,7 +15,7 @@ interface MessageServiceInterface
     /**
      * All threads that user is participating in.
      *
-     * @param User $user
+     * @param  User  $user
      * @return LengthAwarePaginator
      */
     public function threads(User $user): LengthAwarePaginator;
@@ -23,8 +23,9 @@ interface MessageServiceInterface
     /**
      * All threads that user is participating in, with new messages.
      *
-     * @param User $user
+     * @param  User  $user
      * @return Collection
+     *
      * @throws ModelNotFoundException
      */
     public function unreadThreads(User $user): Collection;
@@ -32,7 +33,7 @@ interface MessageServiceInterface
     /**
      * Retrieve a thread.
      *
-     * @param string $thread_id
+     * @param  string  $thread_id
      * @return Thread
      */
     public function thread(string $thread_id): Thread;
@@ -40,7 +41,7 @@ interface MessageServiceInterface
     /**
      * User ids that are associated with the thread.
      *
-     * @param string $thread_id
+     * @param  string  $thread_id
      * @return Collection
      */
     public function threadParticipants(string $thread_id): Collection;
@@ -48,10 +49,10 @@ interface MessageServiceInterface
     /**
      * New message thread.
      *
-     * @param string $subject
-     * @param User $user
-     * @param array $content
-     * @param array $recipients
+     * @param  string  $subject
+     * @param  User  $user
+     * @param  array  $content
+     * @param  array  $recipients
      * @return Thread
      */
     public function newThread(string $subject, User $user, array $content, array $recipients = []): Thread;
@@ -59,9 +60,9 @@ interface MessageServiceInterface
     /**
      * New message.
      *
-     * @param Thread $thread
-     * @param User $user
-     * @param array $content
+     * @param  Thread  $thread
+     * @param  User  $user
+     * @param  array  $content
      * @return Message
      */
     public function newMessage(Thread $thread, User $user, array $content): Message;
@@ -69,8 +70,8 @@ interface MessageServiceInterface
     /**
      * Mark as read a tread of a user.
      *
-     * @param Thread $thread
-     * @param User $user
+     * @param  Thread  $thread
+     * @param  User  $user
      * @return Participant
      */
     public function markAsRead(Thread $thread, User $user): Participant;
@@ -78,7 +79,7 @@ interface MessageServiceInterface
     /**
      * Mark as read all messages of a user.
      *
-     * @param User $user
+     * @param  User  $user
      * @return bool
      */
     public function markAsReadAll(User $user): bool;
@@ -86,9 +87,9 @@ interface MessageServiceInterface
     /**
      * Mark as read all messages of a user.
      *
-     * @param Thread $thread
-     * @param User $user
-     * @param bool $mark_as_read
+     * @param  Thread  $thread
+     * @param  User  $user
+     * @param  bool  $mark_as_read
      * @return Participant
      */
     public function addParticipant(Thread $thread, User $user, bool $mark_as_read = false): Participant;
