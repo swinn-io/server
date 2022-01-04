@@ -72,6 +72,17 @@ class MessageService implements MessageServiceInterface
      * @param string $thread_id
      * @return Collection
      */
+    public function threadParticipant(string $thread_id): Collection
+    {
+        return Thread::with('participants.user')->find($thread_id)->participants;
+    }
+
+    /**
+     * User ids that are associated with the thread.
+     *
+     * @param string $thread_id
+     * @return Collection
+     */
     public function threadParticipants(string $thread_id): Collection
     {
         return Thread::with('participants.user')->find($thread_id)->participants;
@@ -124,20 +135,14 @@ class MessageService implements MessageServiceInterface
      */
     public function newMessage(Thread $thread, User $user, array $content): Message
     {
-        $activatedParticipants = $thread
-            ->activateAllParticipants()
-            ->pluck('user_id')
-            ->push($user->id)
-            ->unique()
-            ->toArray();
-
         $message = Message::create([
             'thread_id' => $thread->id,
             'user_id' => $user->id,
             'body' => $content,
         ]);
 
-        $recipients = User::find($activatedParticipants);
+        $participants = $thread->participants()->get();
+        $recipients = User::find($participants);
 
         Notification::send($recipients, new MessageCreated($message));
 
@@ -153,7 +158,8 @@ class MessageService implements MessageServiceInterface
      */
     public function markAsRead(Thread $thread, User $user): Participant
     {
-        return $thread->markAsRead($user->id);
+        $thread->markAsRead($user->id);
+        return $thread->participants()->where('user_id', $user->id)->first();
     }
 
     /**

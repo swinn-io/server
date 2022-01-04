@@ -7,10 +7,19 @@ use Cmgmyr\Messenger\Models\Message;
 use Cmgmyr\Messenger\Models\Models;
 use Cmgmyr\Messenger\Models\Thread as BaseThread;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Thread extends BaseThread
 {
-    use HasFactory, HasUUID;
+    use HasFactory, SoftDeletes, HasUUID;
+
+    /**
+     * Internal cache for creator.
+     *
+     * @var null|Models::user()|\Illuminate\Database\Eloquent\Model
+     */
+    protected $creatorCache;
 
     /**
      * Messages relationship.
@@ -19,41 +28,10 @@ class Thread extends BaseThread
      *
      * @codeCoverageIgnore
      */
-    public function messages()
+    public function messages(): HasMany
     {
         return $this
             ->hasMany(Models::classname(Message::class), 'thread_id', 'id')
             ->orderBy('created_at', 'desc');
-    }
-
-    /**
-     * Mark a thread as read for a user.
-     *
-     * @param int $userId
-     *
-     * @return Participant
-     */
-    public function markAsRead($userId): Participant
-    {
-        $participant = $this->getParticipantFromUser($userId);
-        $participant->last_read = now();
-        $participant->save();
-
-        return $participant;
-    }
-
-    /**
-     * Restores all participants within a thread that has a new message.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function activateAllParticipants()
-    {
-        $participants = $this->participants()->withTrashed()->get();
-        foreach ($participants as $participant) {
-            $participant->restore();
-        }
-
-        return $participants;
     }
 }
