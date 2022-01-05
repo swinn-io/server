@@ -15,13 +15,6 @@ class Thread extends BaseThread
     use HasFactory, SoftDeletes, HasUUID;
 
     /**
-     * Internal cache for creator.
-     *
-     * @var null|Models::user()|\Illuminate\Database\Eloquent\Model
-     */
-    protected $creatorCache;
-
-    /**
      * Messages relationship.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
