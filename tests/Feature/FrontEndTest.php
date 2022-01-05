@@ -13,7 +13,7 @@ class FrontEndTest extends TestCase
      *
      * @return void
      */
-    public function testFrontEndControllerWelcomeMethod()
+    public function testPageControllerIndexMethod()
     {
         $response = $this->get('/');
 
