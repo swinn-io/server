@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>{{ config('app.name') }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="{{ asset('css/app.css') }}" type="text/css" rel="stylesheet" />
 </head>
 <body>
 <header class="relative w-full px-8 text-gray-700 bg-white body-font">
@@ -59,7 +59,10 @@
         </div>
     </div>
 </header>
-@yield('content')
+
+<div id="app">
+    @yield('content')
+</div>
 <footer class="bg-white">
     <div class="max-w-screen-xl px-4 py-12 mx-auto space-y-8 overflow-hidden sm:px-6 lg:px-8">
         <nav class="flex flex-wrap justify-center -mx-5 -my-2">
@@ -87,6 +90,6 @@
         </p>
     </div>
 </footer>
-
+<script src="{{ asset('js/app.js') }}" type="text/javascript"></script>
 </body>
 </html>
