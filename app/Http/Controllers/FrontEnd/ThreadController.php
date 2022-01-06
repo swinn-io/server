@@ -15,7 +15,7 @@ class ThreadController extends Controller
     public MessageServiceInterface $service;
 
     /**
-     * @param MessageServiceInterface $service
+     * @param  MessageServiceInterface  $service
      */
     public function __construct(MessageServiceInterface $service)
     {
@@ -56,7 +56,7 @@ class ThreadController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  string $thread
+     * @param  string  $thread
      * @return \Illuminate\Http\Response
      */
     public function show(string $thread)

@@ -19,6 +19,7 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
         $threads = $messages->threads($user);
+
         return view('dashboard', compact('threads'));
     }
 
