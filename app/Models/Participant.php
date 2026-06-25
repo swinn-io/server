@@ -10,9 +10,14 @@ class Participant extends BaseParticipant
     use HasUUID;
 
     /**
-     * The attributes that should be mutated to dates.
+     * The attributes that should be cast.
      *
      * @var array
      */
-    protected $dates = ['last_read', 'created_at', 'updated_at', 'deleted_at'];
+    protected $casts = [
+        'last_read' => 'datetime',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'deleted_at' => 'datetime',
+    ];
 }
