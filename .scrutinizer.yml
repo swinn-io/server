@@ -1,0 +1,33 @@
+build:
+  environment:
+    ubuntu: '2204'
+    php:
+      version: '8.3'
+      ini:
+        memory_limit: '-1'
+    mysql:
+      version: '8.0'
+      database: swinn-test
+      username: root
+      password: root
+
+  dependencies:
+    before:
+      - php -r "file_exists('.env') || copy('.env.example', '.env');"
+      - composer install --no-ansi --no-interaction --no-scripts --prefer-dist
+      - php artisan key:generate
+      - php artisan migrate --force
+      - php artisan passport:install --no-interaction
+
+  tests:
+    override:
+      - php-scrutinizer-run
+      - command: vendor/bin/phpunit
+        coverage:
+          file: build/logs/clover.xml
+          format: clover
+
+checks:
+  php:
+    code_rating: true
+    duplication: true
