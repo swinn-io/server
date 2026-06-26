@@ -4,6 +4,9 @@ build:
     mysql: true
 
   dependencies:
+    before:
+      - sudo service mysql start || true
+      - until mysqladmin -u root ping --silent 2>/dev/null; do sleep 1; done
     override:
       - composer install --no-interaction --prefer-dist
 
@@ -11,9 +14,6 @@ build:
     override:
       - command: cp .env.example .env
       - command: php artisan key:generate
-      - command: sudo service mysql start || true
-      - command: until mysqladmin -u root ping --silent 2>/dev/null; do sleep 1; done
-      - command: mysql -u root -e "CREATE DATABASE IF NOT EXISTS \`swinn-test\`;"
       - command: php artisan migrate --force
       - command: php artisan passport:install --no-interaction
       - command: vendor/bin/phpunit
