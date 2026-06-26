@@ -7,15 +7,13 @@ build:
         memory_limit: '-1'
     mysql:
       version: '8.0'
-      database: swinn-test
-      username: root
-      password: root
 
   dependencies:
     before:
       - php -r "file_exists('.env') || copy('.env.example', '.env');"
       - composer install --no-ansi --no-interaction --no-scripts --prefer-dist
       - php artisan key:generate
+      - mysql -uroot -e "CREATE DATABASE IF NOT EXISTS \`swinn-test\`;"
       - php artisan migrate --force
       - php artisan passport:install --no-interaction
 
