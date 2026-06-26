@@ -1,9 +1,7 @@
-![Laravel](https://github.com/ikidnapmyself/pp-api/workflows/Laravel/badge.svg?branch=master)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/swinn-io/server/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/swinn-io/server/?branch=master)
-[![Code Coverage](https://scrutinizer-ci.com/g/swinn-io/server/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/swinn-io/server/?branch=master)
-[![Build Status](https://scrutinizer-ci.com/g/swinn-io/server/badges/build.png?b=master)](https://scrutinizer-ci.com/g/swinn-io/server/build-status/master)
+[![CI](https://github.com/swinn-io/server/actions/workflows/ci.yml/badge.svg)](https://github.com/swinn-io/server/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/swinn-io/server/branch/master/graph/badge.svg)](https://codecov.io/gh/swinn-io/server)
 [![StyleCI](https://github.styleci.io/repos/276172517/shield?branch=master)](https://github.styleci.io/repos/276172517?branch=master)
- [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 ## About Swinn
 
 @todo

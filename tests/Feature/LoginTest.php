@@ -20,7 +20,8 @@ class LoginTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->artisan('passport:install');
+        $this->withoutMockingConsoleOutput();
+        $this->artisan('passport:install', ['--no-interaction' => true]);
     }
 
     /**

@@ -108,16 +108,13 @@ class LoginService implements LoginServiceInterface
      */
     public function client(User $user, array $clientInfo): Client
     {
-        $find = $this->clientRepository->forUser($user->id);
+        $find = $user->oauthApps()->where('revoked', false)->orderBy('name');
 
-        return $find->first() ?? $this->clientRepository->create(
-                $user->id,
-                "{$user->provider_name}-{$user->provider_id}",
-                Arr::get($clientInfo, 'redirect_uri'),
-                $user->provider_name,
-                false,
-                false,
-                false
-            );
+        return $find->first() ?? $this->clientRepository->createAuthorizationCodeGrantClient(
+            "{$user->provider_name}-{$user->provider_id}",
+            array_filter([Arr::get($clientInfo, 'redirect_uri')]),
+            false,
+            $user
+        );
     }
 }
