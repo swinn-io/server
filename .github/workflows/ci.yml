@@ -68,8 +68,8 @@ jobs:
       - name: Run Tests
         run: vendor/bin/phpunit --coverage-clover coverage.xml
 
-      - name: Upload Coverage to Codecov
-        uses: codecov/codecov-action@v4
+      - name: Upload Coverage to Coveralls
+        uses: coverallsapp/github-action@v2
         with:
-          files: coverage.xml
-          fail_ci_if_error: false
+          file: coverage.xml
+          format: clover

@@ -1,5 +1,5 @@
 [![CI](https://github.com/swinn-io/server/actions/workflows/ci.yml/badge.svg)](https://github.com/swinn-io/server/actions/workflows/ci.yml)
-[![codecov](https://codecov.io/gh/swinn-io/server/branch/master/graph/badge.svg)](https://codecov.io/gh/swinn-io/server)
+[![Coverage Status](https://coveralls.io/repos/github/swinn-io/server/badge.svg?branch=master)](https://coveralls.io/github/swinn-io/server?branch=master)
 [![StyleCI](https://github.styleci.io/repos/276172517/shield?branch=master)](https://github.styleci.io/repos/276172517?branch=master)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 ## About Swinn
