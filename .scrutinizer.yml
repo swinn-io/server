@@ -11,7 +11,8 @@ build:
     override:
       - command: cp .env.example .env
       - command: php artisan key:generate
-      - command: mysql -u root -e "CREATE DATABASE IF NOT EXISTS \`swinn-test\`;"
+      - command: until mysql -h 127.0.0.1 -u root -e "SELECT 1" >/dev/null 2>&1; do sleep 1; done
+      - command: mysql -h 127.0.0.1 -u root -e "CREATE DATABASE IF NOT EXISTS \`swinn-test\`;"
       - command: php artisan migrate --force
       - command: php artisan passport:install --no-interaction
       - command: vendor/bin/phpunit
