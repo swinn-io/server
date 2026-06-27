@@ -76,4 +76,23 @@ class LoginTest extends TestCase
         $response = $this->get(route('login.callback', ['provider' => 'github']));
         $response->assertRedirect();
     }
+
+    /**
+     * Test logout revokes the user's access tokens.
+     *
+     * @return void
+     */
+    public function testLoginControllerLogoutMethod()
+    {
+        $user = User::factory()->create();
+        $user->createToken('Test Token');
+
+        $this->assertFalse($user->tokens()->where('revoked', true)->exists());
+
+        $response = $this->actingAs($user)->post(route('logout'));
+
+        $response->assertRedirect('/');
+        $this->assertGuest();
+        $this->assertTrue($user->tokens()->where('revoked', false)->doesntExist());
+    }
 }
