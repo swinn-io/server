@@ -1,11 +1,3 @@
-require('./bootstrap');
-import { createApp } from 'vue';
+import { createApp } from 'vue'
 
-
-createApp({
-    components: {
-        // CompaniesIndex
-    }
-})
-// .use(router)
-.mount('#app')
+createApp({}).mount('#app')
