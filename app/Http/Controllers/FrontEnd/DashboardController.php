@@ -20,7 +20,17 @@ class DashboardController extends Controller
         $user = Auth::user();
         $threads = $messages->threads($user);
 
-        return view('dashboard', compact('threads'));
+        return view('dashboard', [
+            'threads' => $threads->map(fn ($thread) => [
+                'id' => $thread->id,
+                'subject' => $thread->subject,
+                'unread_count' => 0,
+                'participants' => $thread->participants
+                    ->map(fn ($participant) => ['user' => ['name' => $participant->user->name]])
+                    ->values()
+                    ->all(),
+            ])->values()->all(),
+        ]);
     }
 
     /**
