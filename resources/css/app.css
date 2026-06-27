@@ -1,0 +1,8 @@
+@import "tailwindcss";
+
+@source "../js/**/*.vue";
+
+@theme {
+    --color-brand: oklch(38% 0.18 25);
+    --color-brand-hover: oklch(30% 0.18 25);
+}
