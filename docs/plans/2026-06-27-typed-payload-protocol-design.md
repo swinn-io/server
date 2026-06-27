@@ -30,22 +30,26 @@ This realizes the brief's "No free text" and "Data consistency" principles on th
 | `MessageTypeInterface` | `app/Interfaces/MessageTypeInterface.php` | Contract: `name()`, `version()`, `purpose()`, `schema(): array`, `rendererHint()`. |
 | Type classes | `app/MessageTypes/{Currency,Location,Status,FileReference,Metric,Mood}Type.php` | One per starter type; implement the interface. |
 | `TypeRegistry` | `app/Services/TypeRegistry.php` | Singleton. `all()`, `has($name)`, `get($name)`, `validate(array $envelope): array` (returns violations / error descriptor). |
-| `MessageTypeServiceProvider` | `app/Providers/MessageTypeServiceProvider.php` | Registers the six types into the registry singleton; registered in `config/app.php`. |
-| `ValidEnvelope` rule | `app/Rules/ValidEnvelope.php` | Reusable validation rule used on `content` (store) and `body` (append). |
+| `MessageTypeServiceProvider` | `app/Providers/Project/MessageTypeServiceProvider.php` | Registers the six types into the registry singleton; added to the `config/app.php` providers array alongside the other `Project` providers. |
+| `InvalidEnvelopeException` | `app/Exceptions/InvalidEnvelopeException.php` | Extends `HttpResponseException`; renders the structured `422` from a descriptor. |
+| `MessageService` (modify) | `app/Services/MessageService.php` | `newThread`/`newMessage` call `TypeRegistry::validate` and throw `InvalidEnvelopeException` on failure. |
 | `TypeController` | `app/Http/Controllers/TypeController.php` | `GET /types`. |
 | `MessageTypeResource` | `app/Http/Resources/MessageTypeResource.php` | Serializes a type to `{type, version, purpose, schema, renderer_hint}`. |
 
 ## 4. Validation & Error Flow
 
-`ValidEnvelope`, applied to the body field on every write:
+**Enforcement lives in `MessageService`** so every write path — HTTP endpoints, seeders, internal callers, tests — is covered. The brief's first principle is "data consistency everywhere, always," and the Unit suite writes through the service directly, so request-layer-only validation would leave a hole. The endpoints enforce transitively because they call the service.
 
-1. Body is an object with **exactly** keys `type`, `version`, `payload`. Extra top-level keys → reject.
-2. `type` is a string and known in the registry, else `422 {"error":"unknown_type","type":"…"}`.
-3. `version` matches the registered type's version, else `422 {"error":"unknown_version","type":"…","version":"…"}`.
-4. `payload` validates against the type's JSON Schema (via `opis/json-schema`), else `422 {"error":"invalid_payload","violations":[…]}`.
-5. On pass, the message is stored unchanged (`body` cast to array as today).
+`MessageService::newThread()` validates `$content` **before** creating the thread (no orphan thread on failure); `MessageService::newMessage()` validates `$body` before creating the message. Both delegate to `TypeRegistry::validate(array $envelope): ?array`, which returns `null` on success or an error descriptor. On a non-null descriptor the service throws `InvalidEnvelopeException`, which renders the structured `422`.
 
-`MessageStoreRequest` / `MessageNewRequest` override `failedValidation()` to emit these structured bodies.
+`TypeRegistry::validate()` checks, in order:
+
+1. Envelope is an object with **exactly** keys `type`, `version`, `payload` (`type`/`version` strings, `payload` object). Otherwise → `{"error":"invalid_envelope","message":"…"}`.
+2. `type` known in the registry, else `{"error":"unknown_type","type":"…"}`.
+3. `version` matches the registered type's version, else `{"error":"unknown_version","type":"…","version":"…"}`.
+4. `payload` validates against the type's JSON Schema (via `opis/json-schema`), else `{"error":"invalid_payload","violations":[…]}`.
+
+`InvalidEnvelopeException extends Illuminate\Http\Exceptions\HttpResponseException`, built from the descriptor; its response is `response()->json($descriptor, 422)`. The `MessageStoreRequest` / `MessageNewRequest` keep only their basic `required|array` rules — the envelope contract is enforced one layer deeper.
 
 ## 5. Starter Schemas (all `additionalProperties: false`)
 
@@ -86,9 +90,10 @@ Share your mood with your lads. The mood is a closed enum — no free text.
 
 "Ensure the endpoints use them" has a ripple: the current `MessageFactory`, seeders, and existing message feature tests post arbitrary arrays, which will now `422`. This run updates them to emit valid typed envelopes so the suite and `db:seed` stay green.
 
-- `database/factories/MessageFactory.php` — emit a valid envelope (e.g. a random starter type).
-- Seeders that create messages — use valid envelopes.
-- Existing message feature tests — assert against valid envelopes; add the rejection cases below.
+- `database/factories/MessageFactory.php` — currently emits unversioned `{type, payload}` bodies (`weather`, plus a `currency` payload that does not match the strict schema). Rewrite to emit a valid versioned envelope for a random starter type.
+- `database/seeders/MessagingSeeder.php` — uses the factory; verify it produces valid envelopes after the rewrite.
+- `tests/Feature/MessageTest.php` — `store` uses the factory body (valid after rewrite); `new` posts `['test' => 'data']` → replace with a valid envelope. Add the rejection cases below.
+- `tests/Unit/MessageTest.php` — calls `MessageService::newThread/newMessage` directly with free-form bodies (`['some' => 'data']`, `['some', "content #{$i}"]`). Because enforcement is now in the service, **every** such literal must become a valid envelope. A small test helper (`validEnvelope($type, $payload)`) keeps this DRY.
 
 ## 8. Testing
 
