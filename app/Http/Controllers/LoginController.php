@@ -35,6 +35,7 @@ class LoginController extends Controller
     public function home(Request $request)
     {
         $allParams = $request->all();
+
         $request->session()->flash('client', $allParams);
 
         $params = http_build_query($allParams);
@@ -96,11 +97,18 @@ class LoginController extends Controller
     /**
      * Logout current user.
      *
+     * @param  Request  $request
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function logout()
+    public function logout(Request $request)
     {
+        // Revoke the user's Passport access tokens so API sessions die with the web session.
+        Auth::user()?->tokens->each->revoke();
+
         Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
         return redirect('/');
     }
