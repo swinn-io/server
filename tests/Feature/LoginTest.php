@@ -34,7 +34,8 @@ class LoginTest extends TestCase
         $response = $this->get(route('login'));
 
         $response->assertOk();
-        $response->assertSee('GitHub');
+        $response->assertViewIs('login');
+        $response->assertSee("window.__PAGE__ = 'Login'", false);
     }
 
     /**
