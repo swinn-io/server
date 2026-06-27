@@ -24,7 +24,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        // Keep a generous Telescope history (30 days), pruning only older entries.
+        $schedule->command('telescope:prune --hours=720')->daily();
     }
 
     /**
