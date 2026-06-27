@@ -1,9 +1,20 @@
 <script setup>
+import { computed } from 'vue'
 import AppAvatar from '../atoms/AppAvatar.vue'
 
-defineProps({
+const props = defineProps({
     message: { type: Object, required: true },
 })
+
+const isStructured = computed(
+    () => props.message.body !== null && typeof props.message.body === 'object'
+)
+
+const text = computed(() =>
+    isStructured.value
+        ? JSON.stringify(props.message.body, null, 2)
+        : props.message.body
+)
 </script>
 
 <template>
@@ -14,7 +25,11 @@ defineProps({
                 <span class="font-medium text-gray-900">{{ message.user?.name }}</span>
                 <span class="text-xs text-gray-400">{{ message.created_at }}</span>
             </div>
-            <p class="mt-1 whitespace-pre-wrap break-words text-gray-700">{{ message.body }}</p>
+            <pre
+                v-if="isStructured"
+                class="mt-1 overflow-x-auto rounded-md bg-gray-50 p-3 text-sm text-gray-700"
+            >{{ text }}</pre>
+            <p v-else class="mt-1 whitespace-pre-wrap break-words text-gray-700">{{ text }}</p>
         </div>
     </div>
 </template>

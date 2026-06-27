@@ -63,7 +63,18 @@ class ThreadController extends Controller
     {
         $thread = $this->service->thread($thread);
 
-        return view('thread', compact('thread'));
+        return view('thread', [
+            'thread' => [
+                'id' => $thread->id,
+                'subject' => $thread->subject,
+                'messages' => $thread->messages->map(fn ($message) => [
+                    'id' => $message->id,
+                    'body' => $message->body,
+                    'created_at' => $message->created_at->diffForHumans(),
+                    'user' => ['name' => $message->user->name],
+                ])->values()->all(),
+            ],
+        ]);
     }
 
     /**
