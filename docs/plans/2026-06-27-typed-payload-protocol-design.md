@@ -1,8 +1,8 @@
 # Typed-Payload Protocol — Design (Backend, Steps 1–3)
 
 **Status:** Approved 2026-06-27
-**Source brief:** `docs/SWINN_DESIGN.md`
-**Scope this run:** Backend only — envelope enforcement, type registry + schema validation, `GET /types` discovery. Web UI renderers (brief Step 4) deferred.
+**Source:** the Swinn typed-data-communication vision — message bodies are typed JSON envelopes validated against a closed registry, with no free text anywhere.
+**Scope this run:** Backend only — envelope enforcement, type registry + schema validation, `GET /types` discovery. Web UI renderers (the human-client rendering step) deferred.
 **Delivery:** single feature branch `feat/typed-payload-protocol`, one PR.
 
 ---
@@ -62,7 +62,7 @@ This realizes the brief's "No free text" and "Data consistency" principles on th
 - `lng` — number, required, minimum −180, maximum 180
 
 ### `status` — renderer hint `StatusBadge`
-- `state` — string, required, pattern `^[a-z][a-z0-9_]{0,59}$` (bounded slug; the state vocabulary is the sending system's domain per SWINN_DESIGN-3 §5.3, so it stays a length-capped slug rather than an enum)
+- `state` — string, required, pattern `^[a-z][a-z0-9_]{0,59}$` (bounded slug; the state vocabulary belongs to the sending system's domain, so it stays a length-capped slug rather than a closed enum)
 - `reason` — string, optional, pattern `^[a-z][a-z0-9_]{0,59}$`
 
 ### `file_reference` — renderer hint `FileCard`
@@ -109,5 +109,5 @@ Share your mood with your lads. The mood is a closed enum — no free text.
 
 ## 9. Out of Scope (this run)
 
-- Web UI renderer map and message components (brief Step 4).
-- Runtime type registration, multi-version coexistence beyond a single version per type, `transit`/webhook types (brief §5).
+- Web UI renderer map and message components (the human-client rendering step).
+- Runtime type registration, multi-version coexistence beyond a single version per type, and future `transit`/webhook types.
