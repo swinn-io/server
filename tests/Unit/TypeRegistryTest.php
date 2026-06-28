@@ -1,0 +1,75 @@
+<?php
+
+namespace Tests\Unit;
+
+use App\MessageTypes\CurrencyType;
+use App\MessageTypes\MoodType;
+use App\Services\TypeRegistry;
+use PHPUnit\Framework\TestCase;
+
+class TypeRegistryTest extends TestCase
+{
+    private function registry(): TypeRegistry
+    {
+        return new TypeRegistry([new CurrencyType(), new MoodType()]);
+    }
+
+    public function testHasAndGet(): void
+    {
+        $registry = $this->registry();
+        $this->assertTrue($registry->has('currency'));
+        $this->assertFalse($registry->has('nope'));
+        $this->assertInstanceOf(CurrencyType::class, $registry->get('currency'));
+        $this->assertCount(2, $registry->all());
+    }
+
+    public function testValidEnvelopeReturnsNull(): void
+    {
+        $error = $this->registry()->validate([
+            'type' => 'currency', 'version' => '1.0',
+            'payload' => ['amount' => 10, 'currency_code' => 'USD'],
+        ]);
+        $this->assertNull($error);
+    }
+
+    public function testMissingKeysRejected(): void
+    {
+        $this->assertSame('invalid_envelope', $this->registry()->validate(['type' => 'currency'])['error']);
+        $this->assertSame('invalid_envelope', $this->registry()->validate([
+            'type' => 'currency', 'version' => '1.0', 'payload' => ['x' => 1], 'extra' => 1,
+        ])['error']);
+    }
+
+    public function testNonObjectPayloadRejected(): void
+    {
+        $this->assertSame('invalid_envelope', $this->registry()->validate([
+            'type' => 'currency', 'version' => '1.0', 'payload' => 'nope',
+        ])['error']);
+    }
+
+    public function testUnknownType(): void
+    {
+        $error = $this->registry()->validate([
+            'type' => 'weather', 'version' => '1.0', 'payload' => ['x' => 1],
+        ]);
+        $this->assertSame('unknown_type', $error['error']);
+        $this->assertSame('weather', $error['type']);
+    }
+
+    public function testUnknownVersion(): void
+    {
+        $error = $this->registry()->validate([
+            'type' => 'currency', 'version' => '9.9', 'payload' => ['amount' => 1, 'currency_code' => 'USD'],
+        ]);
+        $this->assertSame('unknown_version', $error['error']);
+    }
+
+    public function testInvalidPayload(): void
+    {
+        $error = $this->registry()->validate([
+            'type' => 'currency', 'version' => '1.0', 'payload' => ['amount' => 1, 'currency_code' => 'usd'],
+        ]);
+        $this->assertSame('invalid_payload', $error['error']);
+        $this->assertNotEmpty($error['violations']);
+    }
+}
