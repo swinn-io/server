@@ -28,8 +28,8 @@ class StatusType implements MessageTypeInterface
             'additionalProperties' => false,
             'required' => ['state'],
             'properties' => [
-                'state' => ['type' => 'string', 'pattern' => '^[a-z][a-z0-9_]*$'],
-                'reason' => ['type' => 'string', 'pattern' => '^[a-z][a-z0-9_]*$', 'maxLength' => 60],
+                'state' => ['type' => 'string', 'pattern' => '^[a-z][a-z0-9_]{0,59}$'],
+                'reason' => ['type' => 'string', 'pattern' => '^[a-z][a-z0-9_]{0,59}$'],
             ],
         ];
     }

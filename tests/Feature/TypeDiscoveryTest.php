@@ -21,4 +21,15 @@ class TypeDiscoveryTest extends TestCase
             $this->assertContains($name, $types);
         }
     }
+
+    public function testMetricExposesCompatibleUnitConstraints(): void
+    {
+        $response = $this->getJson(route('types'));
+
+        $metric = collect($response->json())->firstWhere('type', 'metric');
+
+        $this->assertArrayHasKey('constraints', $metric);
+        $this->assertArrayHasKey('compatible_units', $metric['constraints']);
+        $this->assertSame(['celsius', 'fahrenheit', 'kelvin'], $metric['constraints']['compatible_units']['temperature']);
+    }
 }

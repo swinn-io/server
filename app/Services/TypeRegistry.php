@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Interfaces\CrossFieldValidatableInterface;
 use App\Interfaces\MessageTypeInterface;
 use Opis\JsonSchema\Errors\ErrorFormatter;
 use Opis\JsonSchema\Helper;
@@ -83,6 +84,14 @@ class TypeRegistry
                 'error' => 'invalid_payload',
                 'violations' => (new ErrorFormatter())->format($result->error()),
             ];
+        }
+
+        if ($type instanceof CrossFieldValidatableInterface) {
+            $violations = $type->validate($envelope['payload']);
+
+            if (! empty($violations)) {
+                return ['error' => 'invalid_payload', 'violations' => $violations];
+            }
         }
 
         return null;

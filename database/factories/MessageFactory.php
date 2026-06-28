@@ -28,7 +28,7 @@ class MessageFactory extends Factory
             ['type' => 'currency', 'version' => '1.0', 'payload' => ['amount' => 142.50, 'currency_code' => 'USD']],
             ['type' => 'location', 'version' => '1.0', 'payload' => ['lat' => 51.5074, 'lng' => -0.1278]],
             ['type' => 'status', 'version' => '1.0', 'payload' => ['state' => 'dispatched', 'reason' => 'carrier_collected']],
-            ['type' => 'metric', 'version' => '1.0', 'payload' => ['name' => 'ambient_temperature', 'value' => 22.4, 'unit' => 'celsius']],
+            ['type' => 'metric', 'version' => '1.0', 'payload' => ['quantity' => 'temperature', 'value' => 22.4, 'unit' => 'celsius']],
         ];
 
         return [

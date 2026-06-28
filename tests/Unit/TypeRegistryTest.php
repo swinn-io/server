@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use App\MessageTypes\CurrencyType;
+use App\MessageTypes\MetricType;
 use App\MessageTypes\MoodType;
 use App\Services\TypeRegistry;
 use PHPUnit\Framework\TestCase;
@@ -71,5 +72,25 @@ class TypeRegistryTest extends TestCase
         ]);
         $this->assertSame('invalid_payload', $error['error']);
         $this->assertNotEmpty($error['violations']);
+    }
+
+    public function testCrossFieldViolationRejected(): void
+    {
+        $registry = new TypeRegistry([new MetricType()]);
+
+        // Schema-valid (both are members of their enums) but the pair is incompatible.
+        $error = $registry->validate([
+            'type' => 'metric', 'version' => '1.0',
+            'payload' => ['quantity' => 'temperature', 'value' => 1, 'unit' => 'dbm'],
+        ]);
+
+        $this->assertSame('invalid_payload', $error['error']);
+        $this->assertStringContainsString("not valid for quantity 'temperature'", $error['violations'][0]);
+
+        // A compatible pair passes.
+        $this->assertNull($registry->validate([
+            'type' => 'metric', 'version' => '1.0',
+            'payload' => ['quantity' => 'temperature', 'value' => 22.4, 'unit' => 'celsius'],
+        ]));
     }
 }

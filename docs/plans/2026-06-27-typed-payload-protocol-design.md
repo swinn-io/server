@@ -62,8 +62,8 @@ This realizes the brief's "No free text" and "Data consistency" principles on th
 - `lng` — number, required, minimum −180, maximum 180
 
 ### `status` — renderer hint `StatusBadge`
-- `state` — string, required, pattern `^[a-z][a-z0-9_]*$`
-- `reason` — string, optional, pattern `^[a-z][a-z0-9_]*$`, maxLength 60
+- `state` — string, required, pattern `^[a-z][a-z0-9_]{0,59}$` (bounded slug; the state vocabulary is the sending system's domain per SWINN_DESIGN-3 §5.3, so it stays a length-capped slug rather than an enum)
+- `reason` — string, optional, pattern `^[a-z][a-z0-9_]{0,59}$`
 
 ### `file_reference` — renderer hint `FileCard`
 - `url` — string, required, format `uri`
@@ -72,10 +72,13 @@ This realizes the brief's "No free text" and "Data consistency" principles on th
 - *(`name` dropped — a filename is free text, violating the no-editable-string rule)*
 
 ### `metric` — renderer hint `MetricDisplay`
-- `name` — string, required, pattern `^[a-z][a-z0-9_]*$`
+Adopts the controlled vocabulary — the open `name`/`unit` slug patterns are replaced by two **closed enums** plus a cross-field compatibility matrix (`MetricType::COMPATIBLE_UNITS`).
+- `quantity` — string, required, enum (keys of the compatibility matrix: `temperature`, `humidity`, `pressure`, `speed`, `distance`, `mass`, `energy`, `power`, `voltage`, `current`, `frequency`, `luminance`, `co2`, `pm2_5`, `pm10`, `battery_level`, `signal_strength`)
 - `value` — number, required
-- `unit` — string, required, pattern `^[a-z][a-z0-9_]*$`
+- `unit` — string, required, enum (all units across the matrix); **cross-field**: must be compatible with `quantity` or the write is rejected `invalid_payload`
 - `recorded_at` — string, optional, format `date-time` (ISO 8601)
+
+**Cross-field validation.** Types whose constraints span fields implement `App\Interfaces\CrossFieldValidatableInterface` (`validate(array $payload): array`, `constraints(): array`). `TypeRegistry::validate()` runs `validate()` after JSON Schema passes; a non-empty violation list yields `invalid_payload`. The `constraints()` vocabulary (e.g. `compatible_units`) is surfaced on `GET /types` so clients can discover valid pairings.
 
 ### `mood` — renderer hint `MoodCard`
 Share your mood with your lads. The mood is a closed enum — no free text.
