@@ -53,7 +53,7 @@ class MessageTest extends TestCase
      *
      * @return void
      */
-    public function testServiceMethodThreads()
+    public function test_service_method_threads()
     {
         $user = User::factory()->create();
         $create = 5;
@@ -75,7 +75,7 @@ class MessageTest extends TestCase
      *
      * @return void
      */
-    public function testServiceMethodUnreadThreads()
+    public function test_service_method_unread_threads()
     {
         // Random participant for utilizing user id
         $participant = Participant::inRandomOrder()->first();
@@ -108,7 +108,7 @@ class MessageTest extends TestCase
 
             return
                 // Last read is null and the user has never read the thread
-                null === $participation->last_read
+                $participation->last_read === null
                 ||
                 // Or last read datetime is less than last message datetime
                 $thread->updated_at->greaterThan($participation->last_read);
@@ -122,7 +122,7 @@ class MessageTest extends TestCase
      *
      * @return void
      */
-    public function testServiceMethodThread()
+    public function test_service_method_thread()
     {
         $user = User::factory()->create();
         $thread = $this->service->newThread('New Thread!', $user, $this->envelope());
@@ -142,7 +142,7 @@ class MessageTest extends TestCase
      *
      * @return void
      */
-    public function testServiceMethodThreadParticipants()
+    public function test_service_method_thread_participants()
     {
         $users = User::factory()
             ->count(5)
@@ -163,7 +163,7 @@ class MessageTest extends TestCase
      *
      * @return void
      */
-    public function testServiceMethodNewThread()
+    public function test_service_method_new_thread()
     {
         $user = User::factory()->create();
         $thread = $this->service->newThread('New Thread!', $user, $this->envelope());
@@ -183,7 +183,7 @@ class MessageTest extends TestCase
      *
      * @return void
      */
-    public function testServiceMethodNewMessage()
+    public function test_service_method_new_message()
     {
         $users =
             User::factory()
@@ -219,7 +219,7 @@ class MessageTest extends TestCase
      *
      * @return void
      */
-    public function testServiceMethodMarkAsRead()
+    public function test_service_method_mark_as_read()
     {
         $users = User::factory()
             ->count(2)
@@ -248,7 +248,7 @@ class MessageTest extends TestCase
      *
      * @return void
      */
-    public function testServiceMethodMarkAsReadAll()
+    public function test_service_method_mark_as_read_all()
     {
         $users = User::factory()
             ->count(2)
@@ -275,7 +275,7 @@ class MessageTest extends TestCase
      *
      * @return void
      */
-    public function testServiceMethodAddParticipant()
+    public function test_service_method_add_participant()
     {
         $user = User::factory()->create();
         $thread = $this->service->newThread('New Thread!', $user, $this->envelope());

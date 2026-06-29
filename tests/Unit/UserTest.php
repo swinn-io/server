@@ -32,7 +32,7 @@ class UserTest extends TestCase
      *
      * @return void
      */
-    public function testServiceMethodFind()
+    public function test_service_method_find()
     {
         $user = User::inRandomOrder()->first();
         $find = $this->service->find($user->id);

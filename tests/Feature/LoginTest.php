@@ -29,7 +29,7 @@ class LoginTest extends TestCase
      *
      * @return void
      */
-    public function testLoginControllerHomeMethod()
+    public function test_login_controller_home_method()
     {
         $response = $this->get(route('login'));
 
@@ -43,7 +43,7 @@ class LoginTest extends TestCase
      *
      * @return void
      */
-    public function testLoginControllerRedirectMethod()
+    public function test_login_controller_redirect_method()
     {
         $response = $this->get(route('login.redirect', ['provider' => 'github']));
 
@@ -56,16 +56,16 @@ class LoginTest extends TestCase
      *
      * @return void
      */
-    public function testLoginControllerCallbackMethod()
+    public function test_login_controller_callback_method()
     {
         $user = User::factory()->make();
         $socialiteUser = Mockery::mock(SocialiteUser::class);
         $socialiteUser->shouldReceive([
-            'getId'       => Str::random(),
-            'getName'     => $user->name,
-            'getEmail'    => $this->faker->email,
+            'getId' => Str::random(),
+            'getName' => $user->name,
+            'getEmail' => $this->faker->email,
             'getNickname' => Str::slug($user->name),
-            'getAvatar'   => $this->faker->url,
+            'getAvatar' => $this->faker->url,
         ])
             ->andSet('user', $user)
             ->andSet('token', Str::random(40))
@@ -82,7 +82,7 @@ class LoginTest extends TestCase
      *
      * @return void
      */
-    public function testLoginControllerLogoutMethod()
+    public function test_login_controller_logout_method()
     {
         $user = User::factory()->create();
         $user->createToken('Test Token');

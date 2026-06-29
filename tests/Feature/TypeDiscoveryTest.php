@@ -6,7 +6,7 @@ use Tests\TestCase;
 
 class TypeDiscoveryTest extends TestCase
 {
-    public function testTypesEndpointIsPublicAndListsAllTypes(): void
+    public function test_types_endpoint_is_public_and_lists_all_types(): void
     {
         $response = $this->getJson(route('types'));
 
@@ -22,7 +22,7 @@ class TypeDiscoveryTest extends TestCase
         }
     }
 
-    public function testMetricExposesCompatibleUnitConstraints(): void
+    public function test_metric_exposes_compatible_unit_constraints(): void
     {
         $response = $this->getJson(route('types'));
 

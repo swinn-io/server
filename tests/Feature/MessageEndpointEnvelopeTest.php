@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Models\Thread;
+use App\Interfaces\MessageServiceInterface;
 use App\Models\User;
 use Tests\TestCase;
 
@@ -13,7 +13,7 @@ class MessageEndpointEnvelopeTest extends TestCase
         return ['type' => 'mood', 'version' => '1.0', 'payload' => ['mood' => 'happy']];
     }
 
-    public function testStoreRejectsFreeTextWith422(): void
+    public function test_store_rejects_free_text_with422(): void
     {
         $user = User::factory()->create();
 
@@ -26,7 +26,7 @@ class MessageEndpointEnvelopeTest extends TestCase
         $response->assertJson(['error' => 'invalid_envelope']);
     }
 
-    public function testStoreAcceptsValidEnvelope(): void
+    public function test_store_accepts_valid_envelope(): void
     {
         $user = User::factory()->create();
 
@@ -38,10 +38,10 @@ class MessageEndpointEnvelopeTest extends TestCase
         $response->assertCreated();
     }
 
-    public function testAppendRejectsInvalidPayloadWith422(): void
+    public function test_append_rejects_invalid_payload_with422(): void
     {
         $user = User::factory()->create();
-        $thread = app(\App\Interfaces\MessageServiceInterface::class)
+        $thread = app(MessageServiceInterface::class)
             ->newThread('Hi', $user, $this->validBody());
 
         $response = $this->actingAs($user, 'api')->postJson(route('message.new', ['id' => $thread->id]), [

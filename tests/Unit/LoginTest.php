@@ -5,10 +5,12 @@ namespace Tests\Unit;
 use App\Interfaces\LoginServiceInterface;
 use App\Models\User;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 use Laravel\Socialite\Contracts\User as SocialiteUser;
 use Mockery;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Tests\TestCase;
 
 class LoginTest extends TestCase
@@ -26,7 +28,7 @@ class LoginTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->withMiddleware(\Illuminate\Session\Middleware\StartSession::class);
+        $this->withMiddleware(StartSession::class);
         $this->service = app(LoginServiceInterface::class);
     }
 
@@ -35,7 +37,7 @@ class LoginTest extends TestCase
      *
      * @return void
      */
-    public function testUnknownServiceRedirection()
+    public function test_unknown_service_redirection()
     {
         $this->expectException(InvalidArgumentException::class);
         $redirect = $this->service->redirect('unknown-service');
@@ -48,9 +50,9 @@ class LoginTest extends TestCase
      *
      * @return void
      */
-    public function testGithubRedirection()
+    public function test_github_redirection()
     {
-        $socialiteRedirection = Mockery::mock(\Symfony\Component\HttpFoundation\RedirectResponse::class);
+        $socialiteRedirection = Mockery::mock(RedirectResponse::class);
         $socialiteRedirection->shouldReceive([
             'getStatusCode' => 302,
             'getTargetUrl' => 'https://github.com/login/oauth',
@@ -68,17 +70,17 @@ class LoginTest extends TestCase
      *
      * @return void
      */
-    public function testUser()
+    public function test_user()
     {
         $user = User::factory()->make();
         $nick = collect([$user->name, ''])->random();
         $socialiteUser = Mockery::mock(SocialiteUser::class);
         $socialiteUser->shouldReceive([
-            'getId'       => Str::random(),
-            'getName'     => $user->name,
-            'getEmail'    => $this->faker->email,
+            'getId' => Str::random(),
+            'getName' => $user->name,
+            'getEmail' => $this->faker->email,
             'getNickname' => $nick,
-            'getAvatar'   => $this->faker->url,
+            'getAvatar' => $this->faker->url,
         ])
             ->andSet('user', $user)
             ->andSet('token', Str::random(40))
@@ -93,7 +95,7 @@ class LoginTest extends TestCase
      *
      * @return void
      */
-    public function testClient()
+    public function test_client()
     {
         $user = User::factory()->create();
         $data = [

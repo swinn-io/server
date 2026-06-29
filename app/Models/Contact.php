@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\HasUUID;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -27,9 +28,9 @@ class Contact extends Model
     /**
      * Scope a query to only include active users.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  Builder  $query
      * @param  string  $user_id
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
     public function scopeForUser($query, $user_id)
     {
@@ -46,8 +47,6 @@ class Contact extends Model
 
     /**
      * Get the owner model of the contact.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
     public function source(): MorphTo
     {

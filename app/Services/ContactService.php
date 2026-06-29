@@ -12,9 +12,6 @@ class ContactService implements ContactServiceInterface
 {
     /**
      * All contacts.
-     *
-     * @param  User  $user
-     * @return LengthAwarePaginator
      */
     public function contacts(User $user): LengthAwarePaginator
     {
@@ -23,10 +20,6 @@ class ContactService implements ContactServiceInterface
 
     /**
      * Retrieve a contact.
-     *
-     * @param  string  $contact_id
-     * @param  User  $user
-     * @return Contact|null
      */
     public function contact(string $contact_id, User $user): ?Contact
     {
@@ -35,10 +28,6 @@ class ContactService implements ContactServiceInterface
 
     /**
      * Creates contact.
-     *
-     * @param  User  $user
-     * @param  User  $contact
-     * @return Contact
      */
     public function addContact(User $user, User $contact): Contact
     {
@@ -53,29 +42,23 @@ class ContactService implements ContactServiceInterface
 
     /**
      * Creates contact by user collection and returns contact.
-     *
-     * @param  Collection  $users
-     * @return Collection
      */
     public function setContacts(Collection $users): Collection
     {
         return $users->map(function ($user) use ($users) {
             return $users
-                    ->filter(function ($item) use ($user) {
-                        return ! $item->is($user);
-                    })
-                    ->map(function ($contact) use ($user) {
-                        return $this->addContact($user, $contact);
-                    });
+                ->filter(function ($item) use ($user) {
+                    return ! $item->is($user);
+                })
+                ->map(function ($contact) use ($user) {
+                    return $this->addContact($user, $contact);
+                });
         })
-                ->flatten();
+            ->flatten();
     }
 
     /**
      * Remove a contact.
-     *
-     * @param  string  $contact_id
-     * @return Contact
      */
     public function removeContact(string $contact_id): Contact
     {

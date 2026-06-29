@@ -24,8 +24,8 @@ class MessageStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'subject'    => 'required|string|max:255',
-            'content'    => 'required|array',
+            'subject' => 'required|string|max:255',
+            'content' => 'required|array',
             'recipients.*' => 'string|exists:users,id',
         ];
     }

@@ -2,30 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ContactStoreRequest;
 use App\Http\Resources\ContactResource;
 use App\Interfaces\ContactServiceInterface;
 use App\Interfaces\UserServiceInterface;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 
 class ContactController extends Controller
 {
-    /**
-     * @var ContactServiceInterface
-     */
     private ContactServiceInterface $service;
 
-    /**
-     * @var UserServiceInterface
-     */
     private UserServiceInterface $userService;
 
     /**
      * ContactController constructor.
-     *
-     * @param  ContactServiceInterface  $service
-     * @param  UserServiceInterface  $userService
      */
     public function __construct(ContactServiceInterface $service, UserServiceInterface $userService)
     {
@@ -36,7 +30,6 @@ class ContactController extends Controller
     /**
      * Returns user by id.
      *
-     * @param  string  $id
      * @return ContactResource
      */
     public function show(string $id)
@@ -51,7 +44,7 @@ class ContactController extends Controller
     /**
      * Returns contacts by user.
      *
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * @return AnonymousResourceCollection
      */
     public function index()
     {
@@ -62,9 +55,6 @@ class ContactController extends Controller
 
     /**
      * Store a contact.
-     *
-     * @param  string  $user_id
-     * @return ContactResource
      */
     public function store(string $user_id): ContactResource
     {
@@ -79,16 +69,14 @@ class ContactController extends Controller
     /**
      * Redirects to URI.
      *
-     * @param  Request  $request
-     * @param  string  $id
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return Application|RedirectResponse|Redirector
      */
     public function redirect(Request $request, string $id)
     {
         $user = Auth::user();
         $contact = $this->service->contact($id, $user);
 
-        if (null === $contact) {
+        if ($contact === null) {
             abort(404);
         }
 

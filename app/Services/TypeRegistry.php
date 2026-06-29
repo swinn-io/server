@@ -74,7 +74,7 @@ class TypeRegistry
             return ['error' => 'unknown_version', 'type' => $type->name(), 'version' => $envelope['version']];
         }
 
-        $result = (new Validator())->validate(
+        $result = (new Validator)->validate(
             Helper::toJSON($envelope['payload']),
             Helper::toJSON($type->schema()),
         );
@@ -82,7 +82,7 @@ class TypeRegistry
         if (! $result->isValid()) {
             return [
                 'error' => 'invalid_payload',
-                'violations' => (new ErrorFormatter())->format($result->error()),
+                'violations' => (new ErrorFormatter)->format($result->error()),
             ];
         }
 

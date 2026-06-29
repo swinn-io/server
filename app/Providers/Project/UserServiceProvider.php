@@ -16,7 +16,7 @@ class UserServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(UserServiceInterface::class, function ($app) {
-            return new UserService();
+            return new UserService;
         });
     }
 

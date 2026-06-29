@@ -15,15 +15,11 @@ class LoginService implements LoginServiceInterface
 {
     /**
      * Laravel Passport Client Repository.
-     *
-     * @var ClientRepository
      */
     private ClientRepository $clientRepository;
 
     /**
      * LoginService constructor.
-     *
-     * @param  ClientRepository  $repository
      */
     public function __construct(ClientRepository $repository)
     {
@@ -32,9 +28,6 @@ class LoginService implements LoginServiceInterface
 
     /**
      * Redirect to OAuth authorization service URL.
-     *
-     * @param  string  $provider
-     * @return RedirectResponse
      */
     public function redirect(string $provider): RedirectResponse
     {
@@ -46,10 +39,6 @@ class LoginService implements LoginServiceInterface
 
     /**
      * Handle callback.
-     *
-     * @param  string  $provider
-     * @param  array  $clientInfo
-     * @return User
      */
     public function callback(string $provider, array $clientInfo): User
     {
@@ -60,9 +49,6 @@ class LoginService implements LoginServiceInterface
 
     /**
      * Handle callback.
-     *
-     * @param  User  $user
-     * @return string
      */
     public function createToken(User $user): string
     {
@@ -73,38 +59,30 @@ class LoginService implements LoginServiceInterface
 
     /**
      * Create a new user or update existing one.
-     *
-     * @param  string  $provider
-     * @param  UserContract  $userContract
-     * @return User
      */
     public function user(string $provider, UserContract $userContract): User
     {
         return User::updateOrCreate([
-            'provider_name'  => $provider,                       // GitHub, LinkedIn, Google, Apple
-            'provider_id'    => $userContract->getId(),          // unsignedBigInteger, uuid
+            'provider_name' => $provider,                       // GitHub, LinkedIn, Google, Apple
+            'provider_id' => $userContract->getId(),          // unsignedBigInteger, uuid
         ], [
-            'name'           => $userContract->getName() ?? $userContract->getNickname(),
+            'name' => $userContract->getName() ?? $userContract->getNickname(),
             /**
              * E-mails, tokens and profile will be synced.
              * E-mail is for e-mail notifications.
              * Tokens for retrieve data from authorization
              * server such as GitHub, Twitter or Google.
              */
-            'email'          => $userContract->getEmail(),       // OAuth provider e-mail address
-            'notify_via'     => ['broadcast'],                   // Default notification preference
-            'access_token'   => $userContract->token,            // TOKEN
-            'refresh_token'  => $userContract->refreshToken,     // TOKEN - some providers have it
-            'profile'        => $userContract->user,             // JSON profile data
+            'email' => $userContract->getEmail(),       // OAuth provider e-mail address
+            'notify_via' => ['broadcast'],                   // Default notification preference
+            'access_token' => $userContract->token,            // TOKEN
+            'refresh_token' => $userContract->refreshToken,     // TOKEN - some providers have it
+            'profile' => $userContract->user,             // JSON profile data
         ]);
     }
 
     /**
      * Get or create client for user.
-     *
-     * @param  User  $user
-     * @param  array  $clientInfo
-     * @return Client
      */
     public function client(User $user, array $clientInfo): Client
     {

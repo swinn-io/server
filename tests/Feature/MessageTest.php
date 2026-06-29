@@ -16,14 +16,8 @@ class MessageTest extends TestCase
 {
     use WithFaker;
 
-    /**
-     * @var MessageServiceInterface
-     */
     private MessageServiceInterface $service;
 
-    /**
-     * @var ContactServiceInterface
-     */
     private ContactServiceInterface $contactService;
 
     /**
@@ -43,7 +37,7 @@ class MessageTest extends TestCase
      *
      * @return void
      */
-    public function testMessageControllerIndexMethod()
+    public function test_message_controller_index_method()
     {
         $message = Message::inRandomOrder()->first();
         $user = $message->user;
@@ -65,7 +59,7 @@ class MessageTest extends TestCase
      *
      * @return void
      */
-    public function testMessageControllerStoreMethod()
+    public function test_message_controller_store_method()
     {
         $thread = Thread::factory()->make();
         $message = Message::factory()->make();
@@ -106,7 +100,7 @@ class MessageTest extends TestCase
      *
      * @return void
      */
-    public function testMessageControllerShowMethod()
+    public function test_message_controller_show_method()
     {
         $thread = Thread::inRandomOrder()->first();
         $user = $thread->creator();
@@ -135,7 +129,7 @@ class MessageTest extends TestCase
      *
      * @return void
      */
-    public function testMessageControllerNewMethod()
+    public function test_message_controller_new_method()
     {
         $thread = Thread::inRandomOrder()->first();
         $user = $thread->creator();

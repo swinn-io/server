@@ -26,9 +26,9 @@ class ContactFactory extends Factory
         $contact = User::factory()->create();
 
         return [
-            'name'  => $contact->name,
-            'user_id'   => $user->id,
-            'source_type'   => User::class,
+            'name' => $contact->name,
+            'user_id' => $user->id,
+            'source_type' => User::class,
             'source_id' => $contact->id,
         ];
     }

@@ -17,12 +17,12 @@ class MessageTypeServiceProvider extends ServiceProvider
     {
         $this->app->singleton(TypeRegistry::class, function () {
             return new TypeRegistry([
-                new CurrencyType(),
-                new LocationType(),
-                new StatusType(),
-                new FileReferenceType(),
-                new MetricType(),
-                new MoodType(),
+                new CurrencyType,
+                new LocationType,
+                new StatusType,
+                new FileReferenceType,
+                new MetricType,
+                new MoodType,
             ]);
         });
     }

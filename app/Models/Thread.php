@@ -12,12 +12,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Thread extends BaseThread
 {
-    use HasFactory, SoftDeletes, HasUUID;
+    use HasFactory, HasUUID, SoftDeletes;
 
     /**
      * Messages relationship.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      *
      * @codeCoverageIgnore
      */

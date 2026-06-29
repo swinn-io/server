@@ -16,7 +16,7 @@ class ContactServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(ContactServiceInterface::class, function ($app) {
-            return new ContactService();
+            return new ContactService;
         });
     }
 

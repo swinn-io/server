@@ -6,7 +6,6 @@ use App\Http\Resources\MessageResource;
 use App\Models\Message;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -14,15 +13,11 @@ class MessageCreated extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    /**
-     * @var Message
-     */
     public Message $message;
 
     /**
      * Create a new notification instance.
      *
-     * @param  Message  $message
      * @return void
      */
     public function __construct(Message $message)
@@ -58,7 +53,7 @@ class MessageCreated extends Notification implements ShouldQueue
      * Get the mail representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
+     * @return MailMessage
      */
     public function toMail($notifiable)
     {

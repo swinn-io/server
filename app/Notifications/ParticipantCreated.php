@@ -6,22 +6,17 @@ use App\Http\Resources\ParticipantResource;
 use App\Models\Participant;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
 class ParticipantCreated extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    /**
-     * @var Participant
-     */
     public Participant $participant;
 
     /**
      * Create a new notification instance.
      *
-     * @param  Participant  $participant
      * @return void
      */
     public function __construct(Participant $participant)

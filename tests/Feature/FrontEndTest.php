@@ -2,8 +2,6 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class FrontEndTest extends TestCase
@@ -13,7 +11,7 @@ class FrontEndTest extends TestCase
      *
      * @return void
      */
-    public function testPageControllerIndexMethod()
+    public function test_page_controller_index_method()
     {
         $response = $this->get('/');
 

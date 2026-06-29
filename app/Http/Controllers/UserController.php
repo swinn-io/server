@@ -8,15 +8,10 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    /**
-     * @var UserServiceInterface
-     */
     private UserServiceInterface $service;
 
     /**
      * UserController constructor.
-     *
-     * @param  UserServiceInterface  $service
      */
     public function __construct(UserServiceInterface $service)
     {
@@ -26,7 +21,6 @@ class UserController extends Controller
     /**
      * Returns authenticated API user.
      *
-     * @param  Request  $request
      * @return UserResource
      */
     public function me(Request $request)
@@ -37,7 +31,6 @@ class UserController extends Controller
     /**
      * Returns user by id.
      *
-     * @param  string  $id
      * @return UserResource
      */
     public function show(string $id)

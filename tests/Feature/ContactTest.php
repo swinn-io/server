@@ -14,9 +14,6 @@ class ContactTest extends TestCase
 {
     use WithFaker;
 
-    /**
-     * @var ContactServiceInterface
-     */
     private ContactServiceInterface $service;
 
     /**
@@ -35,7 +32,7 @@ class ContactTest extends TestCase
      *
      * @return void
      */
-    public function testContactControllerIndexMethod()
+    public function test_contact_controller_index_method()
     {
         $contact = Contact::inRandomOrder()->with('user')->first();
         $contacts = $this->service->contacts($contact->user);
@@ -64,7 +61,7 @@ class ContactTest extends TestCase
      *
      * @return void
      */
-    public function testContactControllerShowMethod()
+    public function test_contact_controller_show_method()
     {
         $contact = Contact::inRandomOrder()->with('user')->first();
         $response = $this
@@ -89,7 +86,7 @@ class ContactTest extends TestCase
      *
      * @return void
      */
-    public function testContactControllerStoreMethod()
+    public function test_contact_controller_store_method()
     {
         $user = User::factory()->create();
         $contact = User::factory()->create();

@@ -32,7 +32,7 @@ class ContactTest extends TestCase
      *
      * @return void
      */
-    public function testServiceMethodContacts()
+    public function test_service_method_contacts()
     {
         $user = User::factory()->create();
         $create = 5;
@@ -53,7 +53,7 @@ class ContactTest extends TestCase
      *
      * @return void
      */
-    public function testServiceMethodAddContact()
+    public function test_service_method_add_contact()
     {
         $user = User::factory()->create();
         $contact = User::factory()->create();
@@ -69,7 +69,7 @@ class ContactTest extends TestCase
      *
      * @return void
      */
-    public function testServiceMethodContact()
+    public function test_service_method_contact()
     {
         $user = User::factory()->create();
         $contact = User::factory()->create();
@@ -86,7 +86,7 @@ class ContactTest extends TestCase
      *
      * @return void
      */
-    public function testServiceMethodSetContact()
+    public function test_service_method_set_contact()
     {
         $userNumber = 5;
         $users = User::factory($userNumber)->create();
@@ -100,7 +100,7 @@ class ContactTest extends TestCase
      *
      * @return void
      */
-    public function testServiceMethodRemoveContact()
+    public function test_service_method_remove_contact()
     {
         $user = User::factory()->create();
         $contact = User::factory()->create();
