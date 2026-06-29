@@ -12,7 +12,7 @@ class Participant extends BaseParticipant
     /**
      * The attributes that should be cast.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'last_read' => 'datetime',

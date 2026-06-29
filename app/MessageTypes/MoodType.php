@@ -21,6 +21,9 @@ class MoodType implements MessageTypeInterface
         return 'Share your mood with your lads. The mood is a closed enum drawn from a fixed vocabulary, with an optional 1-5 intensity. No free text.';
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function schema(): array
     {
         return [

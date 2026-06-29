@@ -42,6 +42,8 @@ class MessageTest extends TestCase
 
     /**
      * A valid typed message envelope for service-layer writes.
+     *
+     * @return array<string, mixed>
      */
     private function envelope(string $mood = 'happy'): array
     {

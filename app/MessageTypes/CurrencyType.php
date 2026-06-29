@@ -21,6 +21,9 @@ class CurrencyType implements MessageTypeInterface
         return 'A monetary value in a specific currency. Used for payment references, invoice notifications, and balance updates.';
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function schema(): array
     {
         return [

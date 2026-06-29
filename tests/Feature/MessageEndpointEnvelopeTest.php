@@ -8,6 +8,9 @@ use Tests\TestCase;
 
 class MessageEndpointEnvelopeTest extends TestCase
 {
+    /**
+     * @return array<string, mixed>
+     */
     private function validBody(): array
     {
         return ['type' => 'mood', 'version' => '1.0', 'payload' => ['mood' => 'happy']];

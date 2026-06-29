@@ -49,6 +49,9 @@ class MetricType implements CrossFieldValidatableInterface, MessageTypeInterface
         return 'A scalar numeric measurement identified by a controlled quantity kind and SI-aligned unit. Cross-field compatibility between quantity and unit is enforced at write time.';
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function schema(): array
     {
         return [
