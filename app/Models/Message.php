@@ -5,7 +5,17 @@ namespace App\Models;
 use App\Traits\HasUUID;
 use Cmgmyr\Messenger\Models\Message as BaseMessage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Carbon;
 
+/**
+ * @property string $id
+ * @property string $thread_id
+ * @property string $user_id
+ * @property array<string, mixed> $body
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property Carbon|null $deleted_at
+ */
 class Message extends BaseMessage
 {
     use HasFactory, HasUUID;

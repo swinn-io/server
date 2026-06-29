@@ -7,8 +7,24 @@ use Cmgmyr\Messenger\Traits\Messagable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Carbon;
 use Laravel\Passport\HasApiTokens;
 
+/**
+ * @property string $id
+ * @property string $name
+ * @property string $provider_name
+ * @property string $provider_id
+ * @property string|null $email
+ * @property string|null $one_time_password
+ * @property Carbon|null $password_expires_at
+ * @property array<int, string> $notify_via
+ * @property string $access_token
+ * @property string|null $refresh_token
+ * @property array<string, mixed> $profile
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ */
 class User extends Authenticatable
 {
     use HasApiTokens;

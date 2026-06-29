@@ -82,7 +82,7 @@ class MessageTest extends TestCase
         // Random participant for utilizing user id
         $participant = Participant::inRandomOrder()->first();
         // Chosen user to test
-        $user = User::find($participant->user_id);
+        $user = User::findOrFail($participant->user_id);
 
         // All threads of a user that participated
         $allThreads = $this->service->threads($user);
@@ -106,14 +106,14 @@ class MessageTest extends TestCase
 
         $participated = $participated->get();
         $filtered = $participated->filter(function ($participation) {
-            $thread = Thread::where('id', $participation->thread_id)->first();
+            $thread = Thread::where('id', $participation->thread_id)->firstOrFail();
 
             return
                 // Last read is null and the user has never read the thread
                 $participation->last_read === null
                 ||
                 // Or last read datetime is less than last message datetime
-                $thread->updated_at->greaterThan($participation->last_read);
+                ($thread->updated_at !== null && $thread->updated_at->greaterThan($participation->last_read));
         });
 
         $this->assertEquals($filtered->count(), $unreadThreads->count());

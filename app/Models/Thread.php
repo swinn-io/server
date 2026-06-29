@@ -9,7 +9,15 @@ use Cmgmyr\Messenger\Models\Thread as BaseThread;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 
+/**
+ * @property string $id
+ * @property string $subject
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property Carbon|null $deleted_at
+ */
 class Thread extends BaseThread
 {
     use HasFactory, HasUUID, SoftDeletes;

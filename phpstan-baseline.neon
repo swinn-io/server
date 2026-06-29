@@ -169,12 +169,6 @@ parameters:
 			path: app/Http/Controllers/FrontEnd/PageController.php
 
 		-
-			message: '#^Access to an undefined property App\\Models\\Thread\:\:\$subject\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Http/Controllers/FrontEnd/ThreadController.php
-
-		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$body\.$#'
 			identifier: property.notFound
 			count: 1
@@ -353,210 +347,6 @@ parameters:
 			identifier: return.missing
 			count: 1
 			path: app/Http/Middleware/Authenticate.php
-
-		-
-			message: '#^Access to an undefined property App\\Http\\Resources\\ContactResource\:\:\$created_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Http/Resources/ContactResource.php
-
-		-
-			message: '#^Access to an undefined property App\\Http\\Resources\\ContactResource\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Http/Resources/ContactResource.php
-
-		-
-			message: '#^Access to an undefined property App\\Http\\Resources\\ContactResource\:\:\$name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Http/Resources/ContactResource.php
-
-		-
-			message: '#^Access to an undefined property App\\Http\\Resources\\ContactResource\:\:\$source_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Http/Resources/ContactResource.php
-
-		-
-			message: '#^Access to an undefined property App\\Http\\Resources\\ContactResource\:\:\$source_type\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Http/Resources/ContactResource.php
-
-		-
-			message: '#^Access to an undefined property App\\Http\\Resources\\ContactResource\:\:\$updated_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Http/Resources/ContactResource.php
-
-		-
-			message: '#^Access to an undefined property App\\Http\\Resources\\ContactResource\:\:\$user_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Http/Resources/ContactResource.php
-
-		-
-			message: '#^Cannot cast mixed to string\.$#'
-			identifier: cast.string
-			count: 1
-			path: app/Http/Resources/ContactResource.php
-
-		-
-			message: '#^Access to an undefined property App\\Http\\Resources\\MessageResource\:\:\$body\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Http/Resources/MessageResource.php
-
-		-
-			message: '#^Access to an undefined property App\\Http\\Resources\\MessageResource\:\:\$created_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Http/Resources/MessageResource.php
-
-		-
-			message: '#^Access to an undefined property App\\Http\\Resources\\MessageResource\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Http/Resources/MessageResource.php
-
-		-
-			message: '#^Access to an undefined property App\\Http\\Resources\\MessageResource\:\:\$thread_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Http/Resources/MessageResource.php
-
-		-
-			message: '#^Access to an undefined property App\\Http\\Resources\\MessageResource\:\:\$updated_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Http/Resources/MessageResource.php
-
-		-
-			message: '#^Access to an undefined property App\\Http\\Resources\\MessageResource\:\:\$user_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Http/Resources/MessageResource.php
-
-		-
-			message: '#^Cannot cast mixed to string\.$#'
-			identifier: cast.string
-			count: 1
-			path: app/Http/Resources/MessageResource.php
-
-		-
-			message: '#^Access to an undefined property App\\Http\\Resources\\ParticipantResource\:\:\$created_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Http/Resources/ParticipantResource.php
-
-		-
-			message: '#^Access to an undefined property App\\Http\\Resources\\ParticipantResource\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Http/Resources/ParticipantResource.php
-
-		-
-			message: '#^Access to an undefined property App\\Http\\Resources\\ParticipantResource\:\:\$last_read\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Http/Resources/ParticipantResource.php
-
-		-
-			message: '#^Access to an undefined property App\\Http\\Resources\\ParticipantResource\:\:\$thread_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Http/Resources/ParticipantResource.php
-
-		-
-			message: '#^Access to an undefined property App\\Http\\Resources\\ParticipantResource\:\:\$updated_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Http/Resources/ParticipantResource.php
-
-		-
-			message: '#^Access to an undefined property App\\Http\\Resources\\ParticipantResource\:\:\$user_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Http/Resources/ParticipantResource.php
-
-		-
-			message: '#^Cannot cast mixed to string\.$#'
-			identifier: cast.string
-			count: 1
-			path: app/Http/Resources/ParticipantResource.php
-
-		-
-			message: '#^Access to an undefined property App\\Http\\Resources\\ThreadResource\:\:\$created_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Http/Resources/ThreadResource.php
-
-		-
-			message: '#^Access to an undefined property App\\Http\\Resources\\ThreadResource\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Http/Resources/ThreadResource.php
-
-		-
-			message: '#^Access to an undefined property App\\Http\\Resources\\ThreadResource\:\:\$messages\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Http/Resources/ThreadResource.php
-
-		-
-			message: '#^Access to an undefined property App\\Http\\Resources\\ThreadResource\:\:\$participants\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Http/Resources/ThreadResource.php
-
-		-
-			message: '#^Access to an undefined property App\\Http\\Resources\\ThreadResource\:\:\$subject\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Http/Resources/ThreadResource.php
-
-		-
-			message: '#^Access to an undefined property App\\Http\\Resources\\ThreadResource\:\:\$updated_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Http/Resources/ThreadResource.php
-
-		-
-			message: '#^Cannot cast mixed to string\.$#'
-			identifier: cast.string
-			count: 1
-			path: app/Http/Resources/ThreadResource.php
-
-		-
-			message: '#^Access to an undefined property App\\Http\\Resources\\UserResource\:\:\$created_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Http/Resources/UserResource.php
-
-		-
-			message: '#^Access to an undefined property App\\Http\\Resources\\UserResource\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Http/Resources/UserResource.php
-
-		-
-			message: '#^Access to an undefined property App\\Http\\Resources\\UserResource\:\:\$name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Http/Resources/UserResource.php
-
-		-
-			message: '#^Access to an undefined property App\\Http\\Resources\\UserResource\:\:\$updated_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Http/Resources/UserResource.php
-
-		-
-			message: '#^Cannot cast mixed to string\.$#'
-			identifier: cast.string
-			count: 1
-			path: app/Http/Resources/UserResource.php
 
 		-
 			message: '#^Method App\\Interfaces\\ContactServiceInterface\:\:contacts\(\) return type with generic interface Illuminate\\Contracts\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
@@ -821,12 +611,6 @@ parameters:
 			identifier: method.nonObject
 			count: 1
 			path: app/Notifications/ConfirmPassport.php
-
-		-
-			message: '#^Access to an undefined property App\\Models\\Message\:\:\$body\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Notifications/MessageCreated.php
 
 		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\:\:\$name\.$#'
@@ -1813,24 +1597,6 @@ parameters:
 			path: tests/Unit/LoginTest.php
 
 		-
-			message: '#^Access to an undefined property App\\Models\\Participant\:\:\$last_read\.$#'
-			identifier: property.notFound
-			count: 1
-			path: tests/Unit/MessageTest.php
-
-		-
-			message: '#^Access to an undefined property App\\Models\\Participant\:\:\$thread_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: tests/Unit/MessageTest.php
-
-		-
-			message: '#^Access to an undefined property App\\Models\\Thread\:\:\$subject\.$#'
-			identifier: property.notFound
-			count: 3
-			path: tests/Unit/MessageTest.php
-
-		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$name\.$#'
 			identifier: property.notFound
 			count: 2
@@ -1849,21 +1615,9 @@ parameters:
 			path: tests/Unit/MessageTest.php
 
 		-
-			message: '#^Cannot access property \$id on App\\Models\\User\|Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\User\>\|null\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: tests/Unit/MessageTest.php
-
-		-
 			message: '#^Cannot access property \$id on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
 			identifier: property.nonObject
 			count: 2
-			path: tests/Unit/MessageTest.php
-
-		-
-			message: '#^Cannot access property \$updated_at on App\\Models\\Thread\|null\.$#'
-			identifier: property.nonObject
-			count: 1
 			path: tests/Unit/MessageTest.php
 
 		-
@@ -1874,12 +1628,6 @@ parameters:
 
 		-
 			message: '#^Cannot call method each\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: tests/Unit/MessageTest.php
-
-		-
-			message: '#^Cannot call method greaterThan\(\) on mixed\.$#'
 			identifier: method.nonObject
 			count: 1
 			path: tests/Unit/MessageTest.php
@@ -1915,19 +1663,7 @@ parameters:
 			path: tests/Unit/MessageTest.php
 
 		-
-			message: '#^Parameter \#1 \$user of method App\\Interfaces\\MessageServiceInterface\:\:threads\(\) expects App\\Models\\User, App\\Models\\User\|Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\User\>\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: tests/Unit/MessageTest.php
-
-		-
 			message: '#^Parameter \#1 \$user of method App\\Interfaces\\MessageServiceInterface\:\:threads\(\) expects App\\Models\\User, Illuminate\\Database\\Eloquent\\Model given\.$#'
-			identifier: argument.type
-			count: 1
-			path: tests/Unit/MessageTest.php
-
-		-
-			message: '#^Parameter \#1 \$user of method App\\Interfaces\\MessageServiceInterface\:\:unreadThreads\(\) expects App\\Models\\User, App\\Models\\User\|Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\User\>\|null given\.$#'
 			identifier: argument.type
 			count: 1
 			path: tests/Unit/MessageTest.php
