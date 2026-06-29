@@ -427,26 +427,8 @@ parameters:
 			path: app/MessageTypes/MetricType.php
 
 		-
-			message: '#^Cannot call method getKey\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: app/Models/Contact.php
-
-		-
-			message: '#^Cannot call method getKeyName\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: app/Models/Contact.php
-
-		-
 			message: '#^Class App\\Models\\Contact uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
 			identifier: missingType.generics
-			count: 1
-			path: app/Models/Contact.php
-
-		-
-			message: '#^Method App\\Models\\Contact\:\:bootHasUUID\(\) has no return type specified\.$#'
-			identifier: missingType.return
 			count: 1
 			path: app/Models/Contact.php
 
@@ -475,68 +457,14 @@ parameters:
 			path: app/Models/Contact.php
 
 		-
-			message: '#^Cannot call method getKey\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: app/Models/Message.php
-
-		-
-			message: '#^Cannot call method getKeyName\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: app/Models/Message.php
-
-		-
 			message: '#^Class App\\Models\\Message uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
 			identifier: missingType.generics
 			count: 1
 			path: app/Models/Message.php
 
 		-
-			message: '#^Method App\\Models\\Message\:\:bootHasUUID\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: app/Models/Message.php
-
-		-
-			message: '#^Cannot call method getKey\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: app/Models/Participant.php
-
-		-
-			message: '#^Cannot call method getKeyName\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: app/Models/Participant.php
-
-		-
-			message: '#^Method App\\Models\\Participant\:\:bootHasUUID\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: app/Models/Participant.php
-
-		-
-			message: '#^Cannot call method getKey\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: app/Models/Thread.php
-
-		-
-			message: '#^Cannot call method getKeyName\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: app/Models/Thread.php
-
-		-
 			message: '#^Class App\\Models\\Thread uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
 			identifier: missingType.generics
-			count: 1
-			path: app/Models/Thread.php
-
-		-
-			message: '#^Method App\\Models\\Thread\:\:bootHasUUID\(\) has no return type specified\.$#'
-			identifier: missingType.return
 			count: 1
 			path: app/Models/Thread.php
 
@@ -559,26 +487,8 @@ parameters:
 			path: app/Models/Thread.php
 
 		-
-			message: '#^Cannot call method getKey\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: app/Models/User.php
-
-		-
-			message: '#^Cannot call method getKeyName\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: app/Models/User.php
-
-		-
 			message: '#^Class App\\Models\\User uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
 			identifier: missingType.generics
-			count: 1
-			path: app/Models/User.php
-
-		-
-			message: '#^Method App\\Models\\User\:\:bootHasUUID\(\) has no return type specified\.$#'
-			identifier: missingType.return
 			count: 1
 			path: app/Models/User.php
 
@@ -955,32 +865,8 @@ parameters:
 			path: config/session.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: database/factories/ContactFactory.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: database/factories/ContactFactory.php
-
-		-
 			message: '#^Cannot access property \$id on App\\Models\\User\|null\.$#'
 			identifier: property.nonObject
-			count: 1
-			path: database/factories/ContactFactory.php
-
-		-
-			message: '#^Class Database\\Factories\\ContactFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: database/factories/ContactFactory.php
-
-		-
-			message: '#^PHPDoc type string of property Database\\Factories\\ContactFactory\:\:\$model is not covariant with PHPDoc type class\-string\<Illuminate\\Database\\Eloquent\\Model\> of overridden property Illuminate\\Database\\Eloquent\\Factories\\Factory\<Illuminate\\Database\\Eloquent\\Model\>\:\:\$model\.$#'
-			identifier: property.phpDocType
 			count: 1
 			path: database/factories/ContactFactory.php
 
@@ -997,56 +883,8 @@ parameters:
 			path: database/factories/MessageFactory.php
 
 		-
-			message: '#^Class Database\\Factories\\MessageFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: database/factories/MessageFactory.php
-
-		-
-			message: '#^PHPDoc type string of property Database\\Factories\\MessageFactory\:\:\$model is not covariant with PHPDoc type class\-string\<Illuminate\\Database\\Eloquent\\Model\> of overridden property Illuminate\\Database\\Eloquent\\Factories\\Factory\<Illuminate\\Database\\Eloquent\\Model\>\:\:\$model\.$#'
-			identifier: property.phpDocType
-			count: 1
-			path: database/factories/MessageFactory.php
-
-		-
-			message: '#^Class Database\\Factories\\ParticipantFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: database/factories/ParticipantFactory.php
-
-		-
-			message: '#^PHPDoc type string of property Database\\Factories\\ParticipantFactory\:\:\$model is not covariant with PHPDoc type class\-string\<Illuminate\\Database\\Eloquent\\Model\> of overridden property Illuminate\\Database\\Eloquent\\Factories\\Factory\<Illuminate\\Database\\Eloquent\\Model\>\:\:\$model\.$#'
-			identifier: property.phpDocType
-			count: 1
-			path: database/factories/ParticipantFactory.php
-
-		-
-			message: '#^Class Database\\Factories\\ThreadFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: database/factories/ThreadFactory.php
-
-		-
 			message: '#^Method Database\\Factories\\ThreadFactory\:\:configure\(\) should return \$this\(Database\\Factories\\ThreadFactory\) but returns static\(Database\\Factories\\ThreadFactory\)\.$#'
 			identifier: return.type
-			count: 1
-			path: database/factories/ThreadFactory.php
-
-		-
-			message: '#^PHPDoc type string of property Database\\Factories\\ThreadFactory\:\:\$model is not covariant with PHPDoc type class\-string\<Illuminate\\Database\\Eloquent\\Model\> of overridden property Illuminate\\Database\\Eloquent\\Factories\\Factory\<Illuminate\\Database\\Eloquent\\Model\>\:\:\$model\.$#'
-			identifier: property.phpDocType
-			count: 1
-			path: database/factories/ThreadFactory.php
-
-		-
-			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Factories\\Factory\<Illuminate\\Database\\Eloquent\\Model\>\:\:afterCreating\(\) expects Closure\(Illuminate\\Database\\Eloquent\\Model\)\: mixed, Closure\(App\\Models\\Thread\)\: void given\.$#'
-			identifier: argument.type
-			count: 1
-			path: database/factories/ThreadFactory.php
-
-		-
-			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Factories\\Factory\<Illuminate\\Database\\Eloquent\\Model\>\:\:afterMaking\(\) expects Closure\(Illuminate\\Database\\Eloquent\\Model\)\: mixed, Closure\(App\\Models\\Thread\)\: void given\.$#'
-			identifier: argument.type
 			count: 1
 			path: database/factories/ThreadFactory.php
 
@@ -1055,18 +893,6 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: database/factories/ThreadFactory.php
-
-		-
-			message: '#^Class Database\\Factories\\UserFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: database/factories/UserFactory.php
-
-		-
-			message: '#^PHPDoc type string of property Database\\Factories\\UserFactory\:\:\$model is not covariant with PHPDoc type class\-string\<Illuminate\\Database\\Eloquent\\Model\> of overridden property Illuminate\\Database\\Eloquent\\Factories\\Factory\<Illuminate\\Database\\Eloquent\\Model\>\:\:\$model\.$#'
-			identifier: property.phpDocType
-			count: 1
-			path: database/factories/UserFactory.php
 
 		-
 			message: '#^Method Illuminate\\Database\\Migrations\\Migration@anonymous/database/migrations/2016_06_01_000001_create_oauth_auth_codes_table\.php\:7\:\:getConnection\(\) should return string\|null but returns mixed\.$#'
@@ -1129,18 +955,6 @@ parameters:
 			path: routes/channels.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 3
-			path: tests/Feature/ContactTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: tests/Feature/ContactTest.php
-
-		-
 			message: '#^Cannot access property \$id on App\\Models\\Contact\|null\.$#'
 			identifier: property.nonObject
 			count: 2
@@ -1171,12 +985,6 @@ parameters:
 			path: tests/Feature/ContactTest.php
 
 		-
-			message: '#^Parameter \#1 \$user of method Illuminate\\Foundation\\Testing\\TestCase\:\:actingAs\(\) expects Illuminate\\Contracts\\Auth\\Authenticatable, Illuminate\\Database\\Eloquent\\Model given\.$#'
-			identifier: argument.type
-			count: 1
-			path: tests/Feature/ContactTest.php
-
-		-
 			message: '#^Parameter \#1 \$user of method Illuminate\\Foundation\\Testing\\TestCase\:\:actingAs\(\) expects Illuminate\\Contracts\\Auth\\Authenticatable, mixed given\.$#'
 			identifier: argument.type
 			count: 2
@@ -1195,24 +1003,6 @@ parameters:
 			path: tests/Feature/FrontEndTest.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$name\.$#'
-			identifier: property.notFound
-			count: 2
-			path: tests/Feature/LoginTest.php
-
-		-
-			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:createToken\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: tests/Feature/LoginTest.php
-
-		-
-			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:tokens\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: tests/Feature/LoginTest.php
-
-		-
 			message: '#^Call to an undefined method Mockery\\ExpectationInterface\|Mockery\\HigherOrderMessage\:\:andSet\(\)\.$#'
 			identifier: method.notFound
 			count: 1
@@ -1225,76 +1015,10 @@ parameters:
 			path: tests/Feature/LoginTest.php
 
 		-
-			message: '#^Cannot call method doesntExist\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: tests/Feature/LoginTest.php
-
-		-
-			message: '#^Cannot call method exists\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: tests/Feature/LoginTest.php
-
-		-
-			message: '#^Cannot call method where\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 2
-			path: tests/Feature/LoginTest.php
-
-		-
-			message: '#^Parameter \#1 \$title of static method Illuminate\\Support\\Str\:\:slug\(\) expects string, mixed given\.$#'
+			message: '#^Parameter \#1 \.\.\.\$methodNames of method Mockery\\LegacyMockInterface\:\:shouldReceive\(\) expects string, array\<string, string\> given\.$#'
 			identifier: argument.type
 			count: 1
 			path: tests/Feature/LoginTest.php
-
-		-
-			message: '#^Parameter \#1 \$user of method Illuminate\\Foundation\\Testing\\TestCase\:\:actingAs\(\) expects Illuminate\\Contracts\\Auth\\Authenticatable, Illuminate\\Database\\Eloquent\\Model given\.$#'
-			identifier: argument.type
-			count: 1
-			path: tests/Feature/LoginTest.php
-
-		-
-			message: '#^Parameter \#1 \.\.\.\$methodNames of method Mockery\\LegacyMockInterface\:\:shouldReceive\(\) expects string, array\<string, mixed\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: tests/Feature/LoginTest.php
-
-		-
-			message: '#^Parameter \#1 \$user of method Illuminate\\Foundation\\Testing\\TestCase\:\:actingAs\(\) expects Illuminate\\Contracts\\Auth\\Authenticatable, Illuminate\\Database\\Eloquent\\Model given\.$#'
-			identifier: argument.type
-			count: 3
-			path: tests/Feature/MessageEndpointEnvelopeTest.php
-
-		-
-			message: '#^Parameter \#2 \$user of method App\\Services\\MessageService\:\:newThread\(\) expects App\\Models\\User, Illuminate\\Database\\Eloquent\\Model given\.$#'
-			identifier: argument.type
-			count: 1
-			path: tests/Feature/MessageEndpointEnvelopeTest.php
-
-		-
-			message: '#^Parameter \#2 \$user of method App\\Interfaces\\MessageServiceInterface\:\:newMessage\(\) expects App\\Models\\User, Illuminate\\Database\\Eloquent\\Model given\.$#'
-			identifier: argument.type
-			count: 1
-			path: tests/Feature/MessageEnvelopeTest.php
-
-		-
-			message: '#^Parameter \#2 \$user of method App\\Interfaces\\MessageServiceInterface\:\:newThread\(\) expects App\\Models\\User, Illuminate\\Database\\Eloquent\\Model given\.$#'
-			identifier: argument.type
-			count: 4
-			path: tests/Feature/MessageEnvelopeTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$body\.$#'
-			identifier: property.notFound
-			count: 2
-			path: tests/Feature/MessageTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$subject\.$#'
-			identifier: property.notFound
-			count: 2
-			path: tests/Feature/MessageTest.php
 
 		-
 			message: '#^Cannot access property \$id on App\\Models\\Thread\|null\.$#'
@@ -1303,7 +1027,7 @@ parameters:
 			path: tests/Feature/MessageTest.php
 
 		-
-			message: '#^Cannot access property \$id on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
+			message: '#^Cannot access property \$id on App\\Models\\User\|null\.$#'
 			identifier: property.nonObject
 			count: 1
 			path: tests/Feature/MessageTest.php
@@ -1351,9 +1075,15 @@ parameters:
 			path: tests/Feature/MessageTest.php
 
 		-
+			message: '#^Parameter \#1 \$user of method Illuminate\\Foundation\\Testing\\TestCase\:\:actingAs\(\) expects Illuminate\\Contracts\\Auth\\Authenticatable, App\\Models\\User\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Feature/MessageTest.php
+
+		-
 			message: '#^Parameter \#1 \$user of method Illuminate\\Foundation\\Testing\\TestCase\:\:actingAs\(\) expects Illuminate\\Contracts\\Auth\\Authenticatable, Illuminate\\Database\\Eloquent\\Model\|null given\.$#'
 			identifier: argument.type
-			count: 2
+			count: 1
 			path: tests/Feature/MessageTest.php
 
 		-
@@ -1411,24 +1141,6 @@ parameters:
 			path: tests/Feature/TypeDiscoveryTest.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 3
-			path: tests/Feature/UserTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$name\.$#'
-			identifier: property.notFound
-			count: 2
-			path: tests/Feature/UserTest.php
-
-		-
-			message: '#^Parameter \#1 \$user of method Illuminate\\Foundation\\Testing\\TestCase\:\:actingAs\(\) expects Illuminate\\Contracts\\Auth\\Authenticatable, Illuminate\\Database\\Eloquent\\Model given\.$#'
-			identifier: argument.type
-			count: 2
-			path: tests/Feature/UserTest.php
-
-		-
 			message: '#^Cannot call method bootstrap\(\) on mixed\.$#'
 			identifier: method.nonObject
 			count: 1
@@ -1445,12 +1157,6 @@ parameters:
 			identifier: return.type
 			count: 1
 			path: tests/TestCase.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 7
-			path: tests/Unit/ContactTest.php
 
 		-
 			message: '#^Cannot access property \$source_id on App\\Models\\Contact\|null\.$#'
@@ -1475,48 +1181,6 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: tests/Unit/ContactTest.php
-
-		-
-			message: '#^Parameter \#1 \$user of method App\\Interfaces\\ContactServiceInterface\:\:addContact\(\) expects App\\Models\\User, Illuminate\\Database\\Eloquent\\Model given\.$#'
-			identifier: argument.type
-			count: 4
-			path: tests/Unit/ContactTest.php
-
-		-
-			message: '#^Parameter \#1 \$user of method App\\Interfaces\\ContactServiceInterface\:\:contacts\(\) expects App\\Models\\User, Illuminate\\Database\\Eloquent\\Model given\.$#'
-			identifier: argument.type
-			count: 3
-			path: tests/Unit/ContactTest.php
-
-		-
-			message: '#^Parameter \#2 \$contact of method App\\Interfaces\\ContactServiceInterface\:\:addContact\(\) expects App\\Models\\User, Illuminate\\Database\\Eloquent\\Model given\.$#'
-			identifier: argument.type
-			count: 4
-			path: tests/Unit/ContactTest.php
-
-		-
-			message: '#^Parameter \#2 \$user of method App\\Interfaces\\ContactServiceInterface\:\:contact\(\) expects App\\Models\\User, Illuminate\\Database\\Eloquent\\Model given\.$#'
-			identifier: argument.type
-			count: 1
-			path: tests/Unit/ContactTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$name\.$#'
-			identifier: property.notFound
-			count: 3
-			path: tests/Unit/LoginTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$provider_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: tests/Unit/LoginTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$provider_name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: tests/Unit/LoginTest.php
 
 		-
 			message: '#^Call to an undefined method App\\Interfaces\\LoginServiceInterface\:\:client\(\)\.$#'
@@ -1567,7 +1231,7 @@ parameters:
 			path: tests/Unit/LoginTest.php
 
 		-
-			message: '#^Parameter \#1 \.\.\.\$methodNames of method Mockery\\LegacyMockInterface\:\:shouldReceive\(\) expects string, array\<string, mixed\> given\.$#'
+			message: '#^Parameter \#1 \.\.\.\$methodNames of method Mockery\\LegacyMockInterface\:\:shouldReceive\(\) expects string, array\<string, string\> given\.$#'
 			identifier: argument.type
 			count: 1
 			path: tests/Unit/LoginTest.php
@@ -1577,30 +1241,6 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: tests/Unit/LoginTest.php
-
-		-
-			message: '#^Part \$user\-\>provider_id \(mixed\) of encapsed string cannot be cast to string\.$#'
-			identifier: encapsedStringPart.nonString
-			count: 1
-			path: tests/Unit/LoginTest.php
-
-		-
-			message: '#^Part \$user\-\>provider_name \(mixed\) of encapsed string cannot be cast to string\.$#'
-			identifier: encapsedStringPart.nonString
-			count: 1
-			path: tests/Unit/LoginTest.php
-
-		-
-			message: '#^Unable to resolve the template type TValue in call to function collect$#'
-			identifier: argument.templateType
-			count: 1
-			path: tests/Unit/LoginTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$name\.$#'
-			identifier: property.notFound
-			count: 2
-			path: tests/Unit/MessageTest.php
 
 		-
 			message: '#^Call to an undefined method Illuminate\\Contracts\\Pagination\\LengthAwarePaginator\:\:count\(\)\.$#'
@@ -1615,7 +1255,7 @@ parameters:
 			path: tests/Unit/MessageTest.php
 
 		-
-			message: '#^Cannot access property \$id on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
+			message: '#^Cannot access property \$id on App\\Models\\User\|null\.$#'
 			identifier: property.nonObject
 			count: 2
 			path: tests/Unit/MessageTest.php
@@ -1651,25 +1291,13 @@ parameters:
 			path: tests/Unit/MessageTest.php
 
 		-
-			message: '#^Parameter \#1 \$user of method App\\Interfaces\\ContactServiceInterface\:\:contacts\(\) expects App\\Models\\User, Illuminate\\Database\\Eloquent\\Model given\.$#'
+			message: '#^Parameter \#1 \$user of method App\\Interfaces\\MessageServiceInterface\:\:markAsReadAll\(\) expects App\\Models\\User, App\\Models\\User\|null given\.$#'
 			identifier: argument.type
 			count: 1
 			path: tests/Unit/MessageTest.php
 
 		-
-			message: '#^Parameter \#1 \$user of method App\\Interfaces\\MessageServiceInterface\:\:markAsReadAll\(\) expects App\\Models\\User, Illuminate\\Database\\Eloquent\\Model\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: tests/Unit/MessageTest.php
-
-		-
-			message: '#^Parameter \#1 \$user of method App\\Interfaces\\MessageServiceInterface\:\:threads\(\) expects App\\Models\\User, Illuminate\\Database\\Eloquent\\Model given\.$#'
-			identifier: argument.type
-			count: 1
-			path: tests/Unit/MessageTest.php
-
-		-
-			message: '#^Parameter \#1 \$user of method App\\Interfaces\\MessageServiceInterface\:\:unreadThreads\(\) expects App\\Models\\User, Illuminate\\Database\\Eloquent\\Model\|null given\.$#'
+			message: '#^Parameter \#1 \$user of method App\\Interfaces\\MessageServiceInterface\:\:unreadThreads\(\) expects App\\Models\\User, App\\Models\\User\|null given\.$#'
 			identifier: argument.type
 			count: 4
 			path: tests/Unit/MessageTest.php
@@ -1699,13 +1327,7 @@ parameters:
 			path: tests/Unit/MessageTest.php
 
 		-
-			message: '#^Parameter \#2 \$user of method App\\Interfaces\\MessageServiceInterface\:\:addParticipant\(\) expects App\\Models\\User, Illuminate\\Database\\Eloquent\\Model given\.$#'
-			identifier: argument.type
-			count: 1
-			path: tests/Unit/MessageTest.php
-
-		-
-			message: '#^Parameter \#2 \$user of method App\\Interfaces\\MessageServiceInterface\:\:markAsRead\(\) expects App\\Models\\User, Illuminate\\Database\\Eloquent\\Model\|null given\.$#'
+			message: '#^Parameter \#2 \$user of method App\\Interfaces\\MessageServiceInterface\:\:markAsRead\(\) expects App\\Models\\User, App\\Models\\User\|null given\.$#'
 			identifier: argument.type
 			count: 1
 			path: tests/Unit/MessageTest.php
@@ -1717,19 +1339,7 @@ parameters:
 			path: tests/Unit/MessageTest.php
 
 		-
-			message: '#^Parameter \#2 \$user of method App\\Interfaces\\MessageServiceInterface\:\:newMessage\(\) expects App\\Models\\User, Illuminate\\Database\\Eloquent\\Model given\.$#'
-			identifier: argument.type
-			count: 1
-			path: tests/Unit/MessageTest.php
-
-		-
-			message: '#^Parameter \#2 \$user of method App\\Interfaces\\MessageServiceInterface\:\:newThread\(\) expects App\\Models\\User, Illuminate\\Database\\Eloquent\\Model given\.$#'
-			identifier: argument.type
-			count: 4
-			path: tests/Unit/MessageTest.php
-
-		-
-			message: '#^Parameter \#2 \$user of method App\\Interfaces\\MessageServiceInterface\:\:newThread\(\) expects App\\Models\\User, Illuminate\\Database\\Eloquent\\Model\|null given\.$#'
+			message: '#^Parameter \#2 \$user of method App\\Interfaces\\MessageServiceInterface\:\:newThread\(\) expects App\\Models\\User, App\\Models\\User\|null given\.$#'
 			identifier: argument.type
 			count: 4
 			path: tests/Unit/MessageTest.php

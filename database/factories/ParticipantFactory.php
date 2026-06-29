@@ -7,12 +7,15 @@ use App\Models\Thread;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends Factory<Participant>
+ */
 class ParticipantFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
-     * @var string
+     * @var class-string<Participant>
      */
     protected $model = Participant::class;
 

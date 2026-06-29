@@ -7,12 +7,15 @@ use App\Models\Thread;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
+/**
+ * @extends Factory<Thread>
+ */
 class ThreadFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
-     * @var string
+     * @var class-string<Thread>
      */
     protected $model = Thread::class;
 

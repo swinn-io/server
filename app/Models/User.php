@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Traits\HasUUID;
 use Cmgmyr\Messenger\Traits\Messagable;
+use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -24,6 +25,8 @@ use Laravel\Passport\HasApiTokens;
  * @property array<string, mixed> $profile
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ *
+ * @use HasFactory<UserFactory>
  */
 class User extends Authenticatable
 {

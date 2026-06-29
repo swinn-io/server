@@ -6,12 +6,15 @@ use App\Models\Contact;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends Factory<Contact>
+ */
 class ContactFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
-     * @var string
+     * @var class-string<Contact>
      */
     protected $model = Contact::class;
 
