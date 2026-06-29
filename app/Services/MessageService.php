@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Exceptions\InvalidEnvelopeException;
 use App\Interfaces\ContactServiceInterface;
 use App\Interfaces\MessageServiceInterface;
 use App\Models\Message;
@@ -11,6 +12,7 @@ use App\Models\User;
 use App\Notifications\MessageCreated;
 use App\Notifications\ParticipantCreated;
 use App\Notifications\ThreadCreated;
+use App\Services\TypeRegistry;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
@@ -101,6 +103,8 @@ class MessageService implements MessageServiceInterface
      */
     public function newThread(string $subject, User $user, array $content, ?array $recipients = []): Thread
     {
+        $this->assertValidEnvelope($content);
+
         /** @var $thread Thread */
         $thread = Thread::create([
             'subject' => $subject,
@@ -137,6 +141,8 @@ class MessageService implements MessageServiceInterface
      */
     public function newMessage(Thread $thread, User $user, array $content): Message
     {
+        $this->assertValidEnvelope($content);
+
         $message = Message::create([
             'thread_id' => $thread->id,
             'user_id' => $user->id,
@@ -202,5 +208,19 @@ class MessageService implements MessageServiceInterface
         Notification::send($users, new ParticipantCreated($return));
 
         return $return;
+    }
+
+    /**
+     * Validate a typed envelope, throwing on failure.
+     *
+     * @param  array  $envelope
+     */
+    private function assertValidEnvelope(array $envelope): void
+    {
+        $error = app(TypeRegistry::class)->validate($envelope);
+
+        if ($error !== null) {
+            throw new InvalidEnvelopeException($error);
+        }
     }
 }

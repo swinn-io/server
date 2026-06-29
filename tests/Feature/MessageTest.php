@@ -140,7 +140,7 @@ class MessageTest extends TestCase
         $thread = Thread::inRandomOrder()->first();
         $user = $thread->creator();
         $messagesCount = $thread->messages()->count();
-        $content = ['test' => 'data'];
+        $content = ['type' => 'mood', 'version' => '1.0', 'payload' => ['mood' => 'happy']];
         $response = $this
             ->actingAs($user, 'api')
             ->postJson(route('message.new', ['id' => $thread->id]), [

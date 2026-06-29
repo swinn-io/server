@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('types', ['as' => 'types', 'uses' => 'TypeController@index']);
+
 Route::middleware('auth:api')->group(function () {
     Route::group(['prefix' => 'contact'], function () {
         Route::get('/', ['as' => 'contact', 'uses' => 'ContactController@index']);
