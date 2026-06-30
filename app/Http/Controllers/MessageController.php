@@ -7,9 +7,9 @@ use App\Http\Requests\MessageStoreRequest;
 use App\Http\Resources\MessageResource;
 use App\Http\Resources\ThreadResource;
 use App\Interfaces\MessageServiceInterface;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Illuminate\Support\Arr;
 
 class MessageController extends Controller
 {
@@ -30,6 +30,7 @@ class MessageController extends Controller
      */
     public function index(Request $request)
     {
+        /** @var User $user */
         $user = $request->user();
         $threads = $this->service->threads($user);
 
@@ -41,13 +42,15 @@ class MessageController extends Controller
      */
     public function store(MessageStoreRequest $request)
     {
+        /** @var array{subject: string, content: array<string, mixed>, recipients?: array<int, string>} $values */
         $values = $request->validated();
+        /** @var User $user */
         $user = $request->user();
         $thread = $this->service->newThread(
             $values['subject'],
             $user,
             $values['content'],
-            Arr::get($values, 'recipients', [])
+            $values['recipients'] ?? []
         );
 
         return new ThreadResource($thread);
@@ -70,7 +73,9 @@ class MessageController extends Controller
      */
     public function new(string $id, MessageNewRequest $request)
     {
+        /** @var array{body: array<string, mixed>} $values */
         $values = $request->validated();
+        /** @var User $user */
         $user = $request->user();
         $thread = $this->service->thread($id);
         $message = $this->service->newMessage(

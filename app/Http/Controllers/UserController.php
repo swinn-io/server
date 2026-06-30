@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\UserResource;
 use App\Interfaces\UserServiceInterface;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -25,7 +26,10 @@ class UserController extends Controller
      */
     public function me(Request $request)
     {
-        return $this->show($request->user()->id);
+        /** @var User $user */
+        $user = $request->user();
+
+        return $this->show($user->id);
     }
 
     /**

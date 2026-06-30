@@ -1,30 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Parameter \#1 \$to of function redirect expects string\|null, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Http/Controllers/ContactController.php
-
-		-
-			message: '#^Parameter \#1 \$user of method App\\Interfaces\\ContactServiceInterface\:\:addContact\(\) expects App\\Models\\User, App\\Models\\User\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Http/Controllers/ContactController.php
-
-		-
-			message: '#^Parameter \#1 \$user of method App\\Interfaces\\ContactServiceInterface\:\:contacts\(\) expects App\\Models\\User, App\\Models\\User\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Http/Controllers/ContactController.php
-
-		-
-			message: '#^Parameter \#2 \$user of method App\\Interfaces\\ContactServiceInterface\:\:contact\(\) expects App\\Models\\User, App\\Models\\User\|null given\.$#'
-			identifier: argument.type
-			count: 2
-			path: app/Http/Controllers/ContactController.php
-
-		-
 			message: '#^Call to an undefined method Illuminate\\Contracts\\Pagination\\LengthAwarePaginator\:\:map\(\)\.$#'
 			identifier: method.notFound
 			count: 1
@@ -76,12 +52,6 @@ parameters:
 			message: '#^Cannot call method values\(\) on mixed\.$#'
 			identifier: method.nonObject
 			count: 2
-			path: app/Http/Controllers/FrontEnd/DashboardController.php
-
-		-
-			message: '#^Parameter \#1 \$user of method App\\Interfaces\\MessageServiceInterface\:\:threads\(\) expects App\\Models\\User, App\\Models\\User\|null given\.$#'
-			identifier: argument.type
-			count: 1
 			path: app/Http/Controllers/FrontEnd/DashboardController.php
 
 		-
@@ -167,54 +137,6 @@ parameters:
 			identifier: argument.templateType
 			count: 1
 			path: app/Http/Controllers/LoginController.php
-
-		-
-			message: '#^Parameter \#1 \$subject of method App\\Interfaces\\MessageServiceInterface\:\:newThread\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Http/Controllers/MessageController.php
-
-		-
-			message: '#^Parameter \#1 \$user of method App\\Interfaces\\MessageServiceInterface\:\:threads\(\) expects App\\Models\\User, App\\Models\\User\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Http/Controllers/MessageController.php
-
-		-
-			message: '#^Parameter \#2 \$user of method App\\Interfaces\\MessageServiceInterface\:\:newMessage\(\) expects App\\Models\\User, App\\Models\\User\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Http/Controllers/MessageController.php
-
-		-
-			message: '#^Parameter \#2 \$user of method App\\Interfaces\\MessageServiceInterface\:\:newThread\(\) expects App\\Models\\User, App\\Models\\User\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Http/Controllers/MessageController.php
-
-		-
-			message: '#^Parameter \#3 \$content of method App\\Interfaces\\MessageServiceInterface\:\:newMessage\(\) expects array, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Http/Controllers/MessageController.php
-
-		-
-			message: '#^Parameter \#3 \$content of method App\\Interfaces\\MessageServiceInterface\:\:newThread\(\) expects array, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Http/Controllers/MessageController.php
-
-		-
-			message: '#^Parameter \#4 \$recipients of method App\\Interfaces\\MessageServiceInterface\:\:newThread\(\) expects array, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Http/Controllers/MessageController.php
-
-		-
-			message: '#^Cannot access property \$id on App\\Models\\User\|null\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: app/Http/Controllers/UserController.php
 
 		-
 			message: '#^Method App\\Http\\Middleware\\Authenticate\:\:redirectTo\(\) should return string\|null but return statement is missing\.$#'

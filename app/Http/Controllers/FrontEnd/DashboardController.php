@@ -4,6 +4,7 @@ namespace App\Http\Controllers\FrontEnd;
 
 use App\Http\Controllers\Controller;
 use App\Interfaces\MessageServiceInterface;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
@@ -19,6 +20,7 @@ class DashboardController extends Controller
      */
     public function index(MessageServiceInterface $messages)
     {
+        /** @var User $user */
         $user = Auth::user();
         $threads = $messages->threads($user);
 
