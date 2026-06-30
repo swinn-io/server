@@ -79,94 +79,10 @@ parameters:
 			path: app/Http/Controllers/FrontEnd/DashboardController.php
 
 		-
-			message: '#^Method App\\Http\\Controllers\\FrontEnd\\DashboardController\:\:create\(\) should return Illuminate\\Http\\Response but return statement is missing\.$#'
-			identifier: return.missing
-			count: 1
-			path: app/Http/Controllers/FrontEnd/DashboardController.php
-
-		-
-			message: '#^Method App\\Http\\Controllers\\FrontEnd\\DashboardController\:\:destroy\(\) should return Illuminate\\Http\\Response but return statement is missing\.$#'
-			identifier: return.missing
-			count: 1
-			path: app/Http/Controllers/FrontEnd/DashboardController.php
-
-		-
-			message: '#^Method App\\Http\\Controllers\\FrontEnd\\DashboardController\:\:edit\(\) should return Illuminate\\Http\\Response but return statement is missing\.$#'
-			identifier: return.missing
-			count: 1
-			path: app/Http/Controllers/FrontEnd/DashboardController.php
-
-		-
-			message: '#^Method App\\Http\\Controllers\\FrontEnd\\DashboardController\:\:index\(\) should return Illuminate\\Http\\Response but returns Illuminate\\View\\View\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Http/Controllers/FrontEnd/DashboardController.php
-
-		-
-			message: '#^Method App\\Http\\Controllers\\FrontEnd\\DashboardController\:\:show\(\) should return Illuminate\\Http\\Response but return statement is missing\.$#'
-			identifier: return.missing
-			count: 1
-			path: app/Http/Controllers/FrontEnd/DashboardController.php
-
-		-
-			message: '#^Method App\\Http\\Controllers\\FrontEnd\\DashboardController\:\:store\(\) should return Illuminate\\Http\\Response but return statement is missing\.$#'
-			identifier: return.missing
-			count: 1
-			path: app/Http/Controllers/FrontEnd/DashboardController.php
-
-		-
-			message: '#^Method App\\Http\\Controllers\\FrontEnd\\DashboardController\:\:update\(\) should return Illuminate\\Http\\Response but return statement is missing\.$#'
-			identifier: return.missing
-			count: 1
-			path: app/Http/Controllers/FrontEnd/DashboardController.php
-
-		-
 			message: '#^Parameter \#1 \$user of method App\\Interfaces\\MessageServiceInterface\:\:threads\(\) expects App\\Models\\User, App\\Models\\User\|null given\.$#'
 			identifier: argument.type
 			count: 1
 			path: app/Http/Controllers/FrontEnd/DashboardController.php
-
-		-
-			message: '#^Method App\\Http\\Controllers\\FrontEnd\\PageController\:\:create\(\) should return Illuminate\\Http\\Response but return statement is missing\.$#'
-			identifier: return.missing
-			count: 1
-			path: app/Http/Controllers/FrontEnd/PageController.php
-
-		-
-			message: '#^Method App\\Http\\Controllers\\FrontEnd\\PageController\:\:destroy\(\) should return Illuminate\\Http\\Response but return statement is missing\.$#'
-			identifier: return.missing
-			count: 1
-			path: app/Http/Controllers/FrontEnd/PageController.php
-
-		-
-			message: '#^Method App\\Http\\Controllers\\FrontEnd\\PageController\:\:edit\(\) should return Illuminate\\Http\\Response but return statement is missing\.$#'
-			identifier: return.missing
-			count: 1
-			path: app/Http/Controllers/FrontEnd/PageController.php
-
-		-
-			message: '#^Method App\\Http\\Controllers\\FrontEnd\\PageController\:\:index\(\) should return Illuminate\\Http\\Response but returns Illuminate\\View\\View\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Http/Controllers/FrontEnd/PageController.php
-
-		-
-			message: '#^Method App\\Http\\Controllers\\FrontEnd\\PageController\:\:show\(\) should return Illuminate\\Http\\Response but return statement is missing\.$#'
-			identifier: return.missing
-			count: 1
-			path: app/Http/Controllers/FrontEnd/PageController.php
-
-		-
-			message: '#^Method App\\Http\\Controllers\\FrontEnd\\PageController\:\:store\(\) should return Illuminate\\Http\\Response but return statement is missing\.$#'
-			identifier: return.missing
-			count: 1
-			path: app/Http/Controllers/FrontEnd/PageController.php
-
-		-
-			message: '#^Method App\\Http\\Controllers\\FrontEnd\\PageController\:\:update\(\) should return Illuminate\\Http\\Response but return statement is missing\.$#'
-			identifier: return.missing
-			count: 1
-			path: app/Http/Controllers/FrontEnd/PageController.php
 
 		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$body\.$#'
@@ -201,48 +117,6 @@ parameters:
 		-
 			message: '#^Cannot call method diffForHumans\(\) on mixed\.$#'
 			identifier: method.nonObject
-			count: 1
-			path: app/Http/Controllers/FrontEnd/ThreadController.php
-
-		-
-			message: '#^Method App\\Http\\Controllers\\FrontEnd\\ThreadController\:\:create\(\) should return Illuminate\\Http\\Response but return statement is missing\.$#'
-			identifier: return.missing
-			count: 1
-			path: app/Http/Controllers/FrontEnd/ThreadController.php
-
-		-
-			message: '#^Method App\\Http\\Controllers\\FrontEnd\\ThreadController\:\:destroy\(\) should return Illuminate\\Http\\Response but return statement is missing\.$#'
-			identifier: return.missing
-			count: 1
-			path: app/Http/Controllers/FrontEnd/ThreadController.php
-
-		-
-			message: '#^Method App\\Http\\Controllers\\FrontEnd\\ThreadController\:\:edit\(\) should return Illuminate\\Http\\Response but return statement is missing\.$#'
-			identifier: return.missing
-			count: 1
-			path: app/Http/Controllers/FrontEnd/ThreadController.php
-
-		-
-			message: '#^Method App\\Http\\Controllers\\FrontEnd\\ThreadController\:\:index\(\) should return Illuminate\\Http\\Response but return statement is missing\.$#'
-			identifier: return.missing
-			count: 1
-			path: app/Http/Controllers/FrontEnd/ThreadController.php
-
-		-
-			message: '#^Method App\\Http\\Controllers\\FrontEnd\\ThreadController\:\:show\(\) should return Illuminate\\Http\\Response but returns Illuminate\\View\\View\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Http/Controllers/FrontEnd/ThreadController.php
-
-		-
-			message: '#^Method App\\Http\\Controllers\\FrontEnd\\ThreadController\:\:store\(\) should return Illuminate\\Http\\Response but return statement is missing\.$#'
-			identifier: return.missing
-			count: 1
-			path: app/Http/Controllers/FrontEnd/ThreadController.php
-
-		-
-			message: '#^Method App\\Http\\Controllers\\FrontEnd\\ThreadController\:\:update\(\) should return Illuminate\\Http\\Response but return statement is missing\.$#'
-			identifier: return.missing
 			count: 1
 			path: app/Http/Controllers/FrontEnd/ThreadController.php
 
