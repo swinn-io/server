@@ -1,7 +1,7 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Call to an undefined method Illuminate\\Contracts\\Pagination\\LengthAwarePaginator\:\:map\(\)\.$#'
+			message: '#^Call to an undefined method Illuminate\\Contracts\\Pagination\\LengthAwarePaginator\<int, App\\Models\\Thread\>\:\:map\(\)\.$#'
 			identifier: method.notFound
 			count: 1
 			path: app/Http/Controllers/FrontEnd/DashboardController.php
@@ -167,42 +167,6 @@ parameters:
 			identifier: missingType.iterableValue
 			count: 1
 			path: app/Interfaces/LoginServiceInterface.php
-
-		-
-			message: '#^Method App\\Interfaces\\MessageServiceInterface\:\:newMessage\(\) has parameter \$content with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: app/Interfaces/MessageServiceInterface.php
-
-		-
-			message: '#^Method App\\Interfaces\\MessageServiceInterface\:\:newThread\(\) has parameter \$content with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: app/Interfaces/MessageServiceInterface.php
-
-		-
-			message: '#^Method App\\Interfaces\\MessageServiceInterface\:\:newThread\(\) has parameter \$recipients with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: app/Interfaces/MessageServiceInterface.php
-
-		-
-			message: '#^Method App\\Interfaces\\MessageServiceInterface\:\:threadParticipants\(\) return type with generic class Illuminate\\Support\\Collection does not specify its types\: TKey, TValue$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Interfaces/MessageServiceInterface.php
-
-		-
-			message: '#^Method App\\Interfaces\\MessageServiceInterface\:\:threads\(\) return type with generic interface Illuminate\\Contracts\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Interfaces/MessageServiceInterface.php
-
-		-
-			message: '#^Method App\\Interfaces\\MessageServiceInterface\:\:unreadThreads\(\) return type with generic class Illuminate\\Support\\Collection does not specify its types\: TKey, TValue$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Interfaces/MessageServiceInterface.php
 
 		-
 			message: '#^Part \$payload\[''quantity''\] \(mixed\) of encapsed string cannot be cast to string\.$#'
@@ -503,102 +467,6 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: app/Services/LoginService.php
-
-		-
-			message: '#^Cannot access property \$participants on App\\Models\\Thread\|null\.$#'
-			identifier: property.nonObject
-			count: 2
-			path: app/Services/MessageService.php
-
-		-
-			message: '#^Method App\\Services\\MessageService\:\:addParticipant\(\) should return App\\Models\\Participant but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Services/MessageService.php
-
-		-
-			message: '#^Method App\\Services\\MessageService\:\:assertValidEnvelope\(\) has parameter \$envelope with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: app/Services/MessageService.php
-
-		-
-			message: '#^Method App\\Services\\MessageService\:\:markAsRead\(\) should return App\\Models\\Participant but returns Illuminate\\Database\\Eloquent\\Model\|null\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Services/MessageService.php
-
-		-
-			message: '#^Method App\\Services\\MessageService\:\:markAsReadAll\(\) should return bool but returns int\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Services/MessageService.php
-
-		-
-			message: '#^Method App\\Services\\MessageService\:\:newMessage\(\) has parameter \$content with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: app/Services/MessageService.php
-
-		-
-			message: '#^Method App\\Services\\MessageService\:\:newThread\(\) has parameter \$content with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: app/Services/MessageService.php
-
-		-
-			message: '#^Method App\\Services\\MessageService\:\:newThread\(\) has parameter \$recipients with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: app/Services/MessageService.php
-
-		-
-			message: '#^Method App\\Services\\MessageService\:\:thread\(\) should return App\\Models\\Thread but returns App\\Models\\Thread\|null\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Services/MessageService.php
-
-		-
-			message: '#^Method App\\Services\\MessageService\:\:threadParticipant\(\) return type with generic class Illuminate\\Support\\Collection does not specify its types\: TKey, TValue$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Services/MessageService.php
-
-		-
-			message: '#^Method App\\Services\\MessageService\:\:threadParticipants\(\) return type with generic class Illuminate\\Support\\Collection does not specify its types\: TKey, TValue$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Services/MessageService.php
-
-		-
-			message: '#^Method App\\Services\\MessageService\:\:threads\(\) return type with generic interface Illuminate\\Contracts\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Services/MessageService.php
-
-		-
-			message: '#^Method App\\Services\\MessageService\:\:unreadThreads\(\) return type with generic class Illuminate\\Support\\Collection does not specify its types\: TKey, TValue$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Services/MessageService.php
-
-		-
-			message: '#^PHPDoc tag @var has invalid value \(\$thread Thread\)\: Unexpected token "\$thread", expected type at offset 9 on line 1$#'
-			identifier: phpDoc.parseError
-			count: 1
-			path: app/Services/MessageService.php
-
-		-
-			message: '#^Parameter \#1 \$participant of class App\\Notifications\\ParticipantCreated constructor expects App\\Models\\Participant, Illuminate\\Database\\Eloquent\\Model given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/MessageService.php
-
-		-
-			message: '#^Parameter \#2 \$user of method App\\Services\\MessageService\:\:addParticipant\(\) expects App\\Models\\User, App\\Models\\User\|Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\User\>\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/MessageService.php
 
 		-
 			message: '#^Cannot call method name\(\) on App\\Interfaces\\MessageTypeInterface\|null\.$#'
@@ -1039,13 +907,13 @@ parameters:
 			path: tests/Unit/LoginTest.php
 
 		-
-			message: '#^Call to an undefined method Illuminate\\Contracts\\Pagination\\LengthAwarePaginator\:\:count\(\)\.$#'
+			message: '#^Call to an undefined method Illuminate\\Contracts\\Pagination\\LengthAwarePaginator\<int, App\\Models\\Thread\>\:\:count\(\)\.$#'
 			identifier: method.notFound
 			count: 1
 			path: tests/Unit/MessageTest.php
 
 		-
-			message: '#^Call to an undefined method Illuminate\\Contracts\\Pagination\\LengthAwarePaginator\:\:random\(\)\.$#'
+			message: '#^Call to an undefined method Illuminate\\Contracts\\Pagination\\LengthAwarePaginator\<int, App\\Models\\Thread\>\:\:random\(\)\.$#'
 			identifier: method.notFound
 			count: 1
 			path: tests/Unit/MessageTest.php
@@ -1070,12 +938,6 @@ parameters:
 
 		-
 			message: '#^Parameter \#1 \$object of function get_class expects object, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: tests/Unit/MessageTest.php
-
-		-
-			message: '#^Parameter \#1 \$thread of method App\\Interfaces\\MessageServiceInterface\:\:markAsRead\(\) expects App\\Models\\Thread, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: tests/Unit/MessageTest.php

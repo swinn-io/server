@@ -11,6 +11,7 @@ use Database\Seeders\MessagingSeeder;
 use Database\Seeders\UserSeeder;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
@@ -149,6 +150,7 @@ class MessageTest extends TestCase
         $users = User::factory()
             ->count(5)
             ->create();
+        /** @var array<int, string> $recipients */
         $recipients = $users->pluck('id')->toArray();
         $create = $this->service->newThread('New Thread!', $users->first(), $this->envelope(), $recipients);
         $thread = $this->service->thread($create->id);
@@ -191,8 +193,9 @@ class MessageTest extends TestCase
             User::factory()
                 ->count(5)
                 ->create();
-        $recipients = $users->pluck('id');
-        $thread = $this->service->newThread('New Thread!', $users->first(), $this->envelope(), $recipients->toArray());
+        /** @var array<int, string> $recipients */
+        $recipients = $users->pluck('id')->toArray();
+        $thread = $this->service->newThread('New Thread!', $users->first(), $this->envelope(), $recipients);
         $lastMessage = null;
         $messageNum = rand(2, 10);
 

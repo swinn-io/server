@@ -14,12 +14,15 @@ interface MessageServiceInterface
 {
     /**
      * All threads that user is participating in.
+     *
+     * @return LengthAwarePaginator<int, Thread>
      */
     public function threads(User $user): LengthAwarePaginator;
 
     /**
      * All threads that user is participating in, with new messages.
      *
+     * @return Collection<int, Thread>
      *
      * @throws ModelNotFoundException
      */
@@ -32,16 +35,23 @@ interface MessageServiceInterface
 
     /**
      * User ids that are associated with the thread.
+     *
+     * @return Collection<int, Participant>
      */
     public function threadParticipants(string $thread_id): Collection;
 
     /**
      * New message thread.
+     *
+     * @param  array<string, mixed>  $content
+     * @param  array<int, string>  $recipients
      */
     public function newThread(string $subject, User $user, array $content, array $recipients = []): Thread;
 
     /**
      * New message.
+     *
+     * @param  array<string, mixed>  $content
      */
     public function newMessage(Thread $thread, User $user, array $content): Message;
 
