@@ -31,48 +31,6 @@ parameters:
 			path: app/Http/Middleware/Authenticate.php
 
 		-
-			message: '#^Part \$payload\[''quantity''\] \(mixed\) of encapsed string cannot be cast to string\.$#'
-			identifier: encapsedStringPart.nonString
-			count: 1
-			path: app/MessageTypes/MetricType.php
-
-		-
-			message: '#^Part \$payload\[''unit''\] \(mixed\) of encapsed string cannot be cast to string\.$#'
-			identifier: encapsedStringPart.nonString
-			count: 1
-			path: app/MessageTypes/MetricType.php
-
-		-
-			message: '#^Possibly invalid array key type mixed\.$#'
-			identifier: offsetAccess.invalidOffset
-			count: 1
-			path: app/MessageTypes/MetricType.php
-
-		-
-			message: '#^Access to an undefined property App\\Notifications\\ConfirmPassport\:\:\$token\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Notifications/ConfirmPassport.php
-
-		-
-			message: '#^Binary operation "\." between ''\: '' and mixed results in an error\.$#'
-			identifier: binaryOp.invalid
-			count: 1
-			path: app/Notifications/ConfirmPassport.php
-
-		-
-			message: '#^Binary operation "\." between mixed and '' One Time Password'' results in an error\.$#'
-			identifier: binaryOp.invalid
-			count: 1
-			path: app/Notifications/ConfirmPassport.php
-
-		-
-			message: '#^Cannot call method plainText\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: app/Notifications/ConfirmPassport.php
-
-		-
 			message: '#^Cannot call method make\(\) on mixed\.$#'
 			identifier: method.nonObject
 			count: 1
@@ -101,42 +59,6 @@ parameters:
 			identifier: nullCoalesce.variable
 			count: 1
 			path: app/Providers/TelescopeServiceProvider.php
-
-		-
-			message: '#^Cannot call method name\(\) on App\\Interfaces\\MessageTypeInterface\|null\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: app/Services/TypeRegistry.php
-
-		-
-			message: '#^Cannot call method schema\(\) on App\\Interfaces\\MessageTypeInterface\|null\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: app/Services/TypeRegistry.php
-
-		-
-			message: '#^Cannot call method version\(\) on App\\Interfaces\\MessageTypeInterface\|null\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: app/Services/TypeRegistry.php
-
-		-
-			message: '#^Parameter \#1 \$error of method Opis\\JsonSchema\\Errors\\ErrorFormatter\:\:format\(\) expects Opis\\JsonSchema\\Errors\\ValidationError, Opis\\JsonSchema\\Errors\\ValidationError\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/TypeRegistry.php
-
-		-
-			message: '#^Parameter \#1 \$payload of method App\\Interfaces\\CrossFieldValidatableInterface\:\:validate\(\) expects array\<string, mixed\>, array\<mixed, mixed\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/TypeRegistry.php
-
-		-
-			message: '#^Parameter \#2 \$schema of method Opis\\JsonSchema\\Validator\:\:validate\(\) expects bool\|object\|string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/TypeRegistry.php
 
 		-
 			message: '#^Method App\\Services\\UserService\:\:find\(\) should return App\\Models\\User but returns App\\Models\\User\|null\.$#'

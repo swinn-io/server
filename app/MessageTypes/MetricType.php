@@ -69,10 +69,13 @@ class MetricType implements CrossFieldValidatableInterface, MessageTypeInterface
 
     public function validate(array $payload): array
     {
-        $allowed = self::COMPATIBLE_UNITS[$payload['quantity']] ?? [];
+        $quantity = is_string($payload['quantity'] ?? null) ? $payload['quantity'] : '';
+        $unit = is_string($payload['unit'] ?? null) ? $payload['unit'] : '';
 
-        if (! in_array($payload['unit'], $allowed, true)) {
-            return ["unit '{$payload['unit']}' is not valid for quantity '{$payload['quantity']}'"];
+        $allowed = self::COMPATIBLE_UNITS[$quantity] ?? [];
+
+        if (! in_array($unit, $allowed, true)) {
+            return ["unit '{$unit}' is not valid for quantity '{$quantity}'"];
         }
 
         return [];

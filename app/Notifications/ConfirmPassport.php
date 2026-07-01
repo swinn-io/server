@@ -5,17 +5,13 @@ namespace App\Notifications;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Config;
 
 class ConfirmPassport extends Notification
 {
     use Queueable;
 
-    /**
-     * Create a new notification instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public function __construct(private readonly string $token)
     {
         //
     }
@@ -39,13 +35,11 @@ class ConfirmPassport extends Notification
      */
     public function toMail($notifiable)
     {
-        $appName = config('app.name');
-
         return (new MailMessage)
-            ->subject($appName.' One Time Password')
+            ->subject(Config::string('app.name').' One Time Password')
             ->greeting('Hello!')
             ->line('You have re.')
-            ->line(': '.$this->token->plainText())
+            ->line(': '.$this->token)
             ->line('If you didn\'t request the password, simply ignore this message.');
     }
 
