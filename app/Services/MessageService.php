@@ -183,6 +183,7 @@ class MessageService implements MessageServiceInterface
         ],
             $mark_as_read ? ['last_read' => now()] : []);
 
+        /** @var \Illuminate\Database\Eloquent\Collection<int, User> $users */
         $users = $thread->users()->get();
 
         $this->contactService->setContacts($users);
