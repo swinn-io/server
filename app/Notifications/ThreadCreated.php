@@ -4,6 +4,7 @@ namespace App\Notifications;
 
 use App\Http\Resources\ThreadResource;
 use App\Models\Thread;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -28,15 +29,12 @@ class ThreadCreated extends Notification implements ShouldQueue
     /**
      * Get the notification's delivery channels.
      *
-     * @param  mixed  $notifiable
+     * @param  User  $notifiable
      * @return array<int, string>
      */
     public function via($notifiable)
     {
-        /** @var array<int, string> $channels */
-        $channels = $notifiable->notify_via;
-
-        return $channels;
+        return $notifiable->notify_via;
     }
 
     /**

@@ -127,42 +127,6 @@ parameters:
 			path: app/Notifications/ConfirmPassport.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\:\:\$name\.$#'
-			identifier: property.notFound
-			count: 2
-			path: app/Notifications/MessageCreated.php
-
-		-
-			message: '#^Binary operation "\." between ''New Message from\: '' and mixed results in an error\.$#'
-			identifier: binaryOp.invalid
-			count: 1
-			path: app/Notifications/MessageCreated.php
-
-		-
-			message: '#^Cannot access property \$notify_via on mixed\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: app/Notifications/MessageCreated.php
-
-		-
-			message: '#^Part \$user\-\>name \(mixed\) of encapsed string cannot be cast to string\.$#'
-			identifier: encapsedStringPart.nonString
-			count: 1
-			path: app/Notifications/MessageCreated.php
-
-		-
-			message: '#^Cannot access property \$notify_via on mixed\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: app/Notifications/ParticipantCreated.php
-
-		-
-			message: '#^Cannot access property \$notify_via on mixed\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: app/Notifications/ThreadCreated.php
-
-		-
 			message: '#^Cannot call method make\(\) on mixed\.$#'
 			identifier: method.nonObject
 			count: 1
