@@ -42,4 +42,19 @@ class Thread extends BaseThread
             ->hasMany($messageClass, 'thread_id', 'id')
             ->orderBy('created_at', 'desc');
     }
+
+    /**
+     * Participants relationship.
+     *
+     * @return HasMany<Participant, $this>
+     *
+     * @codeCoverageIgnore
+     */
+    public function participants(): HasMany
+    {
+        /** @var class-string<Participant> $participantClass */
+        $participantClass = Models::classname(\Cmgmyr\Messenger\Models\Participant::class);
+
+        return $this->hasMany($participantClass, 'thread_id', 'id');
+    }
 }

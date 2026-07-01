@@ -12,8 +12,8 @@ use App\Models\User;
 use App\Notifications\MessageCreated;
 use App\Notifications\ParticipantCreated;
 use App\Notifications\ThreadCreated;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Notification;
 

@@ -1,60 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Call to an undefined method Illuminate\\Contracts\\Pagination\\LengthAwarePaginator\<int, App\\Models\\Thread\>\:\:map\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Http/Controllers/FrontEnd/DashboardController.php
-
-		-
-			message: '#^Cannot access property \$id on mixed\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: app/Http/Controllers/FrontEnd/DashboardController.php
-
-		-
-			message: '#^Cannot access property \$name on mixed\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: app/Http/Controllers/FrontEnd/DashboardController.php
-
-		-
-			message: '#^Cannot access property \$participants on mixed\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: app/Http/Controllers/FrontEnd/DashboardController.php
-
-		-
-			message: '#^Cannot access property \$subject on mixed\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: app/Http/Controllers/FrontEnd/DashboardController.php
-
-		-
-			message: '#^Cannot access property \$user on mixed\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: app/Http/Controllers/FrontEnd/DashboardController.php
-
-		-
-			message: '#^Cannot call method all\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 2
-			path: app/Http/Controllers/FrontEnd/DashboardController.php
-
-		-
-			message: '#^Cannot call method map\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: app/Http/Controllers/FrontEnd/DashboardController.php
-
-		-
-			message: '#^Cannot call method values\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 2
-			path: app/Http/Controllers/FrontEnd/DashboardController.php
-
-		-
 			message: '#^Parameter \#1 \$value of function collect expects Illuminate\\Contracts\\Support\\Arrayable\<\(int\|string\), mixed\>\|iterable\<\(int\|string\), mixed\>\|null, mixed given\.$#'
 			identifier: argument.type
 			count: 1
@@ -523,18 +469,6 @@ parameters:
 			path: tests/Unit/LoginTest.php
 
 		-
-			message: '#^Call to an undefined method Illuminate\\Contracts\\Pagination\\LengthAwarePaginator\<int, App\\Models\\Thread\>\:\:count\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: tests/Unit/MessageTest.php
-
-		-
-			message: '#^Call to an undefined method Illuminate\\Contracts\\Pagination\\LengthAwarePaginator\<int, App\\Models\\Thread\>\:\:random\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: tests/Unit/MessageTest.php
-
-		-
 			message: '#^Cannot access property \$id on App\\Models\\User\|null\.$#'
 			identifier: property.nonObject
 			count: 2
@@ -547,19 +481,7 @@ parameters:
 			path: tests/Unit/MessageTest.php
 
 		-
-			message: '#^Cannot call method each\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: tests/Unit/MessageTest.php
-
-		-
 			message: '#^Parameter \#1 \$object of function get_class expects object, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: tests/Unit/MessageTest.php
-
-		-
-			message: '#^Parameter \#1 \$thread of method App\\Interfaces\\MessageServiceInterface\:\:newMessage\(\) expects App\\Models\\Thread, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: tests/Unit/MessageTest.php
@@ -592,12 +514,6 @@ parameters:
 			message: '#^Parameter \#2 \$haystack of method PHPUnit\\Framework\\Assert\:\:assertCount\(\) expects Countable\|iterable, mixed given\.$#'
 			identifier: argument.type
 			count: 3
-			path: tests/Unit/MessageTest.php
-
-		-
-			message: '#^Parameter \#2 \$max of function rand expects int, mixed given\.$#'
-			identifier: argument.type
-			count: 1
 			path: tests/Unit/MessageTest.php
 
 		-

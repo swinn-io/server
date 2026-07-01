@@ -6,8 +6,8 @@ use App\Models\Message;
 use App\Models\Participant;
 use App\Models\Thread;
 use App\Models\User;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
 interface MessageServiceInterface

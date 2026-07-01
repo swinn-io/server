@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use App\Traits\HasUUID;
+use Cmgmyr\Messenger\Models\Models;
 use Cmgmyr\Messenger\Models\Participant as BaseParticipant;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 
 /**
@@ -30,4 +32,19 @@ class Participant extends BaseParticipant
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',
     ];
+
+    /**
+     * User relationship.
+     *
+     * @return BelongsTo<User, $this>
+     *
+     * @codeCoverageIgnore
+     */
+    public function user(): BelongsTo
+    {
+        /** @var class-string<User> $userClass */
+        $userClass = Models::classname(User::class);
+
+        return $this->belongsTo($userClass, 'user_id');
+    }
 }
