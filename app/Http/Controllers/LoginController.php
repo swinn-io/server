@@ -71,6 +71,7 @@ class LoginController extends Controller
      */
     public function callback(string $provider, Request $request)
     {
+        /** @var array<string, mixed> $client */
         $client = $request->session()->get('client', []);
         $user = $this->service->callback($provider, $client);
         $URI = Arr::get($client, 'redirect_uri', false);

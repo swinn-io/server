@@ -11,6 +11,8 @@ interface ContactServiceInterface
 {
     /**
      * All contacts.
+     *
+     * @return LengthAwarePaginator<int, Contact>
      */
     public function contacts(User $user): LengthAwarePaginator;
 
@@ -26,6 +28,9 @@ interface ContactServiceInterface
 
     /**
      * Creates contact by user collection and returns contact.
+     *
+     * @param  Collection<int, User>  $users
+     * @return Collection<int, Contact>
      */
     public function setContacts(Collection $users): Collection;
 

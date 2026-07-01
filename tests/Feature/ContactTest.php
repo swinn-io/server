@@ -34,10 +34,11 @@ class ContactTest extends TestCase
      */
     public function test_contact_controller_index_method()
     {
-        $contact = Contact::inRandomOrder()->with('user')->first();
-        $contacts = $this->service->contacts($contact->user);
+        $contact = Contact::inRandomOrder()->with('user')->firstOrFail();
+        $user = User::findOrFail($contact->user_id);
+        $contacts = $this->service->contacts($user);
         $response = $this
-            ->actingAs($contact->user, 'api')
+            ->actingAs($user, 'api')
             ->get(route('contact'));
 
         $response->assertOk();
@@ -46,7 +47,7 @@ class ContactTest extends TestCase
                 0 => [
                     'type' => 'contact',
                     'attributes' => [
-                        'user_id' => $contact->user->id,
+                        'user_id' => $user->id,
                     ],
                 ],
             ],
@@ -63,9 +64,10 @@ class ContactTest extends TestCase
      */
     public function test_contact_controller_show_method()
     {
-        $contact = Contact::inRandomOrder()->with('user')->first();
+        $contact = Contact::inRandomOrder()->with('user')->firstOrFail();
+        $user = User::findOrFail($contact->user_id);
         $response = $this
-            ->actingAs($contact->user, 'api')
+            ->actingAs($user, 'api')
             ->get(route('contact.show', ['id' => $contact->id]));
 
         $response->assertOk();
@@ -75,7 +77,7 @@ class ContactTest extends TestCase
                 'id' => $contact->id,
                 'attributes' => [
                     'name' => $contact->name,
-                    'user_id' => $contact->user->id,
+                    'user_id' => $user->id,
                 ],
             ],
         ]);
