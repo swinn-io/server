@@ -16,12 +16,14 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
- *
- * @use HasFactory<MessageFactory>
+ * @property-read User|null $user
  */
 class Message extends BaseMessage
 {
-    use HasFactory, HasUUID;
+    /** @use HasFactory<MessageFactory> */
+    use HasFactory;
+
+    use HasUUID;
 
     /**
      * The attributes that should be cast to native types.

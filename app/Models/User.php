@@ -26,13 +26,14 @@ use Laravel\Passport\HasApiTokens;
  * @property array<string, mixed> $profile
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- *
- * @use HasFactory<UserFactory>
  */
 class User extends Authenticatable implements OAuthenticatable
 {
     use HasApiTokens;
+
+    /** @use HasFactory<UserFactory> */
     use HasFactory;
+
     use HasUUID;
     use Messagable;
     use Notifiable;

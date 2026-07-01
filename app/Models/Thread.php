@@ -18,23 +18,28 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
- *
- * @use HasFactory<ThreadFactory>
  */
 class Thread extends BaseThread
 {
-    use HasFactory, HasUUID, SoftDeletes;
+    /** @use HasFactory<ThreadFactory> */
+    use HasFactory;
+
+    use HasUUID, SoftDeletes;
 
     /**
      * Messages relationship.
      *
+     * @return HasMany<\App\Models\Message, $this>
      *
      * @codeCoverageIgnore
      */
     public function messages(): HasMany
     {
+        /** @var class-string<\App\Models\Message> $messageClass */
+        $messageClass = Models::classname(Message::class);
+
         return $this
-            ->hasMany(Models::classname(Message::class), 'thread_id', 'id')
+            ->hasMany($messageClass, 'thread_id', 'id')
             ->orderBy('created_at', 'desc');
     }
 }

@@ -55,54 +55,6 @@ parameters:
 			path: app/Http/Controllers/FrontEnd/DashboardController.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$body\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Http/Controllers/FrontEnd/ThreadController.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$created_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Http/Controllers/FrontEnd/ThreadController.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Http/Controllers/FrontEnd/ThreadController.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$user\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Http/Controllers/FrontEnd/ThreadController.php
-
-		-
-			message: '#^Cannot access property \$name on mixed\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: app/Http/Controllers/FrontEnd/ThreadController.php
-
-		-
-			message: '#^Cannot call method diffForHumans\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: app/Http/Controllers/FrontEnd/ThreadController.php
-
-		-
-			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,Illuminate\\Database\\Eloquent\\Model\>\:\:map\(\) contains unresolvable type\.$#'
-			identifier: argument.unresolvableType
-			count: 1
-			path: app/Http/Controllers/FrontEnd/ThreadController.php
-
-		-
-			message: '#^Return type of call to method Illuminate\\Database\\Eloquent\\Collection\<int,Illuminate\\Database\\Eloquent\\Model\>\:\:map\(\) contains unresolvable type\.$#'
-			identifier: method.unresolvableReturnType
-			count: 1
-			path: app/Http/Controllers/FrontEnd/ThreadController.php
-
-		-
 			message: '#^Parameter \#1 \$value of function collect expects Illuminate\\Contracts\\Support\\Arrayable\<\(int\|string\), mixed\>\|iterable\<\(int\|string\), mixed\>\|null, mixed given\.$#'
 			identifier: argument.type
 			count: 1
@@ -149,42 +101,6 @@ parameters:
 			identifier: offsetAccess.invalidOffset
 			count: 1
 			path: app/MessageTypes/MetricType.php
-
-		-
-			message: '#^Class App\\Models\\Message uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/Message.php
-
-		-
-			message: '#^Class App\\Models\\Thread uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/Thread.php
-
-		-
-			message: '#^Method App\\Models\\Thread\:\:messages\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/Thread.php
-
-		-
-			message: '#^Parameter \#1 \$related of method Illuminate\\Database\\Eloquent\\Model\:\:hasMany\(\) expects class\-string\<Illuminate\\Database\\Eloquent\\Model\>, string given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Models/Thread.php
-
-		-
-			message: '#^Unable to resolve the template type TRelatedModel in call to method Illuminate\\Database\\Eloquent\\Model\:\:hasMany\(\)$#'
-			identifier: argument.templateType
-			count: 1
-			path: app/Models/Thread.php
-
-		-
-			message: '#^Class App\\Models\\User uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/User.php
 
 		-
 			message: '#^Access to an undefined property App\\Notifications\\ConfirmPassport\:\:\$token\.$#'
@@ -457,12 +373,6 @@ parameters:
 			path: tests/Feature/MessageTest.php
 
 		-
-			message: '#^Cannot access property \$id on App\\Models\\User\|null\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: tests/Feature/MessageTest.php
-
-		-
 			message: '#^Cannot access property \$id on mixed\.$#'
 			identifier: property.nonObject
 			count: 1
@@ -470,12 +380,6 @@ parameters:
 
 		-
 			message: '#^Cannot access property \$subject on App\\Models\\Thread\|null\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: tests/Feature/MessageTest.php
-
-		-
-			message: '#^Cannot access property \$user on App\\Models\\Message\|null\.$#'
 			identifier: property.nonObject
 			count: 1
 			path: tests/Feature/MessageTest.php
@@ -495,24 +399,6 @@ parameters:
 		-
 			message: '#^Cannot call method participants\(\) on App\\Models\\Thread\|null\.$#'
 			identifier: method.nonObject
-			count: 1
-			path: tests/Feature/MessageTest.php
-
-		-
-			message: '#^Parameter \#1 \$user of method App\\Interfaces\\MessageServiceInterface\:\:threads\(\) expects App\\Models\\User, Illuminate\\Database\\Eloquent\\Model\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: tests/Feature/MessageTest.php
-
-		-
-			message: '#^Parameter \#1 \$user of method Illuminate\\Foundation\\Testing\\TestCase\:\:actingAs\(\) expects Illuminate\\Contracts\\Auth\\Authenticatable, App\\Models\\User\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: tests/Feature/MessageTest.php
-
-		-
-			message: '#^Parameter \#1 \$user of method Illuminate\\Foundation\\Testing\\TestCase\:\:actingAs\(\) expects Illuminate\\Contracts\\Auth\\Authenticatable, Illuminate\\Database\\Eloquent\\Model\|null given\.$#'
-			identifier: argument.type
 			count: 1
 			path: tests/Feature/MessageTest.php
 

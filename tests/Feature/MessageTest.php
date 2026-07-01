@@ -39,8 +39,8 @@ class MessageTest extends TestCase
      */
     public function test_message_controller_index_method()
     {
-        $message = Message::inRandomOrder()->first();
-        $user = $message->user;
+        $message = Message::inRandomOrder()->firstOrFail();
+        $user = User::findOrFail($message->user_id);
         $messages = $this->service->threads($user);
         $response = $this
             ->actingAs($user, 'api')
@@ -64,6 +64,7 @@ class MessageTest extends TestCase
         $thread = Thread::factory()->make();
         $message = Message::factory()->make();
         $users = User::factory(4)->create();
+        /** @var User $user */
         $user = $users->pop();
         $response = $this
             ->actingAs($user, 'api')
