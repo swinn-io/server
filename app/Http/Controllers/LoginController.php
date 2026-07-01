@@ -51,7 +51,9 @@ class LoginController extends Controller
     public function redirect(string $provider, Request $request)
     {
         try {
-            $client = collect($request->session()->get('client'));
+            /** @var array<string, mixed> $sessionClient */
+            $sessionClient = $request->session()->get('client', []);
+            $client = collect($sessionClient);
             if ($client->has('state') && $client->has('redirect_uri')) {
                 $request->session()->reflash();
             } else {
@@ -75,6 +77,7 @@ class LoginController extends Controller
         $client = $request->session()->get('client', []);
         $user = $this->service->callback($provider, $client);
         $URI = Arr::get($client, 'redirect_uri', false);
+        $URI = is_string($URI) ? $URI : false;
 
         /**
          * Authorize user before redirection, it's required for PKCE
