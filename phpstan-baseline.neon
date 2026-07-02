@@ -13,24 +13,6 @@ parameters:
 			path: app/Providers/Project/LoginServiceProvider.php
 
 		-
-			message: '#^Cannot access property \$email on mixed\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: app/Providers/TelescopeServiceProvider.php
-
-		-
-			message: '#^Parameter \#2 \$string of function explode expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Providers/TelescopeServiceProvider.php
-
-		-
-			message: '#^Variable \$mails on left side of \?\? always exists and is not nullable\.$#'
-			identifier: nullCoalesce.variable
-			count: 1
-			path: app/Providers/TelescopeServiceProvider.php
-
-		-
 			message: '#^Method App\\Services\\UserService\:\:find\(\) should return App\\Models\\User but returns App\\Models\\User\|null\.$#'
 			identifier: return.type
 			count: 1
@@ -125,24 +107,6 @@ parameters:
 			identifier: return.type
 			count: 1
 			path: database/migrations/2024_06_01_000001_create_oauth_device_codes_table.php
-
-		-
-			message: '#^Cannot access property \$id on mixed\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: routes/channels.php
-
-		-
-			message: '#^Cannot call method toArray\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: routes/channels.php
-
-		-
-			message: '#^Cannot cast mixed to string\.$#'
-			identifier: cast.string
-			count: 2
-			path: routes/channels.php
 
 		-
 			message: '#^Parameter \#1 \$value of method Illuminate\\Testing\\TestResponse\<Symfony\\Component\\HttpFoundation\\Response\>\:\:assertSee\(\) expects list\<string\>\|string, mixed given\.$#'
