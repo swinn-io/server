@@ -25,7 +25,7 @@ class ContactFactory extends Factory
      */
     public function definition()
     {
-        $user = User::inRandomOrder()->first();
+        $user = User::inRandomOrder()->firstOrFail();
         $contact = User::factory()->create();
 
         return [

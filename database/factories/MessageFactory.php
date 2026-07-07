@@ -35,8 +35,8 @@ class MessageFactory extends Factory
         ];
 
         return [
-            'thread_id' => Thread::inRandomOrder()->first()->id,
-            'user_id' => User::inRandomOrder()->first()->id,
+            'thread_id' => Thread::inRandomOrder()->firstOrFail()->id,
+            'user_id' => User::inRandomOrder()->firstOrFail()->id,
             'body' => collect($bodies)->random(),
         ];
     }

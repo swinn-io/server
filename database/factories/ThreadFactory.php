@@ -26,7 +26,9 @@ class ThreadFactory extends Factory
      */
     public function definition()
     {
-        $subject = implode(' ', $this->faker->words);
+        /** @var array<int, string> $words */
+        $words = $this->faker->words();
+        $subject = implode(' ', $words);
 
         return [
             'subject' => Str::title($subject),
@@ -36,7 +38,7 @@ class ThreadFactory extends Factory
     /**
      * Configure the model factory.
      *
-     * @return $this
+     * @return static
      */
     public function configure()
     {

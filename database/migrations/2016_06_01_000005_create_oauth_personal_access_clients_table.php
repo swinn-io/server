@@ -50,11 +50,11 @@ class CreateOauthPersonalAccessClientsTable extends Migration
 
     /**
      * Get the migration connection name.
-     *
-     * @return string|null
      */
-    public function getConnection()
+    public function getConnection(): ?string
     {
-        return config('passport.storage.database.connection');
+        $connection = config('passport.storage.database.connection');
+
+        return is_string($connection) ? $connection : null;
     }
 }

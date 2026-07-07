@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use Illuminate\Support\Facades\Config;
 use Tests\TestCase;
 
 class FrontEndTest extends TestCase
@@ -16,6 +17,6 @@ class FrontEndTest extends TestCase
         $response = $this->get('/');
 
         $response->assertOk();
-        $response->assertSee(config('app.name'));
+        $response->assertSee(Config::string('app.name'));
     }
 }
