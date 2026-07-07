@@ -4,7 +4,7 @@ namespace App\Interfaces;
 
 use App\Models\Contact;
 use App\Models\User;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
 interface ContactServiceInterface

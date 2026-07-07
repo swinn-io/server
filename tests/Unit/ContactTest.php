@@ -6,7 +6,6 @@ use App\Interfaces\ContactServiceInterface;
 use App\Models\Contact;
 use App\Models\User;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Arr;
 use Tests\TestCase;
 
 class ContactTest extends TestCase
@@ -42,7 +41,7 @@ class ContactTest extends TestCase
         });
 
         $allContacts = $this->service->contacts($user);
-        $modelName = get_class(Arr::get($allContacts->items(), 0));
+        $modelName = get_class($allContacts->items()[0]);
 
         $this->assertEquals($create, $allContacts->total());
         $this->assertEquals(Contact::class, $modelName);
@@ -76,6 +75,7 @@ class ContactTest extends TestCase
         $created = $this->service->addContact($user, $contact);
         $find = $this->service->contact($created->id, $user);
 
+        $this->assertNotNull($find);
         $this->assertEquals($find->user_id, $user->id);
         $this->assertEquals($find->source_id, $contact->id);
         $this->assertEquals(User::class, $find->source_type);
