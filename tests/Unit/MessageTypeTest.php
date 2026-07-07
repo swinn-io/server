@@ -14,10 +14,17 @@ use PHPUnit\Framework\TestCase;
 
 class MessageTypeTest extends TestCase
 {
+    /**
+     * @param  array<string, mixed>  $schema
+     * @param  array<string, mixed>  $payload
+     */
     private function accepts(array $schema, array $payload): bool
     {
+        /** @var bool|object|string $encodedSchema */
+        $encodedSchema = Helper::toJSON($schema);
+
         return (new Validator)
-            ->validate(Helper::toJSON($payload), Helper::toJSON($schema))
+            ->validate(Helper::toJSON($payload), $encodedSchema)
             ->isValid();
     }
 
