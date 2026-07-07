@@ -12,6 +12,6 @@ class UserService implements UserServiceInterface
      */
     public function find(string $id): User
     {
-        return User::find($id);
+        return User::findOrFail($id);
     }
 }

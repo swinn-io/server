@@ -4,15 +4,36 @@ namespace App\Models;
 
 use App\Traits\HasUUID;
 use Cmgmyr\Messenger\Traits\Messagable;
+use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Carbon;
+use Laravel\Passport\Contracts\OAuthenticatable;
 use Laravel\Passport\HasApiTokens;
 
-class User extends Authenticatable
+/**
+ * @property string $id
+ * @property string $name
+ * @property string $provider_name
+ * @property string $provider_id
+ * @property string|null $email
+ * @property string|null $one_time_password
+ * @property Carbon|null $password_expires_at
+ * @property array<int, string> $notify_via
+ * @property string $access_token
+ * @property string|null $refresh_token
+ * @property array<string, mixed> $profile
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ */
+class User extends Authenticatable implements OAuthenticatable
 {
     use HasApiTokens;
+
+    /** @use HasFactory<UserFactory> */
     use HasFactory;
+
     use HasUUID;
     use Messagable;
     use Notifiable;
@@ -20,7 +41,7 @@ class User extends Authenticatable
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var list<string>
      */
     protected $fillable = [
         'name',
@@ -38,7 +59,7 @@ class User extends Authenticatable
     /**
      * The attributes that should be hidden for arrays.
      *
-     * @var array
+     * @var list<string>
      */
     protected $hidden = [
         'one_time_password',
@@ -56,7 +77,7 @@ class User extends Authenticatable
     /**
      * The attributes that should be cast to native types.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'notify_via' => 'array',
@@ -67,7 +88,7 @@ class User extends Authenticatable
     /**
      * The accessors to append to the model's array form.
      *
-     * @var array
+     * @var list<string>
      */
     protected $appends = [
         // 'profile_photo_url',

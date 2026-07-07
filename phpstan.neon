@@ -1,6 +1,6 @@
 includes:
     - ./vendor/larastan/larastan/extension.neon
-    - ./phpstan-baseline.neon
+    - ./vendor/phpstan/phpstan-mockery/extension.neon
 
 parameters:
     level: max

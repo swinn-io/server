@@ -3,20 +3,34 @@
 namespace App\Models;
 
 use App\Traits\HasUUID;
+use Database\Factories\ContactFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Support\Carbon;
 
+/**
+ * @property string $id
+ * @property string $name
+ * @property string $user_id
+ * @property string $source_type
+ * @property string $source_id
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ */
 class Contact extends Model
 {
+    /** @use HasFactory<ContactFactory> */
     use HasFactory;
+
     use HasUUID;
 
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var list<string>
      */
     protected $fillable = [
         'name',
@@ -28,25 +42,28 @@ class Contact extends Model
     /**
      * Scope a query to only include active users.
      *
-     * @param  Builder  $query
-     * @param  string  $user_id
-     * @return Builder
+     * @param  Builder<Contact>  $query
+     * @return Builder<Contact>
      */
-    public function scopeForUser($query, $user_id)
+    public function scopeForUser($query, string $user_id)
     {
         return $query->where('user_id', $user_id);
     }
 
     /**
      * Get the user that owns the contact.
+     *
+     * @return BelongsTo<User, $this>
      */
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
     /**
      * Get the owner model of the contact.
+     *
+     * @return MorphTo<Model, $this>
      */
     public function source(): MorphTo
     {

@@ -21,6 +21,9 @@ class LocationType implements MessageTypeInterface
         return 'A geographic coordinate. Used for delivery tracking, check-ins, and asset location.';
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function schema(): array
     {
         return [

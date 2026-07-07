@@ -34,7 +34,7 @@ class UserTest extends TestCase
      */
     public function test_service_method_find()
     {
-        $user = User::inRandomOrder()->first();
+        $user = User::inRandomOrder()->firstOrFail();
         $find = $this->service->find($user->id);
         $this->assertEquals($find, $user);
     }

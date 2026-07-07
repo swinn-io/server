@@ -3,6 +3,9 @@
 use Illuminate\Support\Str;
 use Pdo\Mysql;
 
+$appName = env('APP_NAME', 'laravel');
+$appSlug = Str::slug(is_string($appName) ? $appName : 'laravel', '_');
+
 return [
 
     /*
@@ -126,7 +129,7 @@ return [
 
         'options' => [
             'cluster' => env('REDIS_CLUSTER', 'redis'),
-            'prefix' => env('REDIS_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_').'_database_'),
+            'prefix' => env('REDIS_PREFIX', $appSlug.'_database_'),
         ],
 
         'default' => [

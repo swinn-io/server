@@ -2,10 +2,24 @@
 
 namespace Tests\Feature;
 
+use Illuminate\Http\JsonResponse;
+use Illuminate\Testing\TestResponse;
 use Tests\TestCase;
 
 class TypeDiscoveryTest extends TestCase
 {
+    /**
+     * @param  TestResponse<JsonResponse>  $response
+     * @return array<int, array<string, mixed>>
+     */
+    private function typesJson(TestResponse $response): array
+    {
+        /** @var array<int, array<string, mixed>> $json */
+        $json = $response->json();
+
+        return $json;
+    }
+
     public function test_types_endpoint_is_public_and_lists_all_types(): void
     {
         $response = $this->getJson(route('types'));
@@ -16,7 +30,7 @@ class TypeDiscoveryTest extends TestCase
             ['type', 'version', 'purpose', 'schema', 'renderer_hint'],
         ]);
 
-        $types = collect($response->json())->pluck('type')->all();
+        $types = collect($this->typesJson($response))->pluck('type')->all();
         foreach (['currency', 'location', 'status', 'file_reference', 'metric', 'mood'] as $name) {
             $this->assertContains($name, $types);
         }
@@ -26,10 +40,19 @@ class TypeDiscoveryTest extends TestCase
     {
         $response = $this->getJson(route('types'));
 
-        $metric = collect($response->json())->firstWhere('type', 'metric');
+        /** @var array<string, mixed> $metric */
+        $metric = collect($this->typesJson($response))->firstWhere('type', 'metric');
 
         $this->assertArrayHasKey('constraints', $metric);
-        $this->assertArrayHasKey('compatible_units', $metric['constraints']);
-        $this->assertSame(['celsius', 'fahrenheit', 'kelvin'], $metric['constraints']['compatible_units']['temperature']);
+
+        /** @var array<string, mixed> $constraints */
+        $constraints = $metric['constraints'];
+
+        $this->assertArrayHasKey('compatible_units', $constraints);
+
+        /** @var array<string, array<int, string>> $compatibleUnits */
+        $compatibleUnits = $constraints['compatible_units'];
+
+        $this->assertSame(['celsius', 'fahrenheit', 'kelvin'], $compatibleUnits['temperature']);
     }
 }

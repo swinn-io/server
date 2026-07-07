@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\ContactResource;
 use App\Interfaces\ContactServiceInterface;
 use App\Interfaces\UserServiceInterface;
+use App\Models\User;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -34,6 +35,7 @@ class ContactController extends Controller
      */
     public function show(string $id)
     {
+        /** @var User $user */
         $user = Auth::user();
 
         return new ContactResource(
@@ -48,6 +50,7 @@ class ContactController extends Controller
      */
     public function index()
     {
+        /** @var User $user */
         $user = Auth::user();
 
         return ContactResource::collection($this->service->contacts($user));
@@ -58,6 +61,7 @@ class ContactController extends Controller
      */
     public function store(string $user_id): ContactResource
     {
+        /** @var User $user */
         $user = Auth::user();
         $contact = $this->userService->find($user_id);
 
@@ -73,6 +77,7 @@ class ContactController extends Controller
      */
     public function redirect(Request $request, string $id)
     {
+        /** @var User $user */
         $user = Auth::user();
         $contact = $this->service->contact($id, $user);
 
@@ -82,6 +87,6 @@ class ContactController extends Controller
 
         $URI = $request->get('redirect_uri', config('app.uri'));
 
-        return redirect($URI ?? '/');
+        return redirect(is_string($URI) ? $URI : '/');
     }
 }

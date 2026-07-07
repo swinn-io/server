@@ -18,6 +18,9 @@ class MessageEnvelopeTest extends TestCase
         $this->service = app(MessageServiceInterface::class);
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     private function validBody(): array
     {
         return ['type' => 'mood', 'version' => '1.0', 'payload' => ['mood' => 'happy']];

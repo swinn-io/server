@@ -7,23 +7,28 @@ use App\Models\Thread;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
+/**
+ * @extends Factory<Thread>
+ */
 class ThreadFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
-     * @var string
+     * @var class-string<Thread>
      */
     protected $model = Thread::class;
 
     /**
      * Define the model's default state.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function definition()
     {
-        $subject = implode(' ', $this->faker->words);
+        /** @var array<int, string> $words */
+        $words = $this->faker->words();
+        $subject = implode(' ', $words);
 
         return [
             'subject' => Str::title($subject),
@@ -33,7 +38,7 @@ class ThreadFactory extends Factory
     /**
      * Configure the model factory.
      *
-     * @return $this
+     * @return static
      */
     public function configure()
     {

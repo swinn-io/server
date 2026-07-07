@@ -5,13 +5,15 @@ namespace App\Services;
 use App\Interfaces\ContactServiceInterface;
 use App\Models\Contact;
 use App\Models\User;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
 class ContactService implements ContactServiceInterface
 {
     /**
      * All contacts.
+     *
+     * @return LengthAwarePaginator<int, Contact>
      */
     public function contacts(User $user): LengthAwarePaginator
     {
@@ -42,10 +44,14 @@ class ContactService implements ContactServiceInterface
 
     /**
      * Creates contact by user collection and returns contact.
+     *
+     * @param  Collection<int, User>  $users
+     * @return Collection<int, Contact>
      */
     public function setContacts(Collection $users): Collection
     {
-        return $users->map(function ($user) use ($users) {
+        /** @var Collection<int, Contact> $contacts */
+        $contacts = $users->map(function ($user) use ($users) {
             return $users
                 ->filter(function ($item) use ($user) {
                     return ! $item->is($user);
@@ -55,6 +61,8 @@ class ContactService implements ContactServiceInterface
                 });
         })
             ->flatten();
+
+        return $contacts;
     }
 
     /**
@@ -62,7 +70,7 @@ class ContactService implements ContactServiceInterface
      */
     public function removeContact(string $contact_id): Contact
     {
-        $contact = Contact::find($contact_id);
+        $contact = Contact::findOrFail($contact_id);
         $contact->delete();
 
         return $contact;

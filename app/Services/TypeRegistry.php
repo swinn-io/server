@@ -64,30 +64,38 @@ class TypeRegistry
             return ['error' => 'invalid_envelope', 'message' => 'payload must be an object.'];
         }
 
-        if (! $this->has($envelope['type'])) {
-            return ['error' => 'unknown_type', 'type' => $envelope['type']];
-        }
+        /** @var array<string, mixed> $payload */
+        $payload = $envelope['payload'];
 
         $type = $this->get($envelope['type']);
+
+        if ($type === null) {
+            return ['error' => 'unknown_type', 'type' => $envelope['type']];
+        }
 
         if ($envelope['version'] !== $type->version()) {
             return ['error' => 'unknown_version', 'type' => $type->name(), 'version' => $envelope['version']];
         }
 
+        /** @var bool|object|string $schema */
+        $schema = Helper::toJSON($type->schema());
+
         $result = (new Validator)->validate(
-            Helper::toJSON($envelope['payload']),
-            Helper::toJSON($type->schema()),
+            Helper::toJSON($payload),
+            $schema,
         );
 
-        if (! $result->isValid()) {
+        $error = $result->error();
+
+        if ($error !== null) {
             return [
                 'error' => 'invalid_payload',
-                'violations' => (new ErrorFormatter)->format($result->error()),
+                'violations' => (new ErrorFormatter)->format($error),
             ];
         }
 
         if ($type instanceof CrossFieldValidatableInterface) {
-            $violations = $type->validate($envelope['payload']);
+            $violations = $type->validate($payload);
 
             if (! empty($violations)) {
                 return ['error' => 'invalid_payload', 'violations' => $violations];

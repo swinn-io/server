@@ -4,9 +4,10 @@ namespace App\Http\Controllers\FrontEnd;
 
 use App\Http\Controllers\Controller;
 use App\Interfaces\MessageServiceInterface;
+use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
 use function view;
 
@@ -15,10 +16,11 @@ class DashboardController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @return View
      */
     public function index(MessageServiceInterface $messages)
     {
+        /** @var User $user */
         $user = Auth::user();
         $threads = $messages->threads($user);
 
@@ -28,7 +30,7 @@ class DashboardController extends Controller
                 'subject' => $thread->subject,
                 'unread_count' => 0,
                 'participants' => $thread->participants
-                    ->map(fn ($participant) => ['user' => ['name' => $participant->user->name]])
+                    ->map(fn ($participant) => ['user' => ['name' => $participant->user?->name]])
                     ->values()
                     ->all(),
             ])->values()->all(),
@@ -38,7 +40,7 @@ class DashboardController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return Response
+     * @return void
      */
     public function create()
     {
@@ -48,7 +50,7 @@ class DashboardController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @return Response
+     * @return void
      */
     public function store(Request $request)
     {
@@ -59,7 +61,7 @@ class DashboardController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return Response
+     * @return void
      */
     public function show($id)
     {
@@ -70,7 +72,7 @@ class DashboardController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return Response
+     * @return void
      */
     public function edit($id)
     {
@@ -81,7 +83,7 @@ class DashboardController extends Controller
      * Update the specified resource in storage.
      *
      * @param  int  $id
-     * @return Response
+     * @return void
      */
     public function update(Request $request, $id)
     {
@@ -92,7 +94,7 @@ class DashboardController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return Response
+     * @return void
      */
     public function destroy($id)
     {

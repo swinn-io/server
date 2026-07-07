@@ -4,6 +4,7 @@ namespace App\Notifications;
 
 use App\Http\Resources\ParticipantResource;
 use App\Models\Participant;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
@@ -27,8 +28,8 @@ class ParticipantCreated extends Notification implements ShouldQueue
     /**
      * Get the notification's delivery channels.
      *
-     * @param  mixed  $notifiable
-     * @return array
+     * @param  User  $notifiable
+     * @return array<int, string>
      */
     public function via($notifiable)
     {
@@ -39,7 +40,7 @@ class ParticipantCreated extends Notification implements ShouldQueue
      * Get the array representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return array
+     * @return array<string, mixed>
      */
     public function toArray($notifiable)
     {
