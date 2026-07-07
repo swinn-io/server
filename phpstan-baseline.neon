@@ -115,48 +115,6 @@ parameters:
 			path: tests/Feature/FrontEndTest.php
 
 		-
-			message: '#^Cannot access offset ''compatible_units'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: tests/Feature/TypeDiscoveryTest.php
-
-		-
-			message: '#^Cannot access offset ''constraints'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 2
-			path: tests/Feature/TypeDiscoveryTest.php
-
-		-
-			message: '#^Cannot access offset ''temperature'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: tests/Feature/TypeDiscoveryTest.php
-
-		-
-			message: '#^Parameter \#1 \$value of function collect expects Illuminate\\Contracts\\Support\\Arrayable\<\(int\|string\), mixed\>\|iterable\<\(int\|string\), mixed\>\|null, mixed given\.$#'
-			identifier: argument.type
-			count: 2
-			path: tests/Feature/TypeDiscoveryTest.php
-
-		-
-			message: '#^Parameter \#2 \$array of method PHPUnit\\Framework\\Assert\:\:assertArrayHasKey\(\) expects array\<mixed\>\|ArrayAccess\<\(int\|string\), mixed\>, mixed given\.$#'
-			identifier: argument.type
-			count: 2
-			path: tests/Feature/TypeDiscoveryTest.php
-
-		-
-			message: '#^Unable to resolve the template type TKey in call to function collect$#'
-			identifier: argument.templateType
-			count: 2
-			path: tests/Feature/TypeDiscoveryTest.php
-
-		-
-			message: '#^Unable to resolve the template type TValue in call to function collect$#'
-			identifier: argument.templateType
-			count: 2
-			path: tests/Feature/TypeDiscoveryTest.php
-
-		-
 			message: '#^Cannot call method bootstrap\(\) on mixed\.$#'
 			identifier: method.nonObject
 			count: 1
