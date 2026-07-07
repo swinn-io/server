@@ -115,24 +115,6 @@ parameters:
 			path: tests/Feature/FrontEndTest.php
 
 		-
-			message: '#^Call to an undefined method Mockery\\ExpectationInterface\|Mockery\\HigherOrderMessage\:\:andSet\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: tests/Feature/LoginTest.php
-
-		-
-			message: '#^Cannot call method andSet\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 2
-			path: tests/Feature/LoginTest.php
-
-		-
-			message: '#^Parameter \#1 \.\.\.\$methodNames of method Mockery\\LegacyMockInterface\:\:shouldReceive\(\) expects string, array\<string, string\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: tests/Feature/LoginTest.php
-
-		-
 			message: '#^Cannot access property \$id on App\\Models\\Thread\|null\.$#'
 			identifier: property.nonObject
 			count: 5
@@ -263,66 +245,6 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: tests/Unit/ContactTest.php
-
-		-
-			message: '#^Call to an undefined method App\\Interfaces\\LoginServiceInterface\:\:client\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: tests/Unit/LoginTest.php
-
-		-
-			message: '#^Call to an undefined method App\\Interfaces\\LoginServiceInterface\:\:user\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: tests/Unit/LoginTest.php
-
-		-
-			message: '#^Call to an undefined method Mockery\\ExpectationInterface\|Mockery\\HigherOrderMessage\:\:andSet\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: tests/Unit/LoginTest.php
-
-		-
-			message: '#^Call to an undefined method Mockery\\MockInterface\:\:getStatusCode\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: tests/Unit/LoginTest.php
-
-		-
-			message: '#^Call to an undefined method Mockery\\MockInterface\:\:getTargetUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: tests/Unit/LoginTest.php
-
-		-
-			message: '#^Cannot access property \$name on mixed\.$#'
-			identifier: property.nonObject
-			count: 2
-			path: tests/Unit/LoginTest.php
-
-		-
-			message: '#^Cannot call method andSet\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 2
-			path: tests/Unit/LoginTest.php
-
-		-
-			message: '#^Parameter \#1 \.\.\.\$methodNames of method Mockery\\LegacyMockInterface\:\:shouldReceive\(\) expects string, array\<string, int\|string\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: tests/Unit/LoginTest.php
-
-		-
-			message: '#^Parameter \#1 \.\.\.\$methodNames of method Mockery\\LegacyMockInterface\:\:shouldReceive\(\) expects string, array\<string, string\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: tests/Unit/LoginTest.php
-
-		-
-			message: '#^Parameter \#2 \$haystack of method PHPUnit\\Framework\\Assert\:\:assertStringContainsString\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: tests/Unit/LoginTest.php
 
 		-
 			message: '#^Method Tests\\Unit\\MessageTypeTest\:\:accepts\(\) has parameter \$payload with no value type specified in iterable type array\.$#'

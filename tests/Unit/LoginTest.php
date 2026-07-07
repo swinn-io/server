@@ -53,10 +53,8 @@ class LoginTest extends TestCase
     public function test_github_redirection()
     {
         $socialiteRedirection = Mockery::mock(RedirectResponse::class);
-        $socialiteRedirection->shouldReceive([
-            'getStatusCode' => 302,
-            'getTargetUrl' => 'https://github.com/login/oauth',
-        ]);
+        $socialiteRedirection->shouldReceive('getStatusCode')->andReturn(302);
+        $socialiteRedirection->shouldReceive('getTargetUrl')->andReturn('https://github.com/login/oauth');
         // Actually it should call redirect method to test but however, Socialite is well tested and
         // I can not handle RuntimeException : Session store not set on request
         // $redirect = $this->service->redirect('github');
@@ -75,16 +73,14 @@ class LoginTest extends TestCase
         $user = User::factory()->make();
         $nick = collect([$user->name, ''])->random();
         $socialiteUser = Mockery::mock(SocialiteUser::class);
-        $socialiteUser->shouldReceive([
-            'getId' => Str::random(),
-            'getName' => $user->name,
-            'getEmail' => $this->faker->email,
-            'getNickname' => $nick,
-            'getAvatar' => $this->faker->url,
-        ])
+        $socialiteUser->shouldReceive('getId')->andReturn(Str::random())
             ->andSet('user', $user)
             ->andSet('token', Str::random(40))
             ->andSet('refreshToken', Str::random(40));
+        $socialiteUser->shouldReceive('getName')->andReturn($user->name);
+        $socialiteUser->shouldReceive('getEmail')->andReturn($this->faker->email());
+        $socialiteUser->shouldReceive('getNickname')->andReturn($nick);
+        $socialiteUser->shouldReceive('getAvatar')->andReturn($this->faker->url());
 
         $new_class = $this->service->user('github', $socialiteUser);
         $this->assertEquals($user->name, $new_class->name);
