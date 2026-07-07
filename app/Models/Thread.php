@@ -57,4 +57,17 @@ class Thread extends BaseThread
 
         return $this->hasMany($participantClass, 'thread_id', 'id');
     }
+
+    /**
+     * User who sent the first message of the thread.
+     *
+     * @codeCoverageIgnore
+     */
+    public function creator(): User
+    {
+        /** @var User $creator */
+        $creator = parent::creator();
+
+        return $creator;
+    }
 }

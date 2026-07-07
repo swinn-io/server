@@ -115,54 +115,6 @@ parameters:
 			path: tests/Feature/FrontEndTest.php
 
 		-
-			message: '#^Cannot access property \$id on App\\Models\\Thread\|null\.$#'
-			identifier: property.nonObject
-			count: 5
-			path: tests/Feature/MessageTest.php
-
-		-
-			message: '#^Cannot access property \$id on mixed\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: tests/Feature/MessageTest.php
-
-		-
-			message: '#^Cannot access property \$subject on App\\Models\\Thread\|null\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: tests/Feature/MessageTest.php
-
-		-
-			message: '#^Cannot call method creator\(\) on App\\Models\\Thread\|null\.$#'
-			identifier: method.nonObject
-			count: 2
-			path: tests/Feature/MessageTest.php
-
-		-
-			message: '#^Cannot call method messages\(\) on App\\Models\\Thread\|null\.$#'
-			identifier: method.nonObject
-			count: 2
-			path: tests/Feature/MessageTest.php
-
-		-
-			message: '#^Cannot call method participants\(\) on App\\Models\\Thread\|null\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: tests/Feature/MessageTest.php
-
-		-
-			message: '#^Parameter \#1 \$user of method Illuminate\\Foundation\\Testing\\TestCase\:\:actingAs\(\) expects Illuminate\\Contracts\\Auth\\Authenticatable, mixed given\.$#'
-			identifier: argument.type
-			count: 3
-			path: tests/Feature/MessageTest.php
-
-		-
-			message: '#^Property Tests\\Feature\\MessageTest\:\:\$contactService is never read, only written\.$#'
-			identifier: property.onlyWritten
-			count: 1
-			path: tests/Feature/MessageTest.php
-
-		-
 			message: '#^Cannot access offset ''compatible_units'' on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 1

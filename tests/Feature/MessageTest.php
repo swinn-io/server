@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Interfaces\ContactServiceInterface;
 use App\Interfaces\MessageServiceInterface;
 use App\Models\Message;
 use App\Models\Thread;
@@ -18,8 +17,6 @@ class MessageTest extends TestCase
 
     private MessageServiceInterface $service;
 
-    private ContactServiceInterface $contactService;
-
     /**
      * Setup testing.
      */
@@ -27,7 +24,6 @@ class MessageTest extends TestCase
     {
         parent::setUp();
         $this->service = app(MessageServiceInterface::class);
-        $this->contactService = app(ContactServiceInterface::class);
         $this->seed(UserSeeder::class);
         $this->seed(MessagingSeeder::class);
     }
@@ -103,7 +99,7 @@ class MessageTest extends TestCase
      */
     public function test_message_controller_show_method()
     {
-        $thread = Thread::inRandomOrder()->first();
+        $thread = Thread::inRandomOrder()->firstOrFail();
         $user = $thread->creator();
         $messagesCount = $thread->messages()->count();
         $participantsCount = $thread->participants()->count();
@@ -132,7 +128,7 @@ class MessageTest extends TestCase
      */
     public function test_message_controller_new_method()
     {
-        $thread = Thread::inRandomOrder()->first();
+        $thread = Thread::inRandomOrder()->firstOrFail();
         $user = $thread->creator();
         $messagesCount = $thread->messages()->count();
         $content = ['type' => 'mood', 'version' => '1.0', 'payload' => ['mood' => 'happy']];
