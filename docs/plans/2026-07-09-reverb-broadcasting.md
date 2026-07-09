@@ -244,8 +244,10 @@ Broadcast::routes(['middleware' => ['auth:api']]);
 to:
 
 ```php
-Broadcast::routes(['middleware' => ['auth:api,web']]);
+Broadcast::routes(['middleware' => ['web', 'auth:api,web']]);
 ```
+
+Note: `['auth:api,web']` alone *replaces* Laravel's default `['web']` middleware rather than adding to it, so `StartSession`/`EncryptCookies`/`AuthenticateSession` (which live only in the `web` group in `app/Http/Kernel.php`) never run for `/broadcasting/auth` — session-cookie auth silently never works in production. `web` must be listed explicitly alongside the dual-guard `auth:api,web` check. This does not reintroduce a CSRF requirement for the mobile app's bearer-token calls: `BroadcastManager::routes()` unconditionally calls `->withoutMiddleware(PreventRequestForgery::class)` on this route, and Laravel's middleware-exclusion resolution also excludes subclasses (`app/Http/Middleware/VerifyCsrfToken` extends `Illuminate\Foundation\Http\Middleware\VerifyCsrfToken` extends `PreventRequestForgery`), so CSRF stays excluded either way.
 
 **Step 5: Run the test again, confirm all four pass**
 
