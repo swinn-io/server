@@ -19,3 +19,13 @@ yarn-error.log
 
 # Premature design briefs — kept locally, not part of the repo
 /docs/SWINN_DESIGN*.md
+
+# Laravel Boost — regenerated per-developer via `php artisan boost:install`/`boost:update`
+/.claude
+/.agents
+/.junie
+/.mcp.json
+/CLAUDE.md
+/AGENTS.md
+/boost.json
+/opencode.json
