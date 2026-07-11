@@ -1,4 +1,7 @@
 import { createApp } from 'vue'
+import { configureEcho } from '@laravel/echo-vue'
+
+configureEcho({ broadcaster: 'reverb' })
 
 const pages = {
     Welcome:   () => import('./pages/Welcome.vue'),
