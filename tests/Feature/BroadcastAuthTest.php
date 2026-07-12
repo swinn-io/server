@@ -8,6 +8,36 @@ use Tests\TestCase;
 
 class BroadcastAuthTest extends TestCase
 {
+    public function test_presence_channel_authorizes_with_id_and_name(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->postJson('/broadcasting/auth', [
+            'channel_name' => 'presence-online',
+            'socket_id' => '1234.1234',
+        ]);
+
+        $response->assertOk();
+
+        // Pusher's protocol encodes `channel_data` as a JSON *string* nested inside
+        // the outer JSON response body (see vendor/pusher/pusher-php-server's
+        // Pusher::authorizeChannel()), not as a nested JSON object. assertJson()'s
+        // array-subset comparison can't see through an encoded string, so decode it
+        // ourselves before asserting on its shape.
+        $encodedChannelData = $response->json('channel_data');
+        $this->assertIsString($encodedChannelData);
+
+        $channelData = json_decode($encodedChannelData, true);
+
+        $this->assertSame([
+            'user_id' => $user->id,
+            'user_info' => [
+                'id' => $user->id,
+                'name' => $user->name,
+            ],
+        ], $channelData);
+    }
+
     public function test_api_guard_authorizes_own_channel(): void
     {
         $user = User::factory()->create();
