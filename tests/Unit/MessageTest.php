@@ -127,11 +127,25 @@ class MessageTest extends TestCase
             $this->service->newThread("Test Thread {$i}", $user, $this->envelope());
         }
 
+        // Add a couple of extra messages to the first thread so the count
+        // assertion below can't be satisfied by a stray value like 1.
+        $firstThread = Thread::forUser($user->id)->oldest('updated_at')->firstOrFail();
+        $this->service->newMessage($firstThread, $user, $this->envelope());
+        $this->service->newMessage($firstThread, $user, $this->envelope());
+
         $allThreads = $this->service->threads($user);
         $modelName = get_class($allThreads->items()[0]);
 
         $this->assertEquals($create, $allThreads->total());
         $this->assertEquals(Thread::class, $modelName);
+
+        /** @var Thread $threadWithExtraMessages */
+        $threadWithExtraMessages = $allThreads->firstWhere('id', $firstThread->id);
+        $this->assertSame(3, $threadWithExtraMessages->messages_count);
+        $this->assertSame(
+            $threadWithExtraMessages->messages()->count(),
+            $threadWithExtraMessages->messages_count
+        );
     }
 
     /**

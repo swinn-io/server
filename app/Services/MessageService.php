@@ -36,7 +36,7 @@ class MessageService implements MessageServiceInterface
      */
     public function threads(User $user): LengthAwarePaginator
     {
-        return Thread::forUser($user->id)->with('participants.user')->latest('updated_at')->paginate();
+        return Thread::forUser($user->id)->with('participants.user')->withCount('messages')->latest('updated_at')->paginate();
     }
 
     /**
