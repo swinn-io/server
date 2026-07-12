@@ -28,9 +28,10 @@ class DashboardController extends Controller
             'threads' => $threads->map(fn ($thread) => [
                 'id' => $thread->id,
                 'subject' => $thread->subject,
-                'unread_count' => 0,
+                'unread_count' => $thread->userUnreadMessagesCount($user->id),
+                'messages_count' => $thread->messages_count,
                 'participants' => $thread->participants
-                    ->map(fn ($participant) => ['user' => ['name' => $participant->user?->name]])
+                    ->map(fn ($participant) => ['user' => ['id' => $participant->user?->id, 'name' => $participant->user?->name]])
                     ->values()
                     ->all(),
             ])->values()->all(),
