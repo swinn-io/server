@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\FrontEnd\DashboardController;
+use App\Http\Controllers\FrontEnd\PageController;
+use App\Http\Controllers\FrontEnd\ThreadController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [\App\Http\Controllers\FrontEnd\PageController::class, 'index']);
+Route::get('/', [PageController::class, 'index']);
 Route::prefix('login')->group(function () {
     Route::get('/', 'App\Http\Controllers\LoginController@home')->name('login');
     Route::get('redirect/{provider}', 'App\Http\Controllers\LoginController@redirect')->name('login.redirect');
@@ -22,9 +25,9 @@ Route::prefix('login')->group(function () {
 Route::post('logout', 'App\Http\Controllers\LoginController@logout')->name('logout');
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('dashboard')->group(function () {
-        Route::get('/', [\App\Http\Controllers\FrontEnd\DashboardController::class, 'index'])->name('dashboard');
+        Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     });
     Route::prefix('thread')->group(function () {
-        Route::get('{thread}', [\App\Http\Controllers\FrontEnd\ThreadController::class, 'show'])->name('thread.show');
+        Route::get('{thread}', [ThreadController::class, 'show'])->name('thread.show');
     });
 });

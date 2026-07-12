@@ -21,6 +21,9 @@ class StatusType implements MessageTypeInterface
         return 'A named state transition with an optional reason code. Used for order status, device state, and workflow transitions. Status is a state machine, not a notes field.';
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function schema(): array
     {
         return [

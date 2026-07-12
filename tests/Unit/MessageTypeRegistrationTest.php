@@ -7,7 +7,7 @@ use Tests\TestCase;
 
 class MessageTypeRegistrationTest extends TestCase
 {
-    public function testRegistryResolvesWithAllSixTypes(): void
+    public function test_registry_resolves_with_all_six_types(): void
     {
         $registry = app(TypeRegistry::class);
         $this->assertCount(6, $registry->all());

@@ -6,25 +6,68 @@ use App\Traits\HasUUID;
 use Cmgmyr\Messenger\Models\Message;
 use Cmgmyr\Messenger\Models\Models;
 use Cmgmyr\Messenger\Models\Thread as BaseThread;
+use Database\Factories\ThreadFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 
+/**
+ * @property string $id
+ * @property string $subject
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property Carbon|null $deleted_at
+ */
 class Thread extends BaseThread
 {
-    use HasFactory, SoftDeletes, HasUUID;
+    /** @use HasFactory<ThreadFactory> */
+    use HasFactory;
+
+    use HasUUID, SoftDeletes;
 
     /**
      * Messages relationship.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany<\App\Models\Message, $this>
      *
      * @codeCoverageIgnore
      */
     public function messages(): HasMany
     {
+        /** @var class-string<\App\Models\Message> $messageClass */
+        $messageClass = Models::classname(Message::class);
+
         return $this
-            ->hasMany(Models::classname(Message::class), 'thread_id', 'id')
+            ->hasMany($messageClass, 'thread_id', 'id')
             ->orderBy('created_at', 'desc');
+    }
+
+    /**
+     * Participants relationship.
+     *
+     * @return HasMany<Participant, $this>
+     *
+     * @codeCoverageIgnore
+     */
+    public function participants(): HasMany
+    {
+        /** @var class-string<Participant> $participantClass */
+        $participantClass = Models::classname(\Cmgmyr\Messenger\Models\Participant::class);
+
+        return $this->hasMany($participantClass, 'thread_id', 'id');
+    }
+
+    /**
+     * User who sent the first message of the thread.
+     *
+     * @codeCoverageIgnore
+     */
+    public function creator(): User
+    {
+        /** @var User $creator */
+        $creator = parent::creator();
+
+        return $creator;
     }
 }

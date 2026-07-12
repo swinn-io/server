@@ -29,7 +29,7 @@ class LoginTest extends TestCase
      *
      * @return void
      */
-    public function testLoginControllerHomeMethod()
+    public function test_login_controller_home_method()
     {
         $response = $this->get(route('login'));
 
@@ -43,7 +43,7 @@ class LoginTest extends TestCase
      *
      * @return void
      */
-    public function testLoginControllerRedirectMethod()
+    public function test_login_controller_redirect_method()
     {
         $response = $this->get(route('login.redirect', ['provider' => 'github']));
 
@@ -56,20 +56,18 @@ class LoginTest extends TestCase
      *
      * @return void
      */
-    public function testLoginControllerCallbackMethod()
+    public function test_login_controller_callback_method()
     {
         $user = User::factory()->make();
         $socialiteUser = Mockery::mock(SocialiteUser::class);
-        $socialiteUser->shouldReceive([
-            'getId'       => Str::random(),
-            'getName'     => $user->name,
-            'getEmail'    => $this->faker->email,
-            'getNickname' => Str::slug($user->name),
-            'getAvatar'   => $this->faker->url,
-        ])
+        $socialiteUser->shouldReceive('getId')->andReturn(Str::random())
             ->andSet('user', $user)
             ->andSet('token', Str::random(40))
             ->andSet('refreshToken', Str::random(40));
+        $socialiteUser->shouldReceive('getName')->andReturn($user->name);
+        $socialiteUser->shouldReceive('getEmail')->andReturn($this->faker->email());
+        $socialiteUser->shouldReceive('getNickname')->andReturn(Str::slug($user->name));
+        $socialiteUser->shouldReceive('getAvatar')->andReturn($this->faker->url());
 
         Socialite::shouldReceive('driver->user')->andReturn($socialiteUser);
 
@@ -82,7 +80,7 @@ class LoginTest extends TestCase
      *
      * @return void
      */
-    public function testLoginControllerLogoutMethod()
+    public function test_login_controller_logout_method()
     {
         $user = User::factory()->create();
         $user->createToken('Test Token');

@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Interfaces\ContactServiceInterface;
 use App\Models\Contact;
 use App\Models\User;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
 class ContactService implements ContactServiceInterface
@@ -13,8 +13,7 @@ class ContactService implements ContactServiceInterface
     /**
      * All contacts.
      *
-     * @param  User  $user
-     * @return LengthAwarePaginator
+     * @return LengthAwarePaginator<int, Contact>
      */
     public function contacts(User $user): LengthAwarePaginator
     {
@@ -23,10 +22,6 @@ class ContactService implements ContactServiceInterface
 
     /**
      * Retrieve a contact.
-     *
-     * @param  string  $contact_id
-     * @param  User  $user
-     * @return Contact|null
      */
     public function contact(string $contact_id, User $user): ?Contact
     {
@@ -35,10 +30,6 @@ class ContactService implements ContactServiceInterface
 
     /**
      * Creates contact.
-     *
-     * @param  User  $user
-     * @param  User  $contact
-     * @return Contact
      */
     public function addContact(User $user, User $contact): Contact
     {
@@ -54,32 +45,32 @@ class ContactService implements ContactServiceInterface
     /**
      * Creates contact by user collection and returns contact.
      *
-     * @param  Collection  $users
-     * @return Collection
+     * @param  Collection<int, User>  $users
+     * @return Collection<int, Contact>
      */
     public function setContacts(Collection $users): Collection
     {
-        return $users->map(function ($user) use ($users) {
+        /** @var Collection<int, Contact> $contacts */
+        $contacts = $users->map(function ($user) use ($users) {
             return $users
-                    ->filter(function ($item) use ($user) {
-                        return ! $item->is($user);
-                    })
-                    ->map(function ($contact) use ($user) {
-                        return $this->addContact($user, $contact);
-                    });
+                ->filter(function ($item) use ($user) {
+                    return ! $item->is($user);
+                })
+                ->map(function ($contact) use ($user) {
+                    return $this->addContact($user, $contact);
+                });
         })
-                ->flatten();
+            ->flatten();
+
+        return $contacts;
     }
 
     /**
      * Remove a contact.
-     *
-     * @param  string  $contact_id
-     * @return Contact
      */
     public function removeContact(string $contact_id): Contact
     {
-        $contact = Contact::find($contact_id);
+        $contact = Contact::findOrFail($contact_id);
         $contact->delete();
 
         return $contact;

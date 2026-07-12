@@ -3,23 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Interfaces\LoginServiceInterface;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
 class LoginController extends Controller
 {
     /**
      * Login Service.
-     *
-     * @var LoginServiceInterface
      */
     private LoginServiceInterface $service;
 
     /**
      * LoginController constructor.
-     *
-     * @param  LoginServiceInterface  $service
      */
     public function __construct(LoginServiceInterface $service)
     {
@@ -29,8 +30,7 @@ class LoginController extends Controller
     /**
      * Socialite integrations provider selection to authenticate.
      *
-     * @param  Request  $request
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return Application|Factory|View
      */
     public function home(Request $request)
     {
@@ -46,14 +46,14 @@ class LoginController extends Controller
     /**
      * Redirect the user to the provider authentication page.
      *
-     * @param  string  $provider
-     * @param  Request  $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function redirect(string $provider, Request $request)
     {
         try {
-            $client = collect($request->session()->get('client'));
+            /** @var array<string, mixed> $sessionClient */
+            $sessionClient = $request->session()->get('client', []);
+            $client = collect($sessionClient);
             if ($client->has('state') && $client->has('redirect_uri')) {
                 $request->session()->reflash();
             } else {
@@ -69,15 +69,15 @@ class LoginController extends Controller
     /**
      * Obtain the user information from the provider.
      *
-     * @param  string  $provider
-     * @param  Request  $request
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return Application|RedirectResponse|Redirector
      */
     public function callback(string $provider, Request $request)
     {
+        /** @var array<string, mixed> $client */
         $client = $request->session()->get('client', []);
         $user = $this->service->callback($provider, $client);
         $URI = Arr::get($client, 'redirect_uri', false);
+        $URI = is_string($URI) ? $URI : false;
 
         /**
          * Authorize user before redirection, it's required for PKCE
@@ -97,8 +97,7 @@ class LoginController extends Controller
     /**
      * Logout current user.
      *
-     * @param  Request  $request
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return Application|RedirectResponse|Redirector
      */
     public function logout(Request $request)
     {

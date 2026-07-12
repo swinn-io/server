@@ -6,7 +6,6 @@ use App\Interfaces\ContactServiceInterface;
 use App\Models\Contact;
 use App\Models\User;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Arr;
 use Tests\TestCase;
 
 class ContactTest extends TestCase
@@ -32,7 +31,7 @@ class ContactTest extends TestCase
      *
      * @return void
      */
-    public function testServiceMethodContacts()
+    public function test_service_method_contacts()
     {
         $user = User::factory()->create();
         $create = 5;
@@ -42,7 +41,7 @@ class ContactTest extends TestCase
         });
 
         $allContacts = $this->service->contacts($user);
-        $modelName = get_class(Arr::get($allContacts->items(), 0));
+        $modelName = get_class($allContacts->items()[0]);
 
         $this->assertEquals($create, $allContacts->total());
         $this->assertEquals(Contact::class, $modelName);
@@ -53,7 +52,7 @@ class ContactTest extends TestCase
      *
      * @return void
      */
-    public function testServiceMethodAddContact()
+    public function test_service_method_add_contact()
     {
         $user = User::factory()->create();
         $contact = User::factory()->create();
@@ -69,13 +68,14 @@ class ContactTest extends TestCase
      *
      * @return void
      */
-    public function testServiceMethodContact()
+    public function test_service_method_contact()
     {
         $user = User::factory()->create();
         $contact = User::factory()->create();
         $created = $this->service->addContact($user, $contact);
         $find = $this->service->contact($created->id, $user);
 
+        $this->assertNotNull($find);
         $this->assertEquals($find->user_id, $user->id);
         $this->assertEquals($find->source_id, $contact->id);
         $this->assertEquals(User::class, $find->source_type);
@@ -86,7 +86,7 @@ class ContactTest extends TestCase
      *
      * @return void
      */
-    public function testServiceMethodSetContact()
+    public function test_service_method_set_contact()
     {
         $userNumber = 5;
         $users = User::factory($userNumber)->create();
@@ -100,7 +100,7 @@ class ContactTest extends TestCase
      *
      * @return void
      */
-    public function testServiceMethodRemoveContact()
+    public function test_service_method_remove_contact()
     {
         $user = User::factory()->create();
         $contact = User::factory()->create();

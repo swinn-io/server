@@ -6,29 +6,32 @@ use App\Models\Contact;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends Factory<Contact>
+ */
 class ContactFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
-     * @var string
+     * @var class-string<Contact>
      */
     protected $model = Contact::class;
 
     /**
      * Define the model's default state.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function definition()
     {
-        $user = User::inRandomOrder()->first();
+        $user = User::inRandomOrder()->firstOrFail();
         $contact = User::factory()->create();
 
         return [
-            'name'  => $contact->name,
-            'user_id'   => $user->id,
-            'source_type'   => User::class,
+            'name' => $contact->name,
+            'user_id' => $user->id,
+            'source_type' => User::class,
             'source_id' => $contact->id,
         ];
     }

@@ -19,13 +19,13 @@ class MessageStoreRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function rules()
     {
         return [
-            'subject'    => 'required|string|max:255',
-            'content'    => 'required|array',
+            'subject' => 'required|string|max:255',
+            'content' => 'required|array',
             'recipients.*' => 'string|exists:users,id',
         ];
     }

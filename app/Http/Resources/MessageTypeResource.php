@@ -3,17 +3,19 @@
 namespace App\Http\Resources;
 
 use App\Interfaces\CrossFieldValidatableInterface;
+use App\Interfaces\MessageTypeInterface;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class MessageTypeResource extends JsonResource
 {
     /**
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
+     * @param  Request  $request
+     * @return array<string, mixed>
      */
     public function toArray($request)
     {
-        /** @var \App\Interfaces\MessageTypeInterface $type */
+        /** @var MessageTypeInterface $type */
         $type = $this->resource;
 
         $data = [

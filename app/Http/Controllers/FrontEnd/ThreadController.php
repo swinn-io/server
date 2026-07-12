@@ -4,19 +4,14 @@ namespace App\Http\Controllers\FrontEnd;
 
 use App\Http\Controllers\Controller;
 use App\Interfaces\MessageServiceInterface;
-use App\Models\Thread;
+use App\Models\Message;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class ThreadController extends Controller
 {
-    /**
-     * @var MessageServiceInterface
-     */
     public MessageServiceInterface $service;
 
-    /**
-     * @param  MessageServiceInterface  $service
-     */
     public function __construct(MessageServiceInterface $service)
     {
         $this->service = $service;
@@ -25,7 +20,7 @@ class ThreadController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return void
      */
     public function index()
     {
@@ -35,7 +30,7 @@ class ThreadController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return void
      */
     public function create()
     {
@@ -45,8 +40,7 @@ class ThreadController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return void
      */
     public function store(Request $request)
     {
@@ -56,8 +50,7 @@ class ThreadController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  string  $thread
-     * @return \Illuminate\Http\Response
+     * @return View
      */
     public function show(string $thread)
     {
@@ -67,11 +60,11 @@ class ThreadController extends Controller
             'thread' => [
                 'id' => $thread->id,
                 'subject' => $thread->subject,
-                'messages' => $thread->messages->map(fn ($message) => [
+                'messages' => $thread->messages->map(fn (Message $message) => [
                     'id' => $message->id,
                     'body' => $message->body,
-                    'created_at' => $message->created_at->diffForHumans(),
-                    'user' => ['name' => $message->user->name],
+                    'created_at' => $message->created_at?->diffForHumans(),
+                    'user' => ['name' => $message->user?->name],
                 ])->values()->all(),
             ],
         ]);
@@ -81,7 +74,7 @@ class ThreadController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return void
      */
     public function edit($id)
     {
@@ -91,9 +84,8 @@ class ThreadController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return void
      */
     public function update(Request $request, $id)
     {
@@ -104,7 +96,7 @@ class ThreadController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return void
      */
     public function destroy($id)
     {

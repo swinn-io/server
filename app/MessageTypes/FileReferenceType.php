@@ -21,6 +21,9 @@ class FileReferenceType implements MessageTypeInterface
         return 'A pointer to an external file: URL, MIME type, and byte size. Swinn carries the reference only, never the file content.';
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function schema(): array
     {
         return [

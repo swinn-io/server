@@ -4,9 +4,9 @@ namespace App\Notifications;
 
 use App\Http\Resources\MessageResource;
 use App\Models\Message;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -14,15 +14,11 @@ class MessageCreated extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    /**
-     * @var Message
-     */
     public Message $message;
 
     /**
      * Create a new notification instance.
      *
-     * @param  Message  $message
      * @return void
      */
     public function __construct(Message $message)
@@ -33,8 +29,8 @@ class MessageCreated extends Notification implements ShouldQueue
     /**
      * Get the notification's delivery channels.
      *
-     * @param  mixed  $notifiable
-     * @return array
+     * @param  User  $notifiable
+     * @return array<int, string>
      */
     public function via($notifiable)
     {
@@ -45,7 +41,7 @@ class MessageCreated extends Notification implements ShouldQueue
      * Get the array representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return array
+     * @return array<string, mixed>
      */
     public function toArray($notifiable)
     {
@@ -58,17 +54,17 @@ class MessageCreated extends Notification implements ShouldQueue
      * Get the mail representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
+     * @return MailMessage
      */
     public function toMail($notifiable)
     {
         $body = json_encode($this->message->body);
-        $user = $this->message->user();
+        $user = $this->message->user;
 
         return (new MailMessage)
-            ->subject('New Message from: '.$user->name)
+            ->subject('New Message from: '.$user?->name)
             ->greeting('Hello!')
-            ->line("{$user->name} pinged you!")
+            ->line("{$user?->name} pinged you!")
             ->line("{$body}")
             ->line('Thank you for using our application!');
     }

@@ -18,26 +18,29 @@ class MessageEnvelopeTest extends TestCase
         $this->service = app(MessageServiceInterface::class);
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     private function validBody(): array
     {
         return ['type' => 'mood', 'version' => '1.0', 'payload' => ['mood' => 'happy']];
     }
 
-    public function testNewThreadAcceptsValidEnvelope(): void
+    public function test_new_thread_accepts_valid_envelope(): void
     {
         $user = User::factory()->create();
         $thread = $this->service->newThread('Subject', $user, $this->validBody());
         $this->assertCount(1, $thread->messages);
     }
 
-    public function testNewThreadRejectsFreeText(): void
+    public function test_new_thread_rejects_free_text(): void
     {
         $user = User::factory()->create();
         $this->expectException(InvalidEnvelopeException::class);
         $this->service->newThread('Subject', $user, ['some' => 'data']);
     }
 
-    public function testNewThreadDoesNotCreateOrphanThreadOnInvalidBody(): void
+    public function test_new_thread_does_not_create_orphan_thread_on_invalid_body(): void
     {
         $user = User::factory()->create();
         $before = Thread::count();
@@ -49,7 +52,7 @@ class MessageEnvelopeTest extends TestCase
         $this->assertSame($before, Thread::count());
     }
 
-    public function testNewMessageRejectsInvalidPayload(): void
+    public function test_new_message_rejects_invalid_payload(): void
     {
         $user = User::factory()->create();
         $thread = $this->service->newThread('Subject', $user, $this->validBody());

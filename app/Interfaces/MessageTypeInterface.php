@@ -13,7 +13,11 @@ interface MessageTypeInterface
     /** One-paragraph plain-English description for the /types endpoint. */
     public function purpose(): string;
 
-    /** JSON Schema array used for write-time payload validation. */
+    /**
+     * JSON Schema array used for write-time payload validation.
+     *
+     * @return array<string, mixed>
+     */
     public function schema(): array;
 
     /** Component name hint for human clients, e.g. "CurrencyCard". */

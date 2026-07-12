@@ -5,7 +5,7 @@ namespace App\MessageTypes;
 use App\Interfaces\CrossFieldValidatableInterface;
 use App\Interfaces\MessageTypeInterface;
 
-class MetricType implements MessageTypeInterface, CrossFieldValidatableInterface
+class MetricType implements CrossFieldValidatableInterface, MessageTypeInterface
 {
     /**
      * Valid quantity → unit pairs. Any combination not listed is rejected
@@ -15,22 +15,22 @@ class MetricType implements MessageTypeInterface, CrossFieldValidatableInterface
      * @var array<string, array<int, string>>
      */
     public const COMPATIBLE_UNITS = [
-        'temperature'     => ['celsius', 'fahrenheit', 'kelvin'],
-        'humidity'        => ['percent'],
-        'pressure'        => ['hpa', 'bar'],
-        'speed'           => ['m_s', 'km_h', 'mph'],
-        'distance'        => ['km', 'm', 'cm', 'mm'],
-        'mass'            => ['kg', 'g'],
-        'energy'          => ['kwh', 'wh'],
-        'power'           => ['w', 'kw'],
-        'voltage'         => ['v', 'mv'],
-        'current'         => ['a', 'ma'],
-        'frequency'       => ['hz', 'khz', 'mhz'],
-        'luminance'       => ['lux'],
-        'co2'             => ['ppm'],
-        'pm2_5'           => ['ug_m3'],
-        'pm10'            => ['ug_m3'],
-        'battery_level'   => ['percent'],
+        'temperature' => ['celsius', 'fahrenheit', 'kelvin'],
+        'humidity' => ['percent'],
+        'pressure' => ['hpa', 'bar'],
+        'speed' => ['m_s', 'km_h', 'mph'],
+        'distance' => ['km', 'm', 'cm', 'mm'],
+        'mass' => ['kg', 'g'],
+        'energy' => ['kwh', 'wh'],
+        'power' => ['w', 'kw'],
+        'voltage' => ['v', 'mv'],
+        'current' => ['a', 'ma'],
+        'frequency' => ['hz', 'khz', 'mhz'],
+        'luminance' => ['lux'],
+        'co2' => ['ppm'],
+        'pm2_5' => ['ug_m3'],
+        'pm10' => ['ug_m3'],
+        'battery_level' => ['percent'],
         'signal_strength' => ['dbm'],
     ];
 
@@ -49,6 +49,9 @@ class MetricType implements MessageTypeInterface, CrossFieldValidatableInterface
         return 'A scalar numeric measurement identified by a controlled quantity kind and SI-aligned unit. Cross-field compatibility between quantity and unit is enforced at write time.';
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function schema(): array
     {
         return [
@@ -66,10 +69,13 @@ class MetricType implements MessageTypeInterface, CrossFieldValidatableInterface
 
     public function validate(array $payload): array
     {
-        $allowed = self::COMPATIBLE_UNITS[$payload['quantity']] ?? [];
+        $quantity = is_string($payload['quantity'] ?? null) ? $payload['quantity'] : '';
+        $unit = is_string($payload['unit'] ?? null) ? $payload['unit'] : '';
 
-        if (! in_array($payload['unit'], $allowed, true)) {
-            return ["unit '{$payload['unit']}' is not valid for quantity '{$payload['quantity']}'"];
+        $allowed = self::COMPATIBLE_UNITS[$quantity] ?? [];
+
+        if (! in_array($unit, $allowed, true)) {
+            return ["unit '{$unit}' is not valid for quantity '{$quantity}'"];
         }
 
         return [];

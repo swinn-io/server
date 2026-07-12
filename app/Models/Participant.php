@@ -3,8 +3,20 @@
 namespace App\Models;
 
 use App\Traits\HasUUID;
+use Cmgmyr\Messenger\Models\Models;
 use Cmgmyr\Messenger\Models\Participant as BaseParticipant;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
+/**
+ * @property string $id
+ * @property string $thread_id
+ * @property string $user_id
+ * @property Carbon|null $last_read
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property Carbon|null $deleted_at
+ */
 class Participant extends BaseParticipant
 {
     use HasUUID;
@@ -12,7 +24,7 @@ class Participant extends BaseParticipant
     /**
      * The attributes that should be cast.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'last_read' => 'datetime',
@@ -20,4 +32,19 @@ class Participant extends BaseParticipant
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',
     ];
+
+    /**
+     * User relationship.
+     *
+     * @return BelongsTo<User, $this>
+     *
+     * @codeCoverageIgnore
+     */
+    public function user(): BelongsTo
+    {
+        /** @var class-string<User> $userClass */
+        $userClass = Models::classname(User::class);
+
+        return $this->belongsTo($userClass, 'user_id');
+    }
 }

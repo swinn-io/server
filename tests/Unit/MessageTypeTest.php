@@ -14,16 +14,23 @@ use PHPUnit\Framework\TestCase;
 
 class MessageTypeTest extends TestCase
 {
+    /**
+     * @param  array<string, mixed>  $schema
+     * @param  array<string, mixed>  $payload
+     */
     private function accepts(array $schema, array $payload): bool
     {
-        return (new Validator())
-            ->validate(Helper::toJSON($payload), Helper::toJSON($schema))
+        /** @var bool|object|string $encodedSchema */
+        $encodedSchema = Helper::toJSON($schema);
+
+        return (new Validator)
+            ->validate(Helper::toJSON($payload), $encodedSchema)
             ->isValid();
     }
 
-    public function testCurrency(): void
+    public function test_currency(): void
     {
-        $type = new CurrencyType();
+        $type = new CurrencyType;
         $this->assertSame('currency', $type->name());
         $this->assertSame('1.0', $type->version());
         $this->assertSame('CurrencyCard', $type->rendererHint());
@@ -35,18 +42,18 @@ class MessageTypeTest extends TestCase
         $this->assertFalse($this->accepts($type->schema(), ['amount' => 1, 'currency_code' => 'USD', 'x' => 1]));
     }
 
-    public function testLocation(): void
+    public function test_location(): void
     {
-        $type = new LocationType();
+        $type = new LocationType;
         $this->assertSame('location', $type->name());
         $this->assertTrue($this->accepts($type->schema(), ['lat' => 51.5, 'lng' => -0.12]));
         $this->assertFalse($this->accepts($type->schema(), ['lat' => 200, 'lng' => 0]));
         $this->assertFalse($this->accepts($type->schema(), ['lat' => 1]));
     }
 
-    public function testStatus(): void
+    public function test_status(): void
     {
-        $type = new StatusType();
+        $type = new StatusType;
         $this->assertSame('status', $type->name());
         $this->assertTrue($this->accepts($type->schema(), ['state' => 'dispatched', 'reason' => 'carrier_collected']));
         $this->assertTrue($this->accepts($type->schema(), ['state' => 'dispatched']));
@@ -57,9 +64,9 @@ class MessageTypeTest extends TestCase
         $this->assertFalse($this->accepts($type->schema(), ['state' => 'a'.str_repeat('b', 60)]));
     }
 
-    public function testFileReference(): void
+    public function test_file_reference(): void
     {
-        $type = new FileReferenceType();
+        $type = new FileReferenceType;
         $this->assertSame('file_reference', $type->name());
         $this->assertTrue($this->accepts($type->schema(), [
             'url' => 'https://cdn.example.com/x.pdf', 'mime_type' => 'application/pdf', 'size_bytes' => 1024,
@@ -72,9 +79,9 @@ class MessageTypeTest extends TestCase
         ]));
     }
 
-    public function testMetric(): void
+    public function test_metric(): void
     {
-        $type = new MetricType();
+        $type = new MetricType;
         $this->assertSame('metric', $type->name());
         $this->assertTrue($this->accepts($type->schema(), [
             'quantity' => 'temperature', 'value' => 22.4, 'unit' => 'celsius',
@@ -89,9 +96,9 @@ class MessageTypeTest extends TestCase
         $this->assertFalse($this->accepts($type->schema(), ['name' => 'temp', 'value' => 1, 'unit' => 'celsius']));
     }
 
-    public function testMetricCrossFieldCompatibility(): void
+    public function test_metric_cross_field_compatibility(): void
     {
-        $type = new MetricType();
+        $type = new MetricType;
         // Compatible quantity/unit pair → no violations.
         $this->assertSame([], $type->validate(['quantity' => 'temperature', 'value' => 22.4, 'unit' => 'celsius']));
         // A real unit paired with the wrong quantity → violation.
@@ -102,9 +109,9 @@ class MessageTypeTest extends TestCase
         $this->assertSame(['compatible_units' => MetricType::COMPATIBLE_UNITS], $type->constraints());
     }
 
-    public function testMood(): void
+    public function test_mood(): void
     {
-        $type = new MoodType();
+        $type = new MoodType;
         $this->assertSame('mood', $type->name());
         $this->assertSame('MoodCard', $type->rendererHint());
         $this->assertTrue($this->accepts($type->schema(), ['mood' => 'happy']));

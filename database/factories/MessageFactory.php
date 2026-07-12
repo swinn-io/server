@@ -7,19 +7,22 @@ use App\Models\Thread;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends Factory<Message>
+ */
 class MessageFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
-     * @var string
+     * @var class-string<Message>
      */
     protected $model = Message::class;
 
     /**
      * Define the model's default state.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function definition()
     {
@@ -32,9 +35,9 @@ class MessageFactory extends Factory
         ];
 
         return [
-            'thread_id' => Thread::inRandomOrder()->first()->id,
-            'user_id'   => User::inRandomOrder()->first()->id,
-            'body'      => collect($bodies)->random(),
+            'thread_id' => Thread::inRandomOrder()->firstOrFail()->id,
+            'user_id' => User::inRandomOrder()->firstOrFail()->id,
+            'body' => collect($bodies)->random(),
         ];
     }
 }

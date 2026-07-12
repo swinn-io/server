@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Schema\Builder;
 use Illuminate\Support\Facades\Schema;
 
 class CreateOauthPersonalAccessClientsTable extends Migration
@@ -9,7 +10,7 @@ class CreateOauthPersonalAccessClientsTable extends Migration
     /**
      * The database schema.
      *
-     * @var \Illuminate\Database\Schema\Builder
+     * @var Builder
      */
     protected $schema;
 
@@ -49,11 +50,11 @@ class CreateOauthPersonalAccessClientsTable extends Migration
 
     /**
      * Get the migration connection name.
-     *
-     * @return string|null
      */
-    public function getConnection()
+    public function getConnection(): ?string
     {
-        return config('passport.storage.database.connection');
+        $connection = config('passport.storage.database.connection');
+
+        return is_string($connection) ? $connection : null;
     }
 }

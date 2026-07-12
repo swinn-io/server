@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Str;
 
+$appName = env('APP_NAME', 'laravel');
+$appSlug = Str::slug(is_string($appName) ? $appName : 'laravel', '_');
+
 return [
 
     /*
@@ -128,7 +131,7 @@ return [
 
     'cookie' => env(
         'SESSION_COOKIE',
-        Str::slug(env('APP_NAME', 'laravel'), '_').'_session'
+        $appSlug.'_session'
     ),
 
     /*

@@ -9,12 +9,9 @@ class UserService implements UserServiceInterface
 {
     /**
      * Find user.
-     *
-     * @param  string  $id
-     * @return User
      */
     public function find(string $id): User
     {
-        return User::find($id);
+        return User::findOrFail($id);
     }
 }

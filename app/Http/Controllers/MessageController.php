@@ -7,20 +7,16 @@ use App\Http\Requests\MessageStoreRequest;
 use App\Http\Resources\MessageResource;
 use App\Http\Resources\ThreadResource;
 use App\Interfaces\MessageServiceInterface;
+use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class MessageController extends Controller
 {
-    /**
-     * @var MessageServiceInterface
-     */
     private MessageServiceInterface $service;
 
     /**
      * MessageController constructor.
-     *
-     * @param  MessageServiceInterface  $service
      */
     public function __construct(MessageServiceInterface $service)
     {
@@ -30,11 +26,11 @@ class MessageController extends Controller
     /**
      * Returns pagination of all threads.
      *
-     * @param  Request  $request
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * @return AnonymousResourceCollection
      */
     public function index(Request $request)
     {
+        /** @var User $user */
         $user = $request->user();
         $threads = $this->service->threads($user);
 
@@ -42,18 +38,19 @@ class MessageController extends Controller
     }
 
     /**
-     * @param  MessageStoreRequest  $request
      * @return ThreadResource
      */
     public function store(MessageStoreRequest $request)
     {
+        /** @var array{subject: string, content: array<string, mixed>, recipients?: array<int, string>} $values */
         $values = $request->validated();
+        /** @var User $user */
         $user = $request->user();
         $thread = $this->service->newThread(
             $values['subject'],
             $user,
             $values['content'],
-            Arr::get($values, 'recipients', [])
+            $values['recipients'] ?? []
         );
 
         return new ThreadResource($thread);
@@ -62,7 +59,6 @@ class MessageController extends Controller
     /**
      * Returns pagination of all threads.
      *
-     * @param  string  $id
      * @return ThreadResource
      */
     public function show(string $id)
@@ -73,13 +69,13 @@ class MessageController extends Controller
     }
 
     /**
-     * @param  string  $id
-     * @param  MessageNewRequest  $request
      * @return MessageResource
      */
     public function new(string $id, MessageNewRequest $request)
     {
+        /** @var array{body: array<string, mixed>} $values */
         $values = $request->validated();
+        /** @var User $user */
         $user = $request->user();
         $thread = $this->service->thread($id);
         $message = $this->service->newMessage(

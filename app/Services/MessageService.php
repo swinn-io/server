@@ -12,23 +12,17 @@ use App\Models\User;
 use App\Notifications\MessageCreated;
 use App\Notifications\ParticipantCreated;
 use App\Notifications\ThreadCreated;
-use App\Services\TypeRegistry;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Notification;
 
 class MessageService implements MessageServiceInterface
 {
-    /**
-     * @var ContactServiceInterface
-     */
     public ContactServiceInterface $contactService;
 
     /**
      * MessageService constructor.
-     *
-     * @param  ContactServiceInterface  $contactService
      */
     public function __construct(ContactServiceInterface $contactService)
     {
@@ -38,8 +32,7 @@ class MessageService implements MessageServiceInterface
     /**
      * All threads that user is participating in.
      *
-     * @param  User  $user
-     * @return LengthAwarePaginator
+     * @return LengthAwarePaginator<int, Thread>
      */
     public function threads(User $user): LengthAwarePaginator
     {
@@ -49,8 +42,7 @@ class MessageService implements MessageServiceInterface
     /**
      * All threads that user is participating in, with new messages.
      *
-     * @param  User  $user
-     * @return Collection
+     * @return Collection<int, Thread>
      */
     public function unreadThreads(User $user): Collection
     {
@@ -60,52 +52,51 @@ class MessageService implements MessageServiceInterface
     /**
      * Retrieve a thread.
      *
-     * @param  string  $thread_id
-     * @return Thread
      *
      * @throws ModelNotFoundException
      */
     public function thread(string $thread_id): Thread
     {
-        return Thread::with(['messages', 'participants.user'])->find($thread_id);
+        return Thread::with(['messages', 'participants.user'])->findOrFail($thread_id);
     }
 
     /**
      * User ids that are associated with the thread.
      *
-     * @param  string  $thread_id
-     * @return Collection
+     * @return Collection<int, Participant>
      */
     public function threadParticipant(string $thread_id): Collection
     {
-        return Thread::with('participants.user')->find($thread_id)->participants;
+        /** @var Collection<int, Participant> $participants */
+        $participants = Thread::with('participants.user')->findOrFail($thread_id)->participants;
+
+        return $participants;
     }
 
     /**
      * User ids that are associated with the thread.
      *
-     * @param  string  $thread_id
-     * @return Collection
+     * @return Collection<int, Participant>
      */
     public function threadParticipants(string $thread_id): Collection
     {
-        return Thread::with('participants.user')->find($thread_id)->participants;
+        /** @var Collection<int, Participant> $participants */
+        $participants = Thread::with('participants.user')->findOrFail($thread_id)->participants;
+
+        return $participants;
     }
 
     /**
      * New message thread.
      *
-     * @param  string  $subject
-     * @param  User  $user
-     * @param  array  $content
-     * @param  null|array  $recipients
-     * @return Thread
+     * @param  array<string, mixed>  $content
+     * @param  array<int, string>|null  $recipients
      */
     public function newThread(string $subject, User $user, array $content, ?array $recipients = []): Thread
     {
         $this->assertValidEnvelope($content);
 
-        /** @var $thread Thread */
+        /** @var Thread $thread */
         $thread = Thread::create([
             'subject' => $subject,
         ]);
@@ -117,9 +108,11 @@ class MessageService implements MessageServiceInterface
             ->map(function ($recipient) {
                 return User::find($recipient);
             })
+            ->filter()
             ->add($user)
             ->unique('id')
             ->map(function ($recipient) use ($thread) {
+                /** @var User $recipient */
                 return $this->addParticipant($thread, $recipient);
             });
 
@@ -134,10 +127,7 @@ class MessageService implements MessageServiceInterface
     /**
      * New message.
      *
-     * @param  Thread  $thread
-     * @param  User  $user
-     * @param  array  $content
-     * @return Message
+     * @param  array<string, mixed>  $content
      */
     public function newMessage(Thread $thread, User $user, array $content): Message
     {
@@ -158,27 +148,23 @@ class MessageService implements MessageServiceInterface
 
     /**
      * Mark as read a tread of a user.
-     *
-     * @param  Thread  $thread
-     * @param  User  $user
-     * @return Participant
      */
     public function markAsRead(Thread $thread, User $user): Participant
     {
         $thread->markAsRead($user->id);
 
-        return $thread->participants()->where('user_id', $user->id)->first();
+        /** @var Participant $participant */
+        $participant = $thread->participants()->where('user_id', $user->id)->firstOrFail();
+
+        return $participant;
     }
 
     /**
      * Mark as read all messages of a user.
-     *
-     * @param  User  $user
-     * @return bool
      */
     public function markAsReadAll(User $user): bool
     {
-        return Participant::where([
+        return (bool) Participant::where([
             'user_id' => $user->id,
         ])->update([
             'last_read' => now(),
@@ -187,20 +173,17 @@ class MessageService implements MessageServiceInterface
 
     /**
      * Mark as read all messages of a user.
-     *
-     * @param  Thread  $thread
-     * @param  User  $user
-     * @param  bool  $mark_as_read
-     * @return Participant
      */
     public function addParticipant(Thread $thread, User $user, bool $mark_as_read = false): Participant
     {
+        /** @var Participant $return */
         $return = $thread->participants()->updateOrCreate([
             'user_id' => $user->id,
             'thread_id' => $thread->id,
         ],
             $mark_as_read ? ['last_read' => now()] : []);
 
+        /** @var \Illuminate\Database\Eloquent\Collection<int, User> $users */
         $users = $thread->users()->get();
 
         $this->contactService->setContacts($users);
@@ -213,7 +196,7 @@ class MessageService implements MessageServiceInterface
     /**
      * Validate a typed envelope, throwing on failure.
      *
-     * @param  array  $envelope
+     * @param  array<string, mixed>  $envelope
      */
     private function assertValidEnvelope(array $envelope): void
     {

@@ -4,6 +4,7 @@ namespace App\Notifications;
 
 use App\Http\Resources\ThreadResource;
 use App\Models\Thread;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -13,15 +14,11 @@ class ThreadCreated extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    /**
-     * @var Thread
-     */
     public Thread $thread;
 
     /**
      * Create a new notification instance.
      *
-     * @param  Thread  $thread
      * @return void
      */
     public function __construct(Thread $thread)
@@ -32,8 +29,8 @@ class ThreadCreated extends Notification implements ShouldQueue
     /**
      * Get the notification's delivery channels.
      *
-     * @param  mixed  $notifiable
-     * @return array
+     * @param  User  $notifiable
+     * @return array<int, string>
      */
     public function via($notifiable)
     {
@@ -44,7 +41,7 @@ class ThreadCreated extends Notification implements ShouldQueue
      * Get the array representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return array
+     * @return array<string, mixed>
      */
     public function toArray($notifiable)
     {
@@ -57,13 +54,13 @@ class ThreadCreated extends Notification implements ShouldQueue
      * Get the mail representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
+     * @return MailMessage
      */
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+            ->line('The introduction to the notification.')
+            ->action('Notification Action', url('/'))
+            ->line('Thank you for using our application!');
     }
 }

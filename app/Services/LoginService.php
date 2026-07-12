@@ -5,25 +5,24 @@ namespace App\Services;
 use App\Interfaces\LoginServiceInterface;
 use App\Models\User;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Config;
 use Laravel\Passport\Client;
 use Laravel\Passport\ClientRepository;
 use Laravel\Socialite\Contracts\User as UserContract;
 use Laravel\Socialite\Facades\Socialite;
+use Laravel\Socialite\Two\AbstractProvider;
+use Laravel\Socialite\Two\User as SocialiteUser;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class LoginService implements LoginServiceInterface
 {
     /**
      * Laravel Passport Client Repository.
-     *
-     * @var ClientRepository
      */
     private ClientRepository $clientRepository;
 
     /**
      * LoginService constructor.
-     *
-     * @param  ClientRepository  $repository
      */
     public function __construct(ClientRepository $repository)
     {
@@ -32,24 +31,24 @@ class LoginService implements LoginServiceInterface
 
     /**
      * Redirect to OAuth authorization service URL.
-     *
-     * @param  string  $provider
-     * @return RedirectResponse
      */
     public function redirect(string $provider): RedirectResponse
     {
-        return Socialite::driver($provider)
-            // Define custom scopes if needed under "services.{provider}"
-            ->scopes(config("services.{$provider}.scopes") ?? '*')
+        /** @var AbstractProvider $driver */
+        $driver = Socialite::driver($provider);
+
+        // Define custom scopes if needed under "services.{provider}"
+        $scopes = config("services.{$provider}.scopes");
+
+        return $driver
+            ->scopes(is_array($scopes) || is_string($scopes) ? $scopes : '*')
             ->redirect();
     }
 
     /**
      * Handle callback.
      *
-     * @param  string  $provider
-     * @param  array  $clientInfo
-     * @return User
+     * @param  array<string, mixed>  $clientInfo
      */
     public function callback(string $provider, array $clientInfo): User
     {
@@ -60,59 +59,53 @@ class LoginService implements LoginServiceInterface
 
     /**
      * Handle callback.
-     *
-     * @param  User  $user
-     * @return string
      */
     public function createToken(User $user): string
     {
-        $tokenName = config('app.name').' Token - '.now();
+        $tokenName = Config::string('app.name').' Token - '.now();
 
         return $user->createToken($tokenName)->accessToken;
     }
 
     /**
      * Create a new user or update existing one.
-     *
-     * @param  string  $provider
-     * @param  UserContract  $userContract
-     * @return User
      */
     public function user(string $provider, UserContract $userContract): User
     {
+        /** @var SocialiteUser $userContract */
         return User::updateOrCreate([
-            'provider_name'  => $provider,                       // GitHub, LinkedIn, Google, Apple
-            'provider_id'    => $userContract->getId(),          // unsignedBigInteger, uuid
+            'provider_name' => $provider,                       // GitHub, LinkedIn, Google, Apple
+            'provider_id' => $userContract->getId(),          // unsignedBigInteger, uuid
         ], [
-            'name'           => $userContract->getName() ?? $userContract->getNickname(),
+            'name' => $userContract->getName() ?? $userContract->getNickname(),
             /**
              * E-mails, tokens and profile will be synced.
              * E-mail is for e-mail notifications.
              * Tokens for retrieve data from authorization
              * server such as GitHub, Twitter or Google.
              */
-            'email'          => $userContract->getEmail(),       // OAuth provider e-mail address
-            'notify_via'     => ['broadcast'],                   // Default notification preference
-            'access_token'   => $userContract->token,            // TOKEN
-            'refresh_token'  => $userContract->refreshToken,     // TOKEN - some providers have it
-            'profile'        => $userContract->user,             // JSON profile data
+            'email' => $userContract->getEmail(),       // OAuth provider e-mail address
+            'notify_via' => ['broadcast'],                   // Default notification preference
+            'access_token' => $userContract->token,            // TOKEN
+            'refresh_token' => $userContract->refreshToken,     // TOKEN - some providers have it
+            'profile' => $userContract->user,             // JSON profile data
         ]);
     }
 
     /**
      * Get or create client for user.
      *
-     * @param  User  $user
-     * @param  array  $clientInfo
-     * @return Client
+     * @param  array<string, mixed>  $clientInfo
      */
     public function client(User $user, array $clientInfo): Client
     {
         $find = $user->oauthApps()->where('revoked', false)->orderBy('name');
 
+        $redirectUri = Arr::get($clientInfo, 'redirect_uri');
+
         return $find->first() ?? $this->clientRepository->createAuthorizationCodeGrantClient(
             "{$user->provider_name}-{$user->provider_id}",
-            array_filter([Arr::get($clientInfo, 'redirect_uri')]),
+            array_filter([is_string($redirectUri) ? $redirectUri : null]),
             false,
             $user
         );

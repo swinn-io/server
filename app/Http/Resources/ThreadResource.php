@@ -2,27 +2,32 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Thread;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @mixin Thread
+ */
 class ThreadResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
+     * @param  Request  $request
+     * @return array<string, mixed>
      */
     public function toArray($request)
     {
         return [
-            'type'       => 'thread',
-            'id'         => (string) $this->id,
+            'type' => 'thread',
+            'id' => (string) $this->id,
             'attributes' => [
-                'subject'      => $this->subject,
-                'messages'     => MessageResource::collection($this->messages),
+                'subject' => $this->subject,
+                'messages' => MessageResource::collection($this->messages),
                 'participants' => ParticipantResource::collection($this->participants),
-                'created_at'   => $this->created_at,
-                'updated_at'   => $this->updated_at,
+                'created_at' => $this->created_at,
+                'updated_at' => $this->updated_at,
             ],
         ];
     }

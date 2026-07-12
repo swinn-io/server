@@ -4,19 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\UserResource;
 use App\Interfaces\UserServiceInterface;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    /**
-     * @var UserServiceInterface
-     */
     private UserServiceInterface $service;
 
     /**
      * UserController constructor.
-     *
-     * @param  UserServiceInterface  $service
      */
     public function __construct(UserServiceInterface $service)
     {
@@ -26,18 +22,19 @@ class UserController extends Controller
     /**
      * Returns authenticated API user.
      *
-     * @param  Request  $request
      * @return UserResource
      */
     public function me(Request $request)
     {
-        return $this->show($request->user()->id);
+        /** @var User $user */
+        $user = $request->user();
+
+        return $this->show($user->id);
     }
 
     /**
      * Returns user by id.
      *
-     * @param  string  $id
      * @return UserResource
      */
     public function show(string $id)
