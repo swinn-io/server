@@ -13,6 +13,7 @@ use App\Notifications\MessageCreated;
 use App\Notifications\ParticipantCreated;
 use App\Notifications\ThreadCreated;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Notification;
@@ -36,7 +37,11 @@ class MessageService implements MessageServiceInterface
      */
     public function threads(User $user): LengthAwarePaginator
     {
-        return Thread::forUser($user->id)->with('participants.user')->withCount('messages')->latest('updated_at')->paginate();
+        return Thread::forUser($user->id)
+            ->with(['participants.user', 'messages' => fn (Relation $query) => $query->latest()->limit(1)])
+            ->withCount('messages')
+            ->latest('updated_at')
+            ->paginate();
     }
 
     /**
