@@ -16,7 +16,10 @@ function transform(payload) {
         id: payload.id,
         body: payload.attributes.body,
         created_at: 'just now', // freshly-arrived messages are definitionally "just now"; no relative-time lib needed
-        user: { name: payload.attributes.user?.attributes?.name },
+        user: {
+            id: payload.attributes.user?.attributes?.id,
+            name: payload.attributes.user?.attributes?.name,
+        },
     }
 }
 

@@ -4,6 +4,7 @@ import AppAvatar from '../atoms/AppAvatar.vue'
 
 const props = defineProps({
     message: { type: Object, required: true },
+    onlineUserIds: { type: Set, default: () => new Set() },
 })
 
 const isStructured = computed(
@@ -19,7 +20,11 @@ const text = computed(() =>
 
 <template>
     <div class="flex gap-3">
-        <AppAvatar :name="message.user?.name ?? '?'" size="sm" />
+        <AppAvatar
+            :name="message.user?.name ?? '?'"
+            size="sm"
+            :online="onlineUserIds.has(message.user?.id)"
+        />
         <div class="min-w-0 flex-1">
             <div class="flex items-baseline gap-2">
                 <span class="font-medium text-gray-900">{{ message.user?.name }}</span>
