@@ -7,11 +7,15 @@ use App\Interfaces\MessageServiceInterface;
 use App\Models\Participant;
 use App\Models\Thread;
 use App\Models\User;
+use App\Notifications\MessageCreated;
+use App\Notifications\ParticipantCreated;
+use App\Notifications\ThreadCreated;
 use Database\Seeders\MessagingSeeder;
 use Database\Seeders\UserSeeder;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
@@ -360,5 +364,73 @@ class MessageTest extends TestCase
 
         $this->assertCount($newParticipants->count() + 1, $participants);
         $this->assertEquals($userNumber, $contacts);
+    }
+
+    /**
+     * Fully resolve a notification's array representation (including nested
+     * JsonResource/AnonymousResourceCollection instances) into plain arrays so
+     * it can be inspected with Arr::get(), the same shape it takes once
+     * serialized to JSON for the broadcast channel.
+     *
+     * @param  array<string, mixed>  $payload
+     * @return array<string, mixed>
+     */
+    private function resolvedPayload(array $payload): array
+    {
+        /** @var array<string, mixed> $resolved */
+        $resolved = json_decode((string) json_encode($payload), true);
+
+        return $resolved;
+    }
+
+    /**
+     * Check that the broadcast/notification payloads carry the sender's/participant's
+     * "user" relation, not just the "user_id" foreign key. Models handed to
+     * MessageCreated/ThreadCreated/ParticipantCreated must have their "user"
+     * relation eager-loaded, otherwise JsonResource::whenLoaded('user') silently
+     * omits the "user" key from the resolved payload.
+     *
+     * @return void
+     */
+    public function test_notifications_carry_eager_loaded_user_relation_in_payload()
+    {
+        Notification::fake();
+
+        $sender = User::factory()->create(['notify_via' => ['broadcast']]);
+        $recipient = User::factory()->create(['notify_via' => ['broadcast']]);
+
+        $thread = $this->service->newThread('New Thread!', $sender, $this->envelope(), [$recipient->id]);
+
+        Notification::assertSentTo($recipient, ThreadCreated::class, function (ThreadCreated $notification) {
+            $payload = $this->resolvedPayload($notification->toArray($notification));
+            /** @var array<int, array<string, mixed>> $participants */
+            $participants = Arr::get($payload, 'payload.attributes.participants', []);
+            $participantUserNames = collect($participants)
+                ->pluck('attributes.user.attributes.name')
+                ->filter();
+
+            return $participantUserNames->count() === 2;
+        });
+
+        // The thread's very first message is created before any recipients are
+        // attached as participants (see MessageService::newThread), so send a
+        // follow-up message on the now-populated thread to exercise the
+        // MessageCreated notification path.
+        $this->service->newMessage($thread, $sender, $this->envelope('meh'));
+
+        Notification::assertSentTo($recipient, MessageCreated::class, function (MessageCreated $notification) use ($sender) {
+            $payload = $this->resolvedPayload($notification->toArray($notification));
+
+            return Arr::get($payload, 'payload.attributes.user.attributes.name') === $sender->name;
+        });
+
+        $newParticipant = User::factory()->create(['notify_via' => ['broadcast']]);
+        $this->service->addParticipant($thread, $newParticipant);
+
+        Notification::assertSentTo($recipient, ParticipantCreated::class, function (ParticipantCreated $notification) use ($newParticipant) {
+            $payload = $this->resolvedPayload($notification->toArray($notification));
+
+            return Arr::get($payload, 'payload.attributes.user.attributes.name') === $newParticipant->name;
+        });
     }
 }

@@ -139,6 +139,8 @@ class MessageService implements MessageServiceInterface
             'body' => $content,
         ]);
 
+        $message->setRelation('user', $user);
+
         $recipients = $thread->users()->get();
 
         Notification::send($recipients, new MessageCreated($message));
@@ -182,6 +184,8 @@ class MessageService implements MessageServiceInterface
             'thread_id' => $thread->id,
         ],
             $mark_as_read ? ['last_read' => now()] : []);
+
+        $return->setRelation('user', $user);
 
         /** @var \Illuminate\Database\Eloquent\Collection<int, User> $users */
         $users = $thread->users()->get();

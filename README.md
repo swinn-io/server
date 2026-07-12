@@ -37,3 +37,15 @@ Seed database:
 ```
 php artisan db:seed
 ```
+
+## Running the app (with real-time messaging)
+
+Reverb requires a persistent process, and message broadcasts are queued — both must be running alongside the usual dev server:
+
+(make sure `REVERB_APP_ID`/`REVERB_APP_KEY`/`REVERB_APP_SECRET` are filled in in your `.env` — `artisan reverb:install` generates these automatically if you haven't run it yet)
+
+```
+php artisan reverb:start
+php artisan queue:work
+npm run dev
+```
