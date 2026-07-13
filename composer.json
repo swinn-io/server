@@ -13,6 +13,7 @@
         "cmgmyr/messenger": "^2.20",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^13.0",
+        "laravel/nightwatch": "^1.28",
         "laravel/passport": "^13.0",
         "laravel/reverb": "^1.10",
         "laravel/sanctum": "^4.0",
