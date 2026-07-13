@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import { useEchoNotification } from '@laravel/echo-vue'
 import AppHeader from '../components/organisms/AppHeader.vue'
 import ThreadList from '../components/organisms/ThreadList.vue'
@@ -27,11 +27,7 @@ function transformThread(payload) {
     }
 }
 
-onMounted(() => {
-    if (!props.auth) {
-        return
-    }
-
+if (props.auth) {
     useEchoNotification(`App.Models.User.${props.auth.id}`, (notification) => {
         const payload = notification.payload
         const type = notification.type
@@ -64,7 +60,7 @@ onMounted(() => {
             threads.value = next
         }
     })
-})
+}
 </script>
 
 <template>

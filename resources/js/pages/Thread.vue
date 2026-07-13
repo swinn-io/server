@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useEchoNotification } from '@laravel/echo-vue'
 import AppHeader from '../components/organisms/AppHeader.vue'
 import AppAvatar from '../components/atoms/AppAvatar.vue'
@@ -30,21 +30,17 @@ function transform(payload) {
     }
 }
 
-onMounted(() => {
-    if (!props.auth) {
-        return
-    }
-
+if (props.auth) {
     useEchoNotification(`App.Models.User.${props.auth.id}`, (notification) => {
         const payload = notification.payload
 
-        if (payload?.attributes?.thread_id === props.thread.id) {
+        if (notification.type === 'App\\Notifications\\MessageCreated' && payload?.attributes?.thread_id === props.thread.id) {
             if (!messages.value.some((m) => m.id === payload.id)) {
                 messages.value.push(transform(payload))
             }
         }
     })
-})
+}
 </script>
 
 <template>

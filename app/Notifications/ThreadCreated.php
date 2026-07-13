@@ -46,7 +46,7 @@ class ThreadCreated extends Notification implements ShouldQueue
     public function toArray($notifiable)
     {
         return [
-            'payload' => (new ThreadResource($this->thread))->resolve(),
+            'payload' => (new ThreadResource($this->thread->load('participants.user', 'messages.user')))->resolve(),
         ];
     }
 
