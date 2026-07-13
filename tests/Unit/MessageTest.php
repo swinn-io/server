@@ -460,6 +460,8 @@ class MessageTest extends TestCase
      */
     public function test_thread_created_toarray_reloads_participant_user_after_serialization_round_trip()
     {
+        Notification::fake();
+
         $sender = User::factory()->create(['notify_via' => ['broadcast']]);
         $recipient = User::factory()->create(['notify_via' => ['broadcast']]);
 
