@@ -45,7 +45,7 @@ class ParticipantCreated extends Notification implements ShouldQueue
     public function toArray($notifiable)
     {
         return [
-            'payload' => (new ParticipantResource($this->participant))->resolve(),
+            'payload' => (new ParticipantResource($this->participant->load('user')))->resolve(),
         ];
     }
 }

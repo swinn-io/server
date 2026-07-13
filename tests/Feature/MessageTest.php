@@ -51,6 +51,44 @@ class MessageTest extends TestCase
     }
 
     /**
+     * The index endpoint must return each thread's full message history, not
+     * just a preview — MessageService::threads() is shared with the
+     * dashboard, which only wants a single-message preview, but this API
+     * endpoint (consumed outside the web dashboard) must keep receiving the
+     * complete list it always has.
+     *
+     * @return void
+     */
+    public function test_message_controller_index_method_returns_full_message_history()
+    {
+        $sender = User::factory()->create(['notify_via' => []]);
+        $recipient = User::factory()->create(['notify_via' => []]);
+
+        $thread = $this->service->newThread(
+            'Full history',
+            $sender,
+            ['type' => 'mood', 'payload' => ['mood' => 'happy', 'intensity' => 1], 'version' => '1.0'],
+            [$recipient->id]
+        );
+        $this->service->newMessage($thread, $sender, ['type' => 'mood', 'payload' => ['mood' => 'happy', 'intensity' => 2], 'version' => '1.0']);
+        $this->service->newMessage($thread, $sender, ['type' => 'mood', 'payload' => ['mood' => 'happy', 'intensity' => 3], 'version' => '1.0']);
+
+        $response = $this
+            ->actingAs($sender, 'api')
+            ->get(route('message'));
+
+        $response->assertOk();
+        $response->assertJson([
+            'data' => [
+                [
+                    'id' => $thread->id,
+                ],
+            ],
+        ]);
+        $response->assertJsonCount(3, 'data.0.attributes.messages');
+    }
+
+    /**
      * Check store method of MessageController.
      *
      * @return void

@@ -14,13 +14,15 @@ const threads = ref(props.threads)
 const { onlineUserIds } = useOnlinePresence()
 
 function transformThread(payload) {
+    const openingMessage = payload.attributes.messages?.[0]
+
     return {
         id: payload.id,
         subject: payload.attributes.subject,
         updated_at: 'just now',
-        unread_count: 0,
+        unread_count: openingMessage?.attributes?.user_id === props.auth?.id ? 0 : 1,
         messages_count: payload.attributes.messages?.length ?? 0,
-        last_message: payload.attributes.messages?.[0]?.attributes?.body ?? null,
+        last_message: openingMessage?.attributes?.body ?? null,
         participants: (payload.attributes.participants ?? []).map((p) => ({
             user: { id: p.attributes?.user?.attributes?.id, name: p.attributes?.user?.attributes?.name },
         })),
@@ -47,10 +49,14 @@ if (props.auth) {
                 return
             }
 
+            const isOwnMessage = payload.attributes?.user_id === props.auth?.id
+
             const updated = {
                 ...threads.value[index],
                 updated_at: 'just now',
-                unread_count: (threads.value[index].unread_count ?? 0) + 1,
+                unread_count: isOwnMessage
+                    ? (threads.value[index].unread_count ?? 0)
+                    : (threads.value[index].unread_count ?? 0) + 1,
                 messages_count: (threads.value[index].messages_count ?? 0) + 1,
                 last_message: payload.attributes?.body ?? threads.value[index].last_message,
             }

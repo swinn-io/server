@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use App\Interfaces\ContactServiceInterface;
 use App\Interfaces\MessageServiceInterface;
+use App\Models\Message;
 use App\Models\Participant;
 use App\Models\Thread;
 use App\Models\User;
@@ -295,6 +296,26 @@ class MessageTest extends TestCase
     }
 
     /**
+     * Sending a message must not leave it counted as unread for its own
+     * sender — without marking the sender's own participant as read,
+     * userUnreadMessagesCount() would count the sender's own message against
+     * themselves.
+     *
+     * @return void
+     */
+    public function test_new_message_does_not_count_as_unread_for_its_sender()
+    {
+        $sender = User::factory()->create();
+        $recipient = User::factory()->create();
+
+        $thread = $this->service->newThread('Own message', $sender, $this->envelope(), [$recipient->id]);
+        $this->service->newMessage($thread, $sender, $this->envelope('meh'));
+
+        $this->assertSame(0, $thread->userUnreadMessagesCount($sender->id));
+        $this->assertSame(2, $thread->userUnreadMessagesCount($recipient->id));
+    }
+
+    /**
      * Check if markAsRead method updates last read attribute.
      *
      * @return void
@@ -481,5 +502,62 @@ class MessageTest extends TestCase
             ->filter();
 
         $this->assertCount(2, $participantUserNames);
+    }
+
+    /**
+     * Same serialization round-trip gap as ThreadCreated, but for the
+     * message's "user" relation: MessageService::newMessage() only attaches
+     * it via setRelation(), so MessageCreated::toArray() must reload it
+     * itself rather than assume it survives dispatch.
+     *
+     * @return void
+     */
+    public function test_message_created_toarray_reloads_user_after_serialization_round_trip()
+    {
+        Notification::fake();
+
+        $sender = User::factory()->create(['notify_via' => ['broadcast']]);
+        $recipient = User::factory()->create(['notify_via' => ['broadcast']]);
+
+        $thread = $this->service->newThread('Serialization Round Trip', $sender, $this->envelope(), [$recipient->id]);
+        $message = $this->service->newMessage($thread, $sender, $this->envelope('meh'));
+
+        // Fetch a bare copy with "user" NOT loaded, mirroring what
+        // SerializesModels restores after unserialize().
+        $bareMessage = Message::findOrFail($message->id);
+
+        $notification = new MessageCreated($bareMessage);
+        $payload = $this->resolvedPayload($notification->toArray($recipient));
+
+        $this->assertSame($sender->name, Arr::get($payload, 'payload.attributes.user.attributes.name'));
+    }
+
+    /**
+     * Same serialization round-trip gap as ThreadCreated, but for the
+     * participant's "user" relation: MessageService::addParticipant() only
+     * attaches it via setRelation(), so ParticipantCreated::toArray() must
+     * reload it itself rather than assume it survives dispatch.
+     *
+     * @return void
+     */
+    public function test_participant_created_toarray_reloads_user_after_serialization_round_trip()
+    {
+        Notification::fake();
+
+        $sender = User::factory()->create(['notify_via' => ['broadcast']]);
+        $recipient = User::factory()->create(['notify_via' => ['broadcast']]);
+        $newParticipant = User::factory()->create(['notify_via' => ['broadcast']]);
+
+        $thread = $this->service->newThread('Serialization Round Trip', $sender, $this->envelope(), [$recipient->id]);
+        $participant = $this->service->addParticipant($thread, $newParticipant);
+
+        // Fetch a bare copy with "user" NOT loaded, mirroring what
+        // SerializesModels restores after unserialize().
+        $bareParticipant = Participant::findOrFail($participant->id);
+
+        $notification = new ParticipantCreated($bareParticipant);
+        $payload = $this->resolvedPayload($notification->toArray($recipient));
+
+        $this->assertSame($newParticipant->name, Arr::get($payload, 'payload.attributes.user.attributes.name'));
     }
 }
