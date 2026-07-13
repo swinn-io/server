@@ -127,11 +127,25 @@ class MessageTest extends TestCase
             $this->service->newThread("Test Thread {$i}", $user, $this->envelope());
         }
 
+        // Add a couple of extra messages to the first thread so the count
+        // assertion below can't be satisfied by a stray value like 1.
+        $firstThread = Thread::forUser($user->id)->oldest('updated_at')->firstOrFail();
+        $this->service->newMessage($firstThread, $user, $this->envelope());
+        $this->service->newMessage($firstThread, $user, $this->envelope());
+
         $allThreads = $this->service->threads($user);
         $modelName = get_class($allThreads->items()[0]);
 
         $this->assertEquals($create, $allThreads->total());
         $this->assertEquals(Thread::class, $modelName);
+
+        /** @var Thread $threadWithExtraMessages */
+        $threadWithExtraMessages = $allThreads->firstWhere('id', $firstThread->id);
+        $this->assertSame(3, $threadWithExtraMessages->messages_count);
+        $this->assertSame(
+            $threadWithExtraMessages->messages()->count(),
+            $threadWithExtraMessages->messages_count
+        );
     }
 
     /**
@@ -432,5 +446,40 @@ class MessageTest extends TestCase
 
             return Arr::get($payload, 'payload.attributes.user.attributes.name') === $newParticipant->name;
         });
+    }
+
+    /**
+     * Reproduces the real dispatch path: ShouldQueue notifications are
+     * serialized and restored via SerializesModels before toArray() runs
+     * (this happens even on the "sync" queue connection), which drops any
+     * relation set only via setRelation() and never actually eager-loaded.
+     * ThreadCreated::toArray() must reload participants.user itself rather
+     * than assume the caller's in-memory relations survive that round-trip.
+     *
+     * @return void
+     */
+    public function test_thread_created_toarray_reloads_participant_user_after_serialization_round_trip()
+    {
+        Notification::fake();
+
+        $sender = User::factory()->create(['notify_via' => ['broadcast']]);
+        $recipient = User::factory()->create(['notify_via' => ['broadcast']]);
+
+        $thread = $this->service->newThread('Serialization Round Trip', $sender, $this->envelope(), [$recipient->id]);
+
+        // Fetch a bare copy with participants loaded but participants.user NOT
+        // loaded, mirroring what SerializesModels restores after unserialize().
+        $bareThread = Thread::with('participants')->findOrFail($thread->id);
+
+        $notification = new ThreadCreated($bareThread);
+        $payload = $this->resolvedPayload($notification->toArray($recipient));
+
+        /** @var array<int, array<string, mixed>> $participants */
+        $participants = Arr::get($payload, 'payload.attributes.participants', []);
+        $participantUserNames = collect($participants)
+            ->pluck('attributes.user.attributes.name')
+            ->filter();
+
+        $this->assertCount(2, $participantUserNames);
     }
 }

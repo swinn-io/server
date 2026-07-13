@@ -23,6 +23,7 @@ class UserResource extends JsonResource
             'type' => 'user',
             'id' => (string) $this->id,
             'attributes' => [
+                'id' => (string) $this->id,
                 'name' => $this->name,
                 'created_at' => $this->created_at,
                 'updated_at' => $this->updated_at,
