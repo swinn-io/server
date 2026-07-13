@@ -22,7 +22,7 @@ class DashboardController extends Controller
     {
         /** @var User $user */
         $user = Auth::user();
-        $threads = $messages->threads($user);
+        $threads = $messages->threads($user, onlyLatestMessage: true);
 
         return view('dashboard', [
             'threads' => $threads->map(fn ($thread) => [

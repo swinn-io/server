@@ -33,12 +33,18 @@ class MessageService implements MessageServiceInterface
     /**
      * All threads that user is participating in.
      *
+     * @param  bool  $onlyLatestMessage  Eager-load only each thread's single latest message
+     *                                   (for a preview), instead of its full message history.
      * @return LengthAwarePaginator<int, Thread>
      */
-    public function threads(User $user): LengthAwarePaginator
+    public function threads(User $user, bool $onlyLatestMessage = false): LengthAwarePaginator
     {
+        $messagesRelation = $onlyLatestMessage
+            ? ['messages' => fn (Relation $query) => $query->latest()->limit(1)]
+            : ['messages'];
+
         return Thread::forUser($user->id)
-            ->with(['participants.user', 'messages' => fn (Relation $query) => $query->latest()->limit(1)])
+            ->with(array_merge(['participants.user'], $messagesRelation))
             ->withCount('messages')
             ->latest('updated_at')
             ->paginate();

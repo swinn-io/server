@@ -15,9 +15,11 @@ interface MessageServiceInterface
     /**
      * All threads that user is participating in.
      *
+     * @param  bool  $onlyLatestMessage  Eager-load only each thread's single latest message
+     *                                   (for a preview), instead of its full message history.
      * @return LengthAwarePaginator<int, Thread>
      */
-    public function threads(User $user): LengthAwarePaginator;
+    public function threads(User $user, bool $onlyLatestMessage = false): LengthAwarePaginator;
 
     /**
      * All threads that user is participating in, with new messages.
