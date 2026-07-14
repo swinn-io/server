@@ -59,4 +59,22 @@ class PingThreadUsersCommandTest extends TestCase
         // It is a normal thread message: every participant is notified.
         Notification::assertSentTo($other, MessageCreated::class);
     }
+
+    public function test_fails_gracefully_when_note_exceeds_max_length(): void
+    {
+        Notification::fake();
+
+        $sender = User::factory()->create(['notify_via' => ['broadcast']]);
+        $recipient = User::factory()->create(['notify_via' => ['broadcast']]);
+        $thread = $this->service->newThread('Subject', $sender, $this->envelope(), [$recipient->id]);
+
+        $this->artisan('thread:ping', [
+            '--thread' => $thread->id,
+            '--from' => $sender->id,
+            '--user' => [$recipient->id],
+            '--note' => str_repeat('a', 281),
+        ])->assertFailed();
+
+        $this->assertNull($this->pingMessage($thread));
+    }
 }

@@ -2,10 +2,12 @@
 
 namespace App\Console\Commands;
 
+use App\Exceptions\InvalidEnvelopeException;
 use App\Interfaces\MessageServiceInterface;
 use App\Models\Thread;
 use App\Models\User;
 use Illuminate\Console\Command;
+use Illuminate\Http\JsonResponse;
 
 class PingThreadUsers extends Command
 {
@@ -67,7 +69,7 @@ class PingThreadUsers extends Command
             'version' => '1.0',
             'payload' => array_filter(
                 ['user_ids' => $userIds, 'note' => $note],
-                fn ($value) => $value !== null,
+                fn ($value) => $value !== null && $value !== '',
             ),
         ];
 
@@ -93,7 +95,18 @@ class PingThreadUsers extends Command
             return self::FAILURE;
         }
 
-        $message = $service->newMessage($thread, $sender, $envelope);
+        try {
+            $message = $service->newMessage($thread, $sender, $envelope);
+        } catch (InvalidEnvelopeException $e) {
+            $response = $e->getResponse();
+            $detail = $response instanceof JsonResponse
+                ? (string) $response->getContent()
+                : $e->getMessage();
+            $this->error('Could not send ping: '.$detail);
+
+            return self::FAILURE;
+        }
+
         $this->info("Pinged {$users->count()} user(s) in thread {$thread->id} (message {$message->id}).");
 
         return self::SUCCESS;
