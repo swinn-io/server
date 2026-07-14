@@ -21,6 +21,9 @@ function toBucket(status) {
  * Wraps echo().connector.onConnectionChange() — the same mechanism app.js
  * uses — rather than @laravel/echo-vue's useConnectionStatus(), which is
  * Vue-lifecycle-bound in a way the app deliberately moved away from.
+ *
+ * Call from within a component's setup() — onUnmounted only registers the
+ * listener cleanup there; calling at module scope would leak the listener.
  */
 export function useSocketStatus() {
     const status = ref('connecting')
