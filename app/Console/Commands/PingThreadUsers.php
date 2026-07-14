@@ -7,6 +7,7 @@ use App\Interfaces\MessageServiceInterface;
 use App\Models\Thread;
 use App\Models\User;
 use Illuminate\Console\Command;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 
 class PingThreadUsers extends Command
@@ -34,6 +35,9 @@ class PingThreadUsers extends Command
         /** @var array<int, string> $userIds */
         $userIds = array_values(array_unique($this->option('user')));
         $note = $this->option('note');
+
+        $threadId = is_string($threadId) && $threadId !== '' ? $threadId : null;
+        $subject = is_string($subject) && $subject !== '' ? $subject : null;
 
         if ($threadId !== null && $subject !== null) {
             $this->error('Provide either --thread (ping an existing thread) or --subject (create one), not both.');
@@ -66,10 +70,10 @@ class PingThreadUsers extends Command
             return self::FAILURE;
         }
 
-        /** @var \Illuminate\Database\Eloquent\Collection<int, User> $users */
+        /** @var Collection<int, User> $users */
         $users = User::findMany($userIds);
         if ($users->count() !== count($userIds)) {
-            $found = $users->pluck('id')->all();
+            $found = $users->map(fn (User $user): string => $user->id)->all();
             $missing = array_diff($userIds, $found);
             $this->error('These users were not found: '.implode(', ', $missing));
 
@@ -106,7 +110,10 @@ class PingThreadUsers extends Command
             return self::FAILURE;
         }
 
-        $participantIds = $thread->users()->get()->pluck('id')->all();
+        $participantIds = array_values(array_filter(
+            $thread->users()->get()->pluck('id')->all(),
+            'is_string',
+        ));
 
         if (! in_array($sender->id, $participantIds, true)) {
             $this->error("Sender {$sender->id} is not a participant of thread {$thread->id}.");
@@ -114,7 +121,7 @@ class PingThreadUsers extends Command
             return self::FAILURE;
         }
 
-        $notParticipants = array_diff($users->pluck('id')->all(), $participantIds);
+        $notParticipants = array_diff($users->map(fn (User $user): string => $user->id)->all(), $participantIds);
         if ($notParticipants !== []) {
             $this->error('These users are not in the thread: '.implode(', ', $notParticipants));
 
