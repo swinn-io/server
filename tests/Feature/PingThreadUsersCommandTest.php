@@ -8,7 +8,9 @@ use App\Models\Thread;
 use App\Models\User;
 use App\Notifications\MessageCreated;
 use App\Notifications\ThreadCreated;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Testing\PendingCommand;
 use Tests\TestCase;
 
 class PingThreadUsersCommandTest extends TestCase
@@ -34,7 +36,21 @@ class PingThreadUsersCommandTest extends TestCase
     private function pingMessage(Thread $thread): ?Message
     {
         return $thread->messages()->get()
-            ->first(fn (Message $m) => is_array($m->body) && ($m->body['type'] ?? null) === 'ping');
+            ->first(fn (Message $m) => Arr::get($m->body, 'type') === 'ping');
+    }
+
+    /**
+     * Run the thread:ping command and return the (narrowed) pending command
+     * so assertions like assertSuccessful()/assertFailed() can be chained.
+     *
+     * @param  array<string, mixed>  $arguments
+     */
+    private function runPing(array $arguments): PendingCommand
+    {
+        $command = $this->artisan('thread:ping', $arguments);
+        $this->assertInstanceOf(PendingCommand::class, $command);
+
+        return $command;
     }
 
     public function test_pings_selected_users_in_an_existing_thread(): void
@@ -47,7 +63,7 @@ class PingThreadUsersCommandTest extends TestCase
 
         $thread = $this->service->newThread('Subject', $sender, $this->envelope(), [$recipient->id, $other->id]);
 
-        $this->artisan('thread:ping', [
+        $this->runPing([
             '--thread' => $thread->id,
             '--from' => $sender->id,
             '--user' => [$recipient->id],
@@ -55,7 +71,7 @@ class PingThreadUsersCommandTest extends TestCase
 
         $ping = $this->pingMessage($thread);
         $this->assertNotNull($ping);
-        $this->assertSame([$recipient->id], $ping->body['payload']['user_ids']);
+        $this->assertSame([$recipient->id], Arr::get($ping->body, 'payload.user_ids'));
 
         // It is a normal thread message: every participant is notified.
         Notification::assertSentTo($other, MessageCreated::class);
@@ -69,7 +85,7 @@ class PingThreadUsersCommandTest extends TestCase
         $a = User::factory()->create(['notify_via' => ['broadcast']]);
         $b = User::factory()->create(['notify_via' => ['broadcast']]);
 
-        $this->artisan('thread:ping', [
+        $this->runPing([
             '--from' => $sender->id,
             '--subject' => 'Heads up',
             '--user' => [$a->id, $b->id],
@@ -85,8 +101,8 @@ class PingThreadUsersCommandTest extends TestCase
 
         $ping = $this->pingMessage($thread);
         $this->assertNotNull($ping);
-        $this->assertSame([$a->id, $b->id], $ping->body['payload']['user_ids']);
-        $this->assertSame('please respond', $ping->body['payload']['note']);
+        $this->assertSame([$a->id, $b->id], Arr::get($ping->body, 'payload.user_ids'));
+        $this->assertSame('please respond', Arr::get($ping->body, 'payload.note'));
 
         Notification::assertSentTo($a, ThreadCreated::class);
     }
@@ -99,7 +115,7 @@ class PingThreadUsersCommandTest extends TestCase
         $recipient = User::factory()->create(['notify_via' => ['broadcast']]);
         $thread = $this->service->newThread('Subject', $sender, $this->envelope(), [$recipient->id]);
 
-        $this->artisan('thread:ping', [
+        $this->runPing([
             '--thread' => $thread->id,
             '--from' => $sender->id,
             '--user' => [$recipient->id],
@@ -114,7 +130,7 @@ class PingThreadUsersCommandTest extends TestCase
         $sender = User::factory()->create();
         $user = User::factory()->create();
 
-        $this->artisan('thread:ping', ['--from' => $sender->id, '--user' => [$user->id]])
+        $this->runPing(['--from' => $sender->id, '--user' => [$user->id]])
             ->assertFailed();
 
         $this->assertNoPingMessagesExist();
@@ -125,7 +141,7 @@ class PingThreadUsersCommandTest extends TestCase
         $sender = User::factory()->create();
         $thread = $this->service->newThread('S', $sender, $this->envelope());
 
-        $this->artisan('thread:ping', [
+        $this->runPing([
             '--thread' => $thread->id,
             '--subject' => 'X',
             '--from' => $sender->id,
@@ -140,7 +156,7 @@ class PingThreadUsersCommandTest extends TestCase
         $sender = User::factory()->create();
         $user = User::factory()->create();
 
-        $this->artisan('thread:ping', [
+        $this->runPing([
             '--thread' => '00000000-0000-0000-0000-000000000000',
             '--from' => $sender->id,
             '--user' => [$user->id],
@@ -155,7 +171,7 @@ class PingThreadUsersCommandTest extends TestCase
         $outsider = User::factory()->create();
         $thread = $this->service->newThread('S', $sender, $this->envelope());
 
-        $this->artisan('thread:ping', [
+        $this->runPing([
             '--thread' => $thread->id,
             '--from' => $sender->id,
             '--user' => [$outsider->id],
@@ -171,7 +187,7 @@ class PingThreadUsersCommandTest extends TestCase
         $outsider = User::factory()->create();
         $thread = $this->service->newThread('S', $creator, $this->envelope(), [$participant->id]);
 
-        $this->artisan('thread:ping', [
+        $this->runPing([
             '--thread' => $thread->id,
             '--from' => $outsider->id,
             '--user' => [$participant->id],
@@ -185,7 +201,7 @@ class PingThreadUsersCommandTest extends TestCase
         $sender = User::factory()->create();
         $thread = $this->service->newThread('S', $sender, $this->envelope());
 
-        $this->artisan('thread:ping', ['--thread' => $thread->id, '--from' => $sender->id])
+        $this->runPing(['--thread' => $thread->id, '--from' => $sender->id])
             ->assertFailed();
 
         $this->assertNoPingMessagesExist();
@@ -194,7 +210,7 @@ class PingThreadUsersCommandTest extends TestCase
     private function assertNoPingMessagesExist(): void
     {
         $this->assertFalse(
-            Message::all()->contains(fn (Message $m) => is_array($m->body) && ($m->body['type'] ?? null) === 'ping'),
+            Message::all()->contains(fn (Message $m) => Arr::get($m->body, 'type') === 'ping'),
             'Expected no ping messages to have been created.',
         );
     }
