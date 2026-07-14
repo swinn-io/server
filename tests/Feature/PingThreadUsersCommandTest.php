@@ -108,4 +108,94 @@ class PingThreadUsersCommandTest extends TestCase
 
         $this->assertNull($this->pingMessage($thread));
     }
+
+    public function test_fails_when_neither_thread_nor_subject_is_given(): void
+    {
+        $sender = User::factory()->create();
+        $user = User::factory()->create();
+
+        $this->artisan('thread:ping', ['--from' => $sender->id, '--user' => [$user->id]])
+            ->assertFailed();
+
+        $this->assertNoPingMessagesExist();
+    }
+
+    public function test_fails_when_both_thread_and_subject_are_given(): void
+    {
+        $sender = User::factory()->create();
+        $thread = $this->service->newThread('S', $sender, $this->envelope());
+
+        $this->artisan('thread:ping', [
+            '--thread' => $thread->id,
+            '--subject' => 'X',
+            '--from' => $sender->id,
+            '--user' => [$sender->id],
+        ])->assertFailed();
+
+        $this->assertNoPingMessagesExist();
+    }
+
+    public function test_fails_when_thread_not_found(): void
+    {
+        $sender = User::factory()->create();
+        $user = User::factory()->create();
+
+        $this->artisan('thread:ping', [
+            '--thread' => '00000000-0000-0000-0000-000000000000',
+            '--from' => $sender->id,
+            '--user' => [$user->id],
+        ])->assertFailed();
+
+        $this->assertNoPingMessagesExist();
+    }
+
+    public function test_fails_when_a_pinged_user_is_not_a_participant(): void
+    {
+        $sender = User::factory()->create();
+        $outsider = User::factory()->create();
+        $thread = $this->service->newThread('S', $sender, $this->envelope());
+
+        $this->artisan('thread:ping', [
+            '--thread' => $thread->id,
+            '--from' => $sender->id,
+            '--user' => [$outsider->id],
+        ])->assertFailed();
+
+        $this->assertNoPingMessagesExist();
+    }
+
+    public function test_fails_when_sender_is_not_a_participant(): void
+    {
+        $creator = User::factory()->create();
+        $participant = User::factory()->create();
+        $outsider = User::factory()->create();
+        $thread = $this->service->newThread('S', $creator, $this->envelope(), [$participant->id]);
+
+        $this->artisan('thread:ping', [
+            '--thread' => $thread->id,
+            '--from' => $outsider->id,
+            '--user' => [$participant->id],
+        ])->assertFailed();
+
+        $this->assertNoPingMessagesExist();
+    }
+
+    public function test_fails_without_users(): void
+    {
+        $sender = User::factory()->create();
+        $thread = $this->service->newThread('S', $sender, $this->envelope());
+
+        $this->artisan('thread:ping', ['--thread' => $thread->id, '--from' => $sender->id])
+            ->assertFailed();
+
+        $this->assertNoPingMessagesExist();
+    }
+
+    private function assertNoPingMessagesExist(): void
+    {
+        $this->assertFalse(
+            Message::all()->contains(fn (Message $m) => is_array($m->body) && ($m->body['type'] ?? null) === 'ping'),
+            'Expected no ping messages to have been created.',
+        );
+    }
 }

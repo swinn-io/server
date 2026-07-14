@@ -35,6 +35,18 @@ class PingThreadUsers extends Command
         $userIds = array_values(array_unique($this->option('user')));
         $note = $this->option('note');
 
+        if ($threadId !== null && $subject !== null) {
+            $this->error('Provide either --thread (ping an existing thread) or --subject (create one), not both.');
+
+            return self::FAILURE;
+        }
+
+        if ($threadId === null && $subject === null) {
+            $this->error('Give --thread to ping an existing thread, or --subject to create one.');
+
+            return self::FAILURE;
+        }
+
         if (! is_string($fromId) || $fromId === '') {
             $this->error('The --from option (sender user UUID) is required.');
 
