@@ -7,6 +7,7 @@ use App\MessageTypes\FileReferenceType;
 use App\MessageTypes\LocationType;
 use App\MessageTypes\MetricType;
 use App\MessageTypes\MoodType;
+use App\MessageTypes\PingType;
 use App\MessageTypes\StatusType;
 use Opis\JsonSchema\Helper;
 use Opis\JsonSchema\Validator;
@@ -119,5 +120,21 @@ class MessageTypeTest extends TestCase
         $this->assertFalse($this->accepts($type->schema(), ['mood' => 'ecstatic']));
         $this->assertFalse($this->accepts($type->schema(), ['mood' => 'happy', 'intensity' => 9]));
         $this->assertFalse($this->accepts($type->schema(), ['mood' => 'happy', 'note' => 'feeling great']));
+    }
+
+    public function test_ping(): void
+    {
+        $type = new PingType;
+        $this->assertSame('ping', $type->name());
+        $this->assertSame('1.0', $type->version());
+        $this->assertSame('PingCard', $type->rendererHint());
+        $this->assertNotEmpty($type->purpose());
+
+        $this->assertTrue($this->accepts($type->schema(), ['user_ids' => ['u1']]));
+        $this->assertTrue($this->accepts($type->schema(), ['user_ids' => ['u1', 'u2'], 'note' => 'please respond']));
+        $this->assertFalse($this->accepts($type->schema(), ['user_ids' => []]));               // minItems
+        $this->assertFalse($this->accepts($type->schema(), ['user_ids' => ['u1', 'u1']]));      // uniqueItems
+        $this->assertFalse($this->accepts($type->schema(), ['note' => 'x']));                   // missing user_ids
+        $this->assertFalse($this->accepts($type->schema(), ['user_ids' => ['u1'], 'x' => 1]));  // additionalProperties
     }
 }
