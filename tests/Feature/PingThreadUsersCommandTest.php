@@ -60,6 +60,34 @@ class PingThreadUsersCommandTest extends TestCase
         Notification::assertSentTo($other, MessageCreated::class);
     }
 
+    public function test_creates_a_new_thread_and_pings_recipients(): void
+    {
+        Notification::fake();
+
+        $sender = User::factory()->create(['notify_via' => ['broadcast']]);
+        $a = User::factory()->create(['notify_via' => ['broadcast']]);
+        $b = User::factory()->create(['notify_via' => ['broadcast']]);
+
+        $this->artisan('thread:ping', [
+            '--from' => $sender->id,
+            '--subject' => 'Heads up',
+            '--user' => [$a->id, $b->id],
+            '--note' => 'please respond',
+        ])->assertSuccessful();
+
+        $thread = Thread::where('subject', 'Heads up')->firstOrFail();
+
+        $participantIds = $thread->users()->get()->pluck('id')->all();
+        $this->assertContains($a->id, $participantIds);
+        $this->assertContains($b->id, $participantIds);
+        $this->assertContains($sender->id, $participantIds);
+
+        $ping = $this->pingMessage($thread);
+        $this->assertNotNull($ping);
+        $this->assertSame([$a->id, $b->id], $ping->body['payload']['user_ids']);
+        $this->assertSame('please respond', $ping->body['payload']['note']);
+    }
+
     public function test_fails_gracefully_when_note_exceeds_max_length(): void
     {
         Notification::fake();

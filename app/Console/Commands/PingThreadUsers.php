@@ -73,6 +73,20 @@ class PingThreadUsers extends Command
             ),
         ];
 
+        if ($threadId === null) {
+            try {
+                $thread = $service->newThread((string) $subject, $sender, $envelope, $userIds);
+            } catch (InvalidEnvelopeException $e) {
+                $this->error('Could not send ping: '.$this->renderEnvelopeError($e));
+
+                return self::FAILURE;
+            }
+
+            $this->info("Created thread {$thread->id} and pinged {$users->count()} user(s).");
+
+            return self::SUCCESS;
+        }
+
         $thread = Thread::find($threadId);
         if ($thread === null) {
             $this->error("Thread {$threadId} not found.");
@@ -98,11 +112,7 @@ class PingThreadUsers extends Command
         try {
             $message = $service->newMessage($thread, $sender, $envelope);
         } catch (InvalidEnvelopeException $e) {
-            $response = $e->getResponse();
-            $detail = $response instanceof JsonResponse
-                ? (string) $response->getContent()
-                : $e->getMessage();
-            $this->error('Could not send ping: '.$detail);
+            $this->error('Could not send ping: '.$this->renderEnvelopeError($e));
 
             return self::FAILURE;
         }
@@ -110,5 +120,14 @@ class PingThreadUsers extends Command
         $this->info("Pinged {$users->count()} user(s) in thread {$thread->id} (message {$message->id}).");
 
         return self::SUCCESS;
+    }
+
+    private function renderEnvelopeError(InvalidEnvelopeException $e): string
+    {
+        $response = $e->getResponse();
+
+        return $response instanceof JsonResponse
+            ? (string) $response->getContent()
+            : $e->getMessage();
     }
 }
