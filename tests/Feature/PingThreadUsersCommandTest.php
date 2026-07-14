@@ -7,6 +7,7 @@ use App\Models\Message;
 use App\Models\Thread;
 use App\Models\User;
 use App\Notifications\MessageCreated;
+use App\Notifications\ThreadCreated;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
@@ -86,6 +87,8 @@ class PingThreadUsersCommandTest extends TestCase
         $this->assertNotNull($ping);
         $this->assertSame([$a->id, $b->id], $ping->body['payload']['user_ids']);
         $this->assertSame('please respond', $ping->body['payload']['note']);
+
+        Notification::assertSentTo($a, ThreadCreated::class);
     }
 
     public function test_fails_gracefully_when_note_exceeds_max_length(): void
