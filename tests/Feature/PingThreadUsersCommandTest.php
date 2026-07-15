@@ -90,7 +90,6 @@ class PingThreadUsersCommandTest extends TestCase
             '--from' => $sender->id,
             '--subject' => 'Heads up',
             '--user' => [$a->id, $b->id],
-            '--note' => 'please respond',
         ])->assertSuccessful();
 
         $thread = Thread::where('subject', 'Heads up')->firstOrFail();
@@ -103,27 +102,8 @@ class PingThreadUsersCommandTest extends TestCase
         $ping = $this->pingMessage($thread);
         $this->assertNotNull($ping);
         $this->assertSame([$a->id, $b->id], Arr::get($ping->body, 'payload.user_ids'));
-        $this->assertSame('please respond', Arr::get($ping->body, 'payload.note'));
 
         Notification::assertSentTo($a, ThreadCreated::class);
-    }
-
-    public function test_fails_gracefully_when_note_exceeds_max_length(): void
-    {
-        Notification::fake();
-
-        $sender = User::factory()->create(['notify_via' => ['broadcast']]);
-        $recipient = User::factory()->create(['notify_via' => ['broadcast']]);
-        $thread = $this->service->newThread('Subject', $sender, $this->envelope(), [$recipient->id]);
-
-        $this->runPing([
-            '--thread' => $thread->id,
-            '--from' => $sender->id,
-            '--user' => [$recipient->id],
-            '--note' => str_repeat('a', 281),
-        ])->assertFailed();
-
-        $this->assertNull($this->pingMessage($thread));
     }
 
     public function test_fails_when_neither_thread_nor_subject_is_given(): void
@@ -246,22 +226,6 @@ class PingThreadUsersCommandTest extends TestCase
         ])->assertFailed();
 
         $this->assertNoPingMessagesExist();
-    }
-
-    public function test_create_mode_fails_gracefully_when_note_exceeds_max_length(): void
-    {
-        $sender = User::factory()->create();
-        $recipient = User::factory()->create();
-
-        $this->runPing([
-            '--from' => $sender->id,
-            '--subject' => 'Heads up',
-            '--user' => [$recipient->id],
-            '--note' => str_repeat('a', 281),
-        ])->assertFailed();
-
-        $this->assertNoPingMessagesExist();
-        $this->assertDatabaseMissing('threads', ['subject' => 'Heads up']);
     }
 
     private function assertNoPingMessagesExist(): void

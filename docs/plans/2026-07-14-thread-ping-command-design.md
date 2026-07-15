@@ -3,6 +3,8 @@
 **Status:** Approved 2026-07-14
 **Source:** ops/admin need to nudge specific participants of a thread from the CLI — either inside an existing thread or by spinning up a new thread whose opening message is the ping.
 
+> **Amendment 2026-07-15:** The optional free-text `note` field (and the `--note` option) described below were **removed** before merge. Every message type in this app deliberately forbids free text (e.g. `MoodType` "No free text", `StatusType` "not a notes field"), so a prose `note` violated that convention. The ping payload is now just `{ user_ids: [...] }`. Because that removed the only user-controlled value that could produce an invalid envelope, the `InvalidEnvelopeException` try/catch in the command was also dropped (the envelope is now valid by construction).
+
 ## 1. Goal
 
 Add an artisan command, `thread:ping`, that an operator/admin runs to "ping" a set of users. It works in two modes:

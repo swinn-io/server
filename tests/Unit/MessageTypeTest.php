@@ -131,10 +131,10 @@ class MessageTypeTest extends TestCase
         $this->assertNotEmpty($type->purpose());
 
         $this->assertTrue($this->accepts($type->schema(), ['user_ids' => ['u1']]));
-        $this->assertTrue($this->accepts($type->schema(), ['user_ids' => ['u1', 'u2'], 'note' => 'please respond']));
+        $this->assertTrue($this->accepts($type->schema(), ['user_ids' => ['u1', 'u2']]));
         $this->assertFalse($this->accepts($type->schema(), ['user_ids' => []]));               // minItems
         $this->assertFalse($this->accepts($type->schema(), ['user_ids' => ['u1', 'u1']]));      // uniqueItems
-        $this->assertFalse($this->accepts($type->schema(), ['note' => 'x']));                   // missing user_ids
-        $this->assertFalse($this->accepts($type->schema(), ['user_ids' => ['u1'], 'x' => 1]));  // additionalProperties
+        $this->assertFalse($this->accepts($type->schema(), []));                               // missing user_ids
+        $this->assertFalse($this->accepts($type->schema(), ['user_ids' => ['u1'], 'note' => 'x']));  // additionalProperties (note no longer allowed)
     }
 }

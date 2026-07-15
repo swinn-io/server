@@ -2,13 +2,11 @@
 
 namespace App\Console\Commands;
 
-use App\Exceptions\InvalidEnvelopeException;
 use App\Interfaces\MessageServiceInterface;
 use App\Models\Thread;
 use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Http\JsonResponse;
 
 class PingThreadUsers extends Command
 {
@@ -19,8 +17,7 @@ class PingThreadUsers extends Command
         {--thread= : Existing thread UUID to ping into (omit to create a new thread)}
         {--from= : Sender / thread-creator user UUID}
         {--user=* : User UUID(s) to ping}
-        {--subject= : Subject for a NEW thread (required when --thread is omitted)}
-        {--note= : Optional short note included in the ping payload}';
+        {--subject= : Subject for a NEW thread (required when --thread is omitted)}';
 
     /**
      * @var string
@@ -34,7 +31,6 @@ class PingThreadUsers extends Command
         $fromId = $this->option('from');
         /** @var array<int, string> $userIds */
         $userIds = array_values(array_unique($this->option('user')));
-        $note = $this->option('note');
 
         $threadId = is_string($threadId) && $threadId !== '' ? $threadId : null;
         $subject = is_string($subject) && $subject !== '' ? $subject : null;
@@ -83,21 +79,11 @@ class PingThreadUsers extends Command
         $envelope = [
             'type' => 'ping',
             'version' => '1.0',
-            'payload' => array_filter(
-                ['user_ids' => $userIds, 'note' => $note],
-                fn ($value) => $value !== null && $value !== '',
-            ),
+            'payload' => ['user_ids' => $userIds],
         ];
 
         if ($threadId === null) {
-            try {
-                $thread = $service->newThread((string) $subject, $sender, $envelope, $userIds);
-            } catch (InvalidEnvelopeException $e) {
-                $this->error('Could not send ping: '.$this->renderEnvelopeError($e));
-
-                return self::FAILURE;
-            }
-
+            $thread = $service->newThread((string) $subject, $sender, $envelope, $userIds);
             $this->info("Created thread {$thread->id} and pinged {$users->count()} user(s).");
 
             return self::SUCCESS;
@@ -128,25 +114,9 @@ class PingThreadUsers extends Command
             return self::FAILURE;
         }
 
-        try {
-            $message = $service->newMessage($thread, $sender, $envelope);
-        } catch (InvalidEnvelopeException $e) {
-            $this->error('Could not send ping: '.$this->renderEnvelopeError($e));
-
-            return self::FAILURE;
-        }
-
+        $message = $service->newMessage($thread, $sender, $envelope);
         $this->info("Pinged {$users->count()} user(s) in thread {$thread->id} (message {$message->id}).");
 
         return self::SUCCESS;
-    }
-
-    private function renderEnvelopeError(InvalidEnvelopeException $e): string
-    {
-        $response = $e->getResponse();
-
-        return $response instanceof JsonResponse
-            ? (string) $response->getContent()
-            : $e->getMessage();
     }
 }

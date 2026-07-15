@@ -18,7 +18,7 @@ class PingType implements MessageTypeInterface
 
     public function purpose(): string
     {
-        return 'Nudge specific participants of a thread. The payload lists the pinged user IDs (a targeted mention) so clients may highlight the message for those users. An optional short note may accompany the ping.';
+        return 'Nudge specific participants of a thread. The payload lists the pinged user IDs (a targeted mention) so clients may highlight the message for those users.';
     }
 
     /**
@@ -37,7 +37,6 @@ class PingType implements MessageTypeInterface
                     'uniqueItems' => true,
                     'items' => ['type' => 'string'],
                 ],
-                'note' => ['type' => 'string', 'maxLength' => 280],
             ],
         ];
     }
