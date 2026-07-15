@@ -7,6 +7,7 @@ use App\MessageTypes\FileReferenceType;
 use App\MessageTypes\LocationType;
 use App\MessageTypes\MetricType;
 use App\MessageTypes\MoodType;
+use App\MessageTypes\PingType;
 use App\MessageTypes\StatusType;
 use App\Services\TypeRegistry;
 use Illuminate\Support\ServiceProvider;
@@ -23,6 +24,7 @@ class MessageTypeServiceProvider extends ServiceProvider
                 new FileReferenceType,
                 new MetricType,
                 new MoodType,
+                new PingType,
             ]);
         });
     }

@@ -1,0 +1,122 @@
+<?php
+
+namespace App\Console\Commands;
+
+use App\Interfaces\MessageServiceInterface;
+use App\Models\Thread;
+use App\Models\User;
+use Illuminate\Console\Command;
+use Illuminate\Database\Eloquent\Collection;
+
+class PingThreadUsers extends Command
+{
+    /**
+     * @var string
+     */
+    protected $signature = 'thread:ping
+        {--thread= : Existing thread UUID to ping into (omit to create a new thread)}
+        {--from= : Sender / thread-creator user UUID}
+        {--user=* : User UUID(s) to ping}
+        {--subject= : Subject for a NEW thread (required when --thread is omitted)}';
+
+    /**
+     * @var string
+     */
+    protected $description = 'Ping certain users in an existing thread, or create a new thread whose opening message is the ping.';
+
+    public function handle(MessageServiceInterface $service): int
+    {
+        $threadId = $this->option('thread');
+        $subject = $this->option('subject');
+        $fromId = $this->option('from');
+        /** @var array<int, string> $userIds */
+        $userIds = array_values(array_unique($this->option('user')));
+
+        $threadId = is_string($threadId) && $threadId !== '' ? $threadId : null;
+        $subject = is_string($subject) && $subject !== '' ? $subject : null;
+
+        if ($threadId !== null && $subject !== null) {
+            $this->error('Provide either --thread (ping an existing thread) or --subject (create one), not both.');
+
+            return self::FAILURE;
+        }
+
+        if ($threadId === null && $subject === null) {
+            $this->error('Give --thread to ping an existing thread, or --subject to create one.');
+
+            return self::FAILURE;
+        }
+
+        if (! is_string($fromId) || $fromId === '') {
+            $this->error('The --from option (sender user UUID) is required.');
+
+            return self::FAILURE;
+        }
+
+        if ($userIds === []) {
+            $this->error('Provide at least one --user to ping.');
+
+            return self::FAILURE;
+        }
+
+        $sender = User::find($fromId);
+        if ($sender === null) {
+            $this->error("Sender user {$fromId} not found.");
+
+            return self::FAILURE;
+        }
+
+        /** @var Collection<int, User> $users */
+        $users = User::findMany($userIds);
+        if ($users->count() !== count($userIds)) {
+            $found = $users->map(fn (User $user): string => $user->id)->all();
+            $missing = array_diff($userIds, $found);
+            $this->error('These users were not found: '.implode(', ', $missing));
+
+            return self::FAILURE;
+        }
+
+        $envelope = [
+            'type' => 'ping',
+            'version' => '1.0',
+            'payload' => ['user_ids' => $userIds],
+        ];
+
+        if ($threadId === null) {
+            $thread = $service->newThread((string) $subject, $sender, $envelope, $userIds);
+            $this->info("Created thread {$thread->id} and pinged {$users->count()} user(s).");
+
+            return self::SUCCESS;
+        }
+
+        $thread = Thread::find($threadId);
+        if ($thread === null) {
+            $this->error("Thread {$threadId} not found.");
+
+            return self::FAILURE;
+        }
+
+        $participantIds = array_values(array_filter(
+            $thread->users()->get()->pluck('id')->all(),
+            'is_string',
+        ));
+
+        if (! in_array($sender->id, $participantIds, true)) {
+            $this->error("Sender {$sender->id} is not a participant of thread {$thread->id}.");
+
+            return self::FAILURE;
+        }
+
+        $notParticipants = array_diff($users->map(fn (User $user): string => $user->id)->all(), $participantIds);
+        if ($notParticipants !== []) {
+            $this->error('These users are not in the thread: '.implode(', ', $notParticipants));
+
+            return self::FAILURE;
+        }
+
+        $message = $service->newMessage($thread, $sender, $envelope);
+        $this->info("Pinged {$users->count()} user(s) in thread {$thread->id} (message {$message->id}).");
+
+        return self::SUCCESS;
+    }
+}

@@ -25,13 +25,13 @@ class TypeDiscoveryTest extends TestCase
         $response = $this->getJson(route('types'));
 
         $response->assertOk();
-        $response->assertJsonCount(6);
+        $response->assertJsonCount(7);
         $response->assertJsonStructure([
             ['type', 'version', 'purpose', 'schema', 'renderer_hint'],
         ]);
 
         $types = collect($this->typesJson($response))->pluck('type')->all();
-        foreach (['currency', 'location', 'status', 'file_reference', 'metric', 'mood'] as $name) {
+        foreach (['currency', 'location', 'status', 'file_reference', 'metric', 'mood', 'ping'] as $name) {
             $this->assertContains($name, $types);
         }
     }
