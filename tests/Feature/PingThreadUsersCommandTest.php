@@ -10,6 +10,7 @@ use App\Notifications\MessageCreated;
 use App\Notifications\ThreadCreated;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Str;
 use Illuminate\Testing\PendingCommand;
 use Tests\TestCase;
 
@@ -205,6 +206,62 @@ class PingThreadUsersCommandTest extends TestCase
             ->assertFailed();
 
         $this->assertNoPingMessagesExist();
+    }
+
+    public function test_fails_when_from_is_missing(): void
+    {
+        $sender = User::factory()->create();
+        $thread = $this->service->newThread('S', $sender, $this->envelope());
+
+        $this->runPing(['--thread' => $thread->id, '--user' => [$sender->id]])
+            ->assertFailed();
+
+        $this->assertNoPingMessagesExist();
+    }
+
+    public function test_fails_when_sender_is_not_found(): void
+    {
+        $creator = User::factory()->create();
+        $participant = User::factory()->create();
+        $thread = $this->service->newThread('S', $creator, $this->envelope(), [$participant->id]);
+
+        $this->runPing([
+            '--thread' => $thread->id,
+            '--from' => (string) Str::uuid(),
+            '--user' => [$participant->id],
+        ])->assertFailed();
+
+        $this->assertNoPingMessagesExist();
+    }
+
+    public function test_fails_when_a_pinged_user_does_not_exist(): void
+    {
+        $sender = User::factory()->create();
+        $thread = $this->service->newThread('S', $sender, $this->envelope());
+
+        $this->runPing([
+            '--thread' => $thread->id,
+            '--from' => $sender->id,
+            '--user' => [(string) Str::uuid()],
+        ])->assertFailed();
+
+        $this->assertNoPingMessagesExist();
+    }
+
+    public function test_create_mode_fails_gracefully_when_note_exceeds_max_length(): void
+    {
+        $sender = User::factory()->create();
+        $recipient = User::factory()->create();
+
+        $this->runPing([
+            '--from' => $sender->id,
+            '--subject' => 'Heads up',
+            '--user' => [$recipient->id],
+            '--note' => str_repeat('a', 281),
+        ])->assertFailed();
+
+        $this->assertNoPingMessagesExist();
+        $this->assertDatabaseMissing('threads', ['subject' => 'Heads up']);
     }
 
     private function assertNoPingMessagesExist(): void
