@@ -77,6 +77,16 @@ jobs:
       - name: Run Tests
         run: vendor/bin/phpunit --coverage-clover coverage.xml
 
+      - name: DEBUG serve probe
+        if: github.event_name == 'pull_request'
+        run: |
+          php artisan serve > serve.log 2>&1 &
+          sleep 5
+          curl -sS -i http://localhost:8000/ | head -30 || true
+          echo "--- serve.log"; cat serve.log
+          echo "--- laravel.log"; tail -n 40 storage/logs/laravel.log || true
+          kill %1
+
       - name: SEO check (local build)
         if: github.event_name == 'pull_request'
         uses: ikidnapmyself/seo-checkup@v1
