@@ -99,10 +99,9 @@ jobs:
   seo-production:
     if: github.event_name != 'push' || github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
-    continue-on-error: ${{ github.event_name == 'pull_request' }}
 
     steps:
       - uses: ikidnapmyself/seo-checkup@v1
         with:
           url: ${{ inputs.url || vars.PRODUCTION_URL }}
-          fail-on: recommended
+          fail-on: ${{ github.event_name == 'pull_request' && 'none' || 'recommended' }}
