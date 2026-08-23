@@ -97,8 +97,9 @@ jobs:
           format: clover
 
   seo-production:
-    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/master')
+    if: github.event_name != 'push' || github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
+    continue-on-error: ${{ github.event_name == 'pull_request' }}
 
     steps:
       - uses: ikidnapmyself/seo-checkup@v1
