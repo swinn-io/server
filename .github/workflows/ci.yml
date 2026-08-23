@@ -4,6 +4,10 @@ on:
   push:
   pull_request:
   workflow_dispatch:
+    inputs:
+      url:
+        description: URL to audit (defaults to the PRODUCTION_URL repo variable)
+        required: false
 
 jobs:
   quality:
@@ -99,5 +103,5 @@ jobs:
     steps:
       - uses: ikidnapmyself/seo-checkup@v1
         with:
-          url: ${{ vars.PRODUCTION_URL }}
+          url: ${{ inputs.url || vars.PRODUCTION_URL }}
           fail-on: recommended
