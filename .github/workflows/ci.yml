@@ -84,7 +84,7 @@ jobs:
 
       - name: SEO check (local build)
         if: github.event_name == 'pull_request'
-        uses: ikidnapmyself/seo-checkup@v1
+        uses: ikidnapmyself/seo-checkup@v1.2.0
         with:
           serve: php artisan migrate --force && php artisan serve
           serve-url: http://localhost:8000
@@ -101,7 +101,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: ikidnapmyself/seo-checkup@v1
+      - uses: ikidnapmyself/seo-checkup@v1.2.0
         with:
           url: ${{ inputs.url || vars.PRODUCTION_URL }}
           fail-on: ${{ github.event_name == 'pull_request' && 'none' || 'recommended' }}
