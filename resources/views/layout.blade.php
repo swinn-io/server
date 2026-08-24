@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name') }}</title>
+    <meta name="description" content="@yield('meta-description', config('app.name'))">
+    <link rel="canonical" href="{{ url()->current() }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @yield('page-data')
     <script>window.__AUTH__ = @json(auth()->user()?->only(['id', 'name', 'email']));</script>
