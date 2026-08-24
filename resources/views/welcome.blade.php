@@ -1,6 +1,6 @@
 @extends('layout')
 
-@section('meta-description', config('app.name').' — real-time messaging threads for teams')
+@section('meta-description', config('app.name').' — an open-source messaging service for the data era.')
 
 @section('page-data')
     <script>
