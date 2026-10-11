@@ -1,0 +1,44 @@
+name: Setup
+description: Install PHP and Composer dependencies, optionally Node dependencies and the built frontend
+
+inputs:
+  extensions:
+    description: PHP extensions to enable
+    default: mbstring, pdo, pdo_mysql, xml, curl
+  coverage:
+    description: PHP coverage driver (none, pcov, xdebug)
+    default: none
+  frontend:
+    description: Install Node dependencies and build the frontend
+    default: 'false'
+
+runs:
+  using: composite
+  steps:
+    - name: Setup PHP 8.3
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.3'
+        extensions: ${{ inputs.extensions }}
+        coverage: ${{ inputs.coverage }}
+
+    - name: Install Dependencies
+      shell: bash
+      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
+    - name: Setup Node
+      if: inputs.frontend == 'true'
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: npm
+
+    - name: Install Node Dependencies
+      if: inputs.frontend == 'true'
+      shell: bash
+      run: npm ci
+
+    - name: Build Frontend
+      if: inputs.frontend == 'true'
+      shell: bash
+      run: npm run build

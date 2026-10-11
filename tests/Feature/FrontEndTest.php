@@ -21,6 +21,8 @@ class FrontEndTest extends TestCase
 
         $response->assertOk();
         $response->assertSee(Config::string('app.name'));
+        $response->assertSee('<meta name="description" content="', false);
+        $response->assertSee('<link rel="canonical" href="'.url('/').'">', false);
     }
 
     public function test_dashboard_shows_real_unread_counts_and_participant_ids(): void
